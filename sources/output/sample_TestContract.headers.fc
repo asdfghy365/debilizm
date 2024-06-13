@@ -1,0 +1,37 @@
+;;
+;; Header files for TestContract
+;; NOTE: declarations are sorted for optimal order
+;;
+
+;; __tact_verify_address
+slice __tact_verify_address(slice address) inline;
+
+;; $Data$_store
+builder $Data$_store(builder build_0, (int, int, cell, cell, int, slice) v) inline_ref;
+
+;; $Data$_load
+(slice, ((int, int, cell, cell, int, slice))) $Data$_load(slice sc_0) inline_ref;
+
+;; $TestContract$_store
+builder $TestContract$_store(builder build_0, ((int, int, cell, cell, int, slice)) v) inline;
+
+;; $TestContract$_load
+(slice, (((int, int, cell, cell, int, slice)))) $TestContract$_load(slice sc_0) inline;
+
+;; $Data$_constructor_total_bet_a_total_bet_b_bets_a_bets_b_finalized_admin
+((int, int, cell, cell, int, slice)) $Data$_constructor_total_bet_a_total_bet_b_bets_a_bets_b_finalized_admin(int total_bet_a, int total_bet_b, cell bets_a, cell bets_b, int finalized, slice admin) inline;
+
+;; $global_emptyCell
+cell $global_emptyCell() impure inline;
+
+;; $TestContract$_contract_init
+((int, int, cell, cell, int, slice)) $TestContract$_contract_init() impure inline_ref;
+
+;; $TestContract$_contract_load
+((int, int, cell, cell, int, slice)) $TestContract$_contract_load() impure inline_ref;
+
+;; $TestContract$_contract_store
+() $TestContract$_contract_store(((int, int, cell, cell, int, slice)) v) impure inline;
+
+;; $TestContract$_fun_handle_bet
+(((int, int, cell, cell, int, slice)), ()) $TestContract$_fun_handle_bet(((int, int, cell, cell, int, slice)) $self, int $bet_on_a, int $bet_amount) impure inline_ref;

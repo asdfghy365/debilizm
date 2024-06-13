@@ -1,0 +1,68 @@
+;;
+;; Type: Data
+;; TLB: _ total_bet_a:uint32 total_bet_b:uint32 bets_a:^cell bets_b:^cell finalized:bool admin:^slice = Data
+;;
+
+builder $Data$_store(builder build_0, (int, int, cell, cell, int, slice) v) inline_ref {
+    var (v'total_bet_a, v'total_bet_b, v'bets_a, v'bets_b, v'finalized, v'admin) = v;
+    build_0 = build_0.store_uint(v'total_bet_a, 32);
+    build_0 = build_0.store_uint(v'total_bet_b, 32);
+    build_0 = build_0.store_ref(v'bets_a);
+    build_0 = build_0.store_ref(v'bets_b);
+    build_0 = build_0.store_int(v'finalized, 1);
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'admin).end_cell());
+    return build_0;
+}
+
+(slice, ((int, int, cell, cell, int, slice))) $Data$_load(slice sc_0) inline_ref {
+    var v'total_bet_a = sc_0~load_uint(32);
+    var v'total_bet_b = sc_0~load_uint(32);
+    var v'bets_a = sc_0~load_ref();
+    var v'bets_b = sc_0~load_ref();
+    var v'finalized = sc_0~load_int(1);
+    var v'admin = sc_0~load_ref().begin_parse();
+    return (sc_0, (v'total_bet_a, v'total_bet_b, v'bets_a, v'bets_b, v'finalized, v'admin));
+}
+
+((int, int, cell, cell, int, slice)) $Data$_constructor_total_bet_a_total_bet_b_bets_a_bets_b_finalized_admin(int total_bet_a, int total_bet_b, cell bets_a, cell bets_b, int finalized, slice admin) inline {
+    return (total_bet_a, total_bet_b, bets_a, bets_b, finalized, admin);
+}
+
+;;
+;; Type: TestContract
+;;
+
+builder $TestContract$_store(builder build_0, ((int, int, cell, cell, int, slice)) v) inline {
+    var ((v'data'total_bet_a, v'data'total_bet_b, v'data'bets_a, v'data'bets_b, v'data'finalized, v'data'admin)) = v;
+    var build_1 = begin_cell();
+    build_1 = $Data$_store(build_1, (v'data'total_bet_a, v'data'total_bet_b, v'data'bets_a, v'data'bets_b, v'data'finalized, v'data'admin));
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, (((int, int, cell, cell, int, slice)))) $TestContract$_load(slice sc_0) inline {
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'data = sc_1~$Data$_load();
+    return (sc_0, (v'data));
+}
+
+((int, int, cell, cell, int, slice)) $TestContract$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$TestContract$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        return $TestContract$_contract_init();
+    }
+}
+
+() $TestContract$_contract_store(((int, int, cell, cell, int, slice)) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $TestContract$_store(b, v);
+    set_data(b.end_cell());
+}
