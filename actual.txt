@@ -1,6 +1,5 @@
 import "@stdlib/deploy";
 import "@stdlib/ownable";
-import "@stdlib/stoppable";
 
 struct Bet {
     address: Address;
@@ -16,7 +15,6 @@ struct Data {
     bets_b: map<Address, Int>;
     finalized: Bool;
     outcome_a_wins: Bool;
-    insufficient_balance: Bool;
     
 }
 
@@ -24,9 +22,13 @@ message Finalize {
     outcome_a_wins: Bool;
 }
 
+message PayoutBatch {
+    startIndex: Int;
+    batchSize: Int;
+}
 
 
-contract TestContract with Deployable, Ownable, Stoppable {
+contract TestContract with Deployable, Ownable {
     owner: Address;
     stopped: Bool;
     data: Data;
@@ -42,8 +44,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
             bets_a: emptyMap(),
             bets_b: emptyMap(),
             finalized: false,
-            outcome_a_wins: false,
-            insufficient_balance: false
+            outcome_a_wins: false
         };
     }
 
@@ -54,6 +55,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
     let bet_amount: Int = context().value;
     let sender_address: Address = sender();
     self.handle_bet(true, bet_amount);
+    emit("bet A received".asComment());
     }
 
     receive("2") {
@@ -61,6 +63,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
     let bet_amount: Int = context().value;
     let sender_address: Address = sender();
     self.handle_bet(false, bet_amount);
+    emit("bet B received".asComment());
     }
 
 
@@ -75,7 +78,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
             let current_bet: Int? = self.data.bets_a.get(sender_address);
             let final_bet: Int = current_bet != null ? current_bet!! + bet_amount : bet_amount;
             self.data.bets_a.set(sender_address, final_bet);
-            dump(self.data.total_bet_a); // Debugging total_bet_a
+            emit("Bet on A registered".asComment());
 
         } else {
             self.data.total_bet_b += bet_amount;
@@ -83,29 +86,30 @@ contract TestContract with Deployable, Ownable, Stoppable {
             let final_bet_b: Int = current_bet_b != null ? current_bet_b!! + bet_amount : bet_amount;
             self.data.bets_b.set(sender_address, final_bet_b);
             dump(self.data.total_bet_b); // Debugging total_bet_b
+            emit("Bet on B registered".asComment());
         }
 
         // Calculate odds
         if (self.data.total_bet_a > 0) {
-            self.data.odds_a = (self.data.total_bet_b * 1000) / self.data.total_bet_a;
+            self.data.odds_a = 1000 + (self.data.total_bet_b * 1000) / self.data.total_bet_a;
         } else {
             self.data.odds_a = 1000; // Default odds if no bets on B
         }
         dump(self.data.odds_a); // Debugging odds_a
 
         if (self.data.total_bet_b > 0) {
-            self.data.odds_b = (self.data.total_bet_a * 1000) / self.data.total_bet_b;
+            self.data.odds_b = 1000 + (self.data.total_bet_a * 1000) / self.data.total_bet_b;
         } else {
             self.data.odds_b = 1000; // Default odds if no bets on A
         }
-        dump(self.data.odds_b); // Debugging odds_b
+        emit("odds calculated".asComment()); 
     }
-    
+
     receive(msg: Finalize) {
     require(sender() == self.owner, "Only the owner can finalize");
     self.data.finalized = true;
     self.data.outcome_a_wins = msg.outcome_a_wins;
-    dump(self.data.outcome_a_wins); // Debugging outcome_a_wins
+    emit("Finalization sucess".asComment());
 }
 
     receive(msg: String) { 
@@ -117,94 +121,64 @@ contract TestContract with Deployable, Ownable, Stoppable {
     else if (msg == "PayA") {
     self.data.outcome_a_wins = true;
     self.data.finalized = true;
-    self.payout(self.data.bets_a, self.data.odds_a);
+    self.payoutA(self.data.bets_a, self.data.odds_a);
     }
 
     else if (msg == "PayB") {
         self.data.finalized = true;
-        self.payout(self.data.bets_b, self.data.odds_b);
+         self.payoutB(self.data.bets_b, self.data.odds_b);
     }
     else {
         dump("Invalid message received");
     }
     }
 
-    receive("CalculateA") {
-    require(sender() == self.owner, "Only for owner");
-    let total_payout_a: Int = self.calculate_total_payout(self.data.bets_a, self.data.odds_a);
-    dump(total_payout_a); // Debugging total payout for bets_a
-}
 
-    receive("CalculateB") {
-    require(sender() == self.owner, "Only for owner");
-    let total_payout_a: Int = self.calculate_total_payout(self.data.bets_a, self.data.odds_a);
-    dump(total_payout_a); // Debugging total payout for bets_a
-}
-
-    fun calculate_total_payout(bets: map<Address, Int>, odds: Int): Int {
-    let total_payout: Int = 0;
+    fun payoutA(bets: map<Address, Int>, odds: Int) {
+    let i: Int = 0;
     foreach (address, bet_amount in bets) {
         if (bet_amount != null) {
-            total_payout += (bet_amount * odds) / 1000 + bet_amount;
-        }
-    }
-    return total_payout;
-}
-
-
-
- fun payout(bets: map<Address, Int>, odds: Int) {
-    let total_payout: Int = self.calculate_total_payout(bets, odds);
-    let contract_balance: Int = myBalance();
-    if (contract_balance < total_payout) {
-        self.data.insufficient_balance = true;
-        return;
-    }
-    foreach (address, bet_amount in bets) { // gets payout amount
-        if (self.data.outcome_a_wins) {
-            let payout_amount: Int = (bet_amount * odds) / 1000;
-            let adjusted_bet_amount: Int = bet_amount * 90 / 100;
-            let rewards_payoutA: Int = payout_amount + adjusted_bet_amount;
+            let payout_amount: Int = bet_amount * odds;
             send(SendParameters{
                 to: address,
-                value: rewards_payoutA,
-                mode: SendRemainingValue + SendIgnoreErrors
-            });
-        } else {
-            let payout_amount: Int = (bet_amount * odds) / 1000;
-            let adjusted_bet_amount: Int = bet_amount * 90 / 100;
-            let rewards_payoutB: Int = payout_amount + adjusted_bet_amount;
-            send(SendParameters{
-                to: address,
-                value: rewards_payoutB,
+                value: payout_amount,
                 mode: SendRemainingValue + SendIgnoreErrors
             });
         }
+        i += 1;
+        emit("payout in process".asComment());
     }
+    bets = emptyMap();
 }
 
-
-
-    get fun isInsufficientBalance(): Bool {
-    return self.data.insufficient_balance;
+   fun payoutB(bets: map<Address, Int>, odds: Int) {
+    let i: Int = 0;
+    foreach (address, bet_amount in bets) {
+        if (bet_amount != null) {
+            let payout_amount: Int = bet_amount * odds;
+            send(SendParameters{
+                to: address,
+                value: payout_amount,
+                mode: SendRemainingValue + SendIgnoreErrors
+            });
+        }
+        i += 1;
     }
-
- 
-    get fun getTotalBetA(): Int {
-        return self.data.total_bet_a;
-    }
-
-    get fun getTotalBetB(): Int {
-        return self.data.total_bet_b;
-    }
-
-    get fun getBalance(): Int {
-        return myBalance();  
-    }
+    bets = emptyMap();
+}
 
     get fun getoddA(): Int {
         return self.data.odds_a;
     }
+
+    get fun totalbetA(): Int{
+        return self.data.total_bet_a;
+    }
+
+        get fun totalbetB(): Int{
+        return self.data.total_bet_b;
+    }
+    
 
     get fun getoddB(): Int {
         return self.data.odds_b;
@@ -214,8 +188,13 @@ contract TestContract with Deployable, Ownable, Stoppable {
         return self.data.outcome_a_wins;
     }
 
-    get fun finalize(): Bool {
-        return self.data.finalized;
+    get fun getBetsA(): map<Address, Int> {
+        return (self.data.bets_a);
+    }
+
+     get fun getBetsB(): map<Address, Int> {
+        return (self.data.bets_b);
     }
 
 }
+

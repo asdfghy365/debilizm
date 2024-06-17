@@ -14,31 +14,34 @@ PROGRAM{
   DECLPROC __tact_dict_min_slice_int
   DECLPROC __tact_dict_next_slice_int
   DECLPROC __tact_slice_eq_bits
+  DECLPROC __tact_slice_eq
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
   DECLPROC $Data$_store
   DECLPROC $Data$_load
   DECLPROC $Finalize$_load
-  DECLPROC $PayoutBatch$_load
   DECLPROC $TestContract$_store
   DECLPROC $TestContract$_load
   DECLPROC $StateInit$_not_null
   DECLPROC $Context$_get_value
-  DECLPROC $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins
+  DECLPROC $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance
   DECLPROC $TestContract$_contract_init
   DECLPROC $TestContract$_contract_load
   DECLPROC $TestContract$_contract_store
   DECLPROC $global_send
   DECLPROC $TestContract$_fun_handle_bet
+  DECLPROC $TestContract$_fun_calculate_total_payout
   DECLPROC $SendParameters$_constructor_to_value_mode
-  DECLPROC $TestContract$_fun_processBatch
+  DECLPROC $TestContract$_fun_payout
+  DECLPROC $TestContract$_fun_isInsufficientBalance
   DECLPROC $TestContract$_fun_getTotalBetA
   DECLPROC $TestContract$_fun_getTotalBetB
-  DECLPROC $TestContract$_fun_isFinalized
-  DECLPROC $TestContract$_fun_getOwner
+  DECLPROC $TestContract$_fun_getBalance
   DECLPROC $TestContract$_fun_getoddA
   DECLPROC $TestContract$_fun_getoddB
+  DECLPROC $TestContract$_fun_outcome
+  DECLPROC $TestContract$_fun_finalize
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $TestContract$_fun_forward
   DECLPROC $TestContract$_fun_reply
@@ -51,15 +54,19 @@ PROGRAM{
   DECLPROC $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b
   DECLPROC $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d
   DECLPROC $TestContract$_internal_binary_Finalize
-  DECLPROC $TestContract$_internal_binary_PayoutBatch
+  DECLPROC $TestContract$_internal_any_text
+  DECLPROC $TestContract$_internal_text_8f6033dcdaeb3a4c98eddef36eb561469faf81a06ab78e04942b4773a8a33de5
+  DECLPROC $TestContract$_internal_text_a8cff6a082b5f7494597416974e7e86fb242d81901daa55b0066a7d01d6ac588
   DECLPROC $TestContract$_internal_binary_Deploy
   DECLPROC $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501
+  68330 DECLMETHOD %isInsufficientBalance
   116979 DECLMETHOD %getTotalBetA
   129168 DECLMETHOD %getTotalBetB
-  85898 DECLMETHOD %isFinalized
-  102025 DECLMETHOD %getOwner
+  106323 DECLMETHOD %getBalance
   96091 DECLMETHOD %getoddA
   83768 DECLMETHOD %getoddB
+  106447 DECLMETHOD %outcome
+  78104 DECLMETHOD %finalize
   83229 DECLMETHOD %owner
   74107 DECLMETHOD %stopped
   113617 DECLMETHOD supported_interfaces
@@ -184,6 +191,13 @@ PROGRAM{
   __tact_slice_eq_bits PROCINLINE:<{
     SDEQ
   }>
+  __tact_slice_eq PROCINLINE:<{
+    SWAP
+    HASHSU
+    SWAP
+    HASHSU
+    EQUAL
+  }>
   $Deploy$_load PROCINLINE:<{
     32 LDU
     SWAP
@@ -206,15 +220,17 @@ PROGRAM{
     ENDC
   }>
   $Data$_store PROCREF:<{
-    s7 s8 XCHG2
+    s8 s9 XCHG2
     32 STU
-    s1 s5 XCHG
+    s1 s6 XCHG
     32 STU
-    s1 s3 XCHG
+    s1 s4 XCHG
     32 STU
+    s1 s2 XCHG
     32 STU
     STDICT
     STDICT
+    1 STI
     1 STI
     1 STI
   }>
@@ -227,7 +243,8 @@ PROGRAM{
     LDDICT
     1 LDI
     1 LDI
-    8 -ROLL
+    1 LDI
+    9 -ROLL
   }>
   $Finalize$_load PROCINLINE:<{
     32 LDU
@@ -238,28 +255,18 @@ PROGRAM{
     1 LDI
     SWAP
   }>
-  $PayoutBatch$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    3101075882 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    257 PUSHINT
-    LDIX
-    257 PUSHINT
-    LDIX
-    -ROT
-  }>
   $TestContract$_store PROCINLINE:<{
-    s10 s9 XCHG2
+    s11 s10 XCHG2
     __tact_store_address INLINECALLDICT
-    s1 s7 XCHG
+    s1 s8 XCHG
     1 STI
-    s0 s8 XCHG
+    s0 s9 XCHG
+    s6 s8 XCHG
     s5 s7 XCHG
     s4 s6 XCHG
     s3 s5 XCHG
     s4 s0 s3 XCHG3
+    s0 s2 XCHG
     $Data$_store INLINECALLDICT
   }>
   $TestContract$_load PROCINLINE:<{
@@ -267,8 +274,8 @@ PROGRAM{
     SWAP
     1 LDI
     $Data$_load INLINECALLDICT
-    s8 s10 XCHG
-    s8 s9 XCHG
+    s9 s11 XCHG
+    s9 s10 XCHG
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -280,7 +287,7 @@ PROGRAM{
     s1 s3 XCHG
     3 BLKDROP
   }>
-  $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins PROCINLINE:<{
+  $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance PROCINLINE:<{
   }>
   $TestContract$_contract_init PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
@@ -293,7 +300,8 @@ PROGRAM{
     PUSHNULL
     FALSE
     FALSE
-    $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins INLINECALLDICT
+    FALSE
+    $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance INLINECALLDICT
   }>
   $TestContract$_contract_load PROCREF:<{
     c4 PUSH
@@ -305,7 +313,7 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $TestContract$_load INLINECALLDICT
-      1 10 BLKDROP2
+      1 11 BLKDROP2
     }>
     DROP
     MYADDR
@@ -323,7 +331,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    10 -ROLL
+    11 -ROLL
     $TestContract$_store INLINECALLDICT
     ENDC
     c4 POP
@@ -431,20 +439,20 @@ PROGRAM{
     SENDRAWMSG
   }>
   $TestContract$_fun_handle_bet PROCREF:<{
-    s6 POP
-    s6 POP
+    s7 POP
+    s7 POP
     63076 PUSHINT
-    s2 PUSH
+    s3 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
-    s0 s6 XCHG
+    s0 s7 XCHG
     IF:<{
-      s7 s4 XCPU
+      s8 s5 XCPU
       ADD
-      s3 PUSH
+      s4 PUSH
       267 PUSHINT
-      s7 PUSH
+      s8 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -452,23 +460,23 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s5 XCHG2
+        s0 s6 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 s4 XCHG
+        s0 s5 XCHG
       }>
-      s2 s3 XCHG
+      s2 s4 XCHG
       267 PUSHINT
-      s0 s6 s6 XCHG3
+      s0 s7 s7 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
-      s6 s4 XCPU
+      s7 s5 XCPU
       ADD
-      s2 PUSH
+      s3 PUSH
       267 PUSHINT
-      s7 PUSH
+      s8 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -476,43 +484,78 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s5 XCHG2
+        s0 s6 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 s4 XCHG
+        s0 s5 XCHG
       }>
+      s2 s3 XCHG
       267 PUSHINT
-      s0 s6 s6 XCHG3
+      s0 s7 s7 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s4 s5 XCHG
-      s4 s0 s0 XCHG3
+      s5 s6 XCHG
+      s3 s5 XCHG
+      ROT
     }>
-    s2 PUSH
+    s3 PUSH
+    0 GTINT
+    IF:<{
+      s5 PUSH
+      1000 PUSHINT
+      MUL
+      s4 PUSH
+      DIV
+    }>ELSE<{
+      1000 PUSHINT
+    }>
+    s6 PUSH
     0 GTINT
     IF:<{
       s4 PUSH
       1000 PUSHINT
       MUL
-      s3 PUSH
+      s7 PUSH
       DIV
     }>ELSE<{
       1000 PUSHINT
     }>
-    s5 PUSH
-    0 GTINT
-    IF:<{
-      s3 PUSH
-      1000 PUSHINT
-      MUL
-      s6 PUSH
-      DIV
-    }>ELSE<{
-      1000 PUSHINT
+    s0 s5 XCHG
+    s4 s6 s8 XCHG3
+  }>
+  $TestContract$_fun_calculate_total_payout PROCREF:<{
+    0 PUSHINT
+    s2 PUSH
+    267 PUSHINT
+    257 PUSHINT
+    __tact_dict_min_slice_int INLINECALLDICT
+    WHILE:<{
+    }>DO<{
+      DUP
+      ISNULL
+      NOT
+      IF:<{
+        s0 s3 PUSH2
+        MUL
+        1000 PUSHINT
+        DIV
+        SWAP
+        ADD
+        s1 s2 XCHG
+        ADD
+        SWAP
+      }>ELSE<{
+        DROP
+      }>
+      267 PUSHINT
+      s4 PUSH
+      s0 s2 XCHG
+      257 PUSHINT
+      __tact_dict_next_slice_int INLINECALLDICT
     }>
-    s0 s4 XCHG
-    s3 s5 s7 XCHG3
+    s2 s4 XCHG
+    4 BLKDROP
   }>
   $SendParameters$_constructor_to_value_mode PROCINLINE:<{
     TRUE
@@ -521,75 +564,93 @@ PROGRAM{
     PUSHNULL
     PUSHNULL
   }>
-  $TestContract$_fun_processBatch PROCREF:<{
-    0 PUSHINT
-    s2 PUSH
+  $TestContract$_fun_payout PROCREF:<{
+    s10 s12 XCHG
+    5 8 REVERSE
+    s7 s11 XCHG
+    s6 s12 XCHG
+    s5 s11 XCHG
+    s4 s12 XCHG
+    s3 s11 XCHG
+    s12 s11 s12 XCHG3
+    s11 s12 PUSH2
+    $TestContract$_fun_calculate_total_payout INLINECALLDICT
+    __tact_my_balance INLINECALLDICT
+    SWAP
+    LESS
+    IFJMP:<{
+      DROP
+      2 10 BLKDROP2
+      TRUE
+    }>
+    s11 PUSH
     267 PUSHINT
     257 PUSHINT
     __tact_dict_min_slice_int INLINECALLDICT
     WHILE:<{
     }>DO<{
-      s2 s6 PUSH2
-      GEQ
+      s3 PUSH
       IF:<{
-        s6 s5 PUSH2
+        s0 s14 PUSH2
+        MUL
+        1000 PUSHINT
+        DIV
+        SWAP
+        90 MULCONST
+        100 PUSHINT
+        DIV
         ADD
-        s3 s(-1) PUXC
-        LESS
+        s1 s(-1) PUXC
+        66 PUSHINT
+        $SendParameters$_constructor_to_value_mode INLINECALLDICT
+        $global_send INLINECALLDICT
       }>ELSE<{
-        FALSE
+        s0 s14 PUSH2
+        MUL
+        1000 PUSHINT
+        DIV
+        SWAP
+        90 MULCONST
+        100 PUSHINT
+        DIV
+        ADD
+        s1 s(-1) PUXC
+        66 PUSHINT
+        $SendParameters$_constructor_to_value_mode INLINECALLDICT
+        $global_send INLINECALLDICT
       }>
-      IF:<{
-        DUP
-        ISNULL
-        NOT
-        IF:<{
-          s3 PUSH
-          MUL
-          1000 PUSHINT
-          DIV
-          s1 s(-1) PUXC
-          66 PUSHINT
-          $SendParameters$_constructor_to_value_mode INLINECALLDICT
-          $global_send INLINECALLDICT
-        }>ELSE<{
-          DROP
-        }>
-      }>ELSE<{
-        DROP
-      }>
-      SWAP
-      INC
       267 PUSHINT
-      s4 s0 s2 PUXC2
+      s13 PUSH
+      s0 s2 XCHG
       257 PUSHINT
       __tact_dict_next_slice_int INLINECALLDICT
     }>
-    s2 s4 XCHG
-    4 BLKDROP
-    -ROT
-    ADD
-    LEQ
-    IF:<{
-    }>
+    2DROP
+    2 11 BLKDROP2
+  }>
+  $TestContract$_fun_isInsufficientBalance PROCREF:<{
+    DUP
   }>
   $TestContract$_fun_getTotalBetA PROCREF:<{
-    s7 PUSH
+    s8 PUSH
   }>
   $TestContract$_fun_getTotalBetB PROCREF:<{
-    s6 PUSH
+    s7 PUSH
   }>
-  $TestContract$_fun_isFinalized PROCREF:<{
-    OVER
-  }>
-  $TestContract$_fun_getOwner PROCREF:<{
-    s9 PUSH
+  $TestContract$_fun_getBalance PROCREF:<{
+    __tact_my_balance INLINECALLDICT
   }>
   $TestContract$_fun_getoddA PROCREF:<{
-    s5 PUSH
+    s6 PUSH
   }>
   $TestContract$_fun_getoddB PROCREF:<{
-    s4 PUSH
+    s5 PUSH
+  }>
+  $TestContract$_fun_outcome PROCREF:<{
+    OVER
+  }>
+  $TestContract$_fun_finalize PROCREF:<{
+    s2 PUSH
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -631,25 +692,29 @@ PROGRAM{
   }>
   $TestContract$_fun_requireOwner PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
-    s10 s(-1) PUXC
+    s11 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     132 THROWIFNOT
   }>
   $TestContract$_fun_owner PROCREF:<{
-    s9 PUSH
+    s10 PUSH
   }>
   $TestContract$_fun_requireNotStopped PROCREF:<{
     40368 PUSHINT
-    s9 PUSH
+    s10 PUSH
     NOT
     THROWANYIFNOT
   }>
   $TestContract$_fun_stopped PROCREF:<{
-    s8 PUSH
+    s9 PUSH
   }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b PROCINLINE:<{
+    63076 PUSHINT
+    s3 PUSH
+    NOT
+    THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     TRUE
@@ -657,6 +722,10 @@ PROGRAM{
     $TestContract$_fun_handle_bet INLINECALLDICT
   }>
   $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d PROCINLINE:<{
+    63076 PUSHINT
+    s3 PUSH
+    NOT
+    THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     FALSE
@@ -664,46 +733,75 @@ PROGRAM{
     $TestContract$_fun_handle_bet INLINECALLDICT
   }>
   $TestContract$_internal_binary_Finalize PROCINLINE:<{
-    2 1 BLKDROP2
+    2 2 BLKDROP2
     49684 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s10 s(-1) PUXC
+    s11 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     TRUE
-    SWAP
+    s0 s2 XCHG
   }>
-  $TestContract$_internal_binary_PayoutBatch PROCINLINE:<{
-    10 2 BLKSWAP
-    $TestContract$_fun_requireOwner INLINECALLDICT
-    DUP
+  $TestContract$_internal_any_text PROCINLINE:<{
+    49684 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s13 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    B{b5ee9c7241010101000f00001a66696e616c697a655f7472756549fcb5e5} B>boc <s PUSHSLICE
+    OVER
+    __tact_slice_eq INLINECALLDICT
     IF:<{
-      s5 PUSH
-      s10 s12 XCHG
-      s9 s11 XCHG
-      s8 s10 XCHG
-      s7 s9 XCHG
-      s8 s4 XCPU
-      s6 s8 XCHG
-      s0 s7 XCHG
-      s4 s6 XCHG
-      s3 s5 XCHG
-      s4 s3 s0 XCHG3
-      $TestContract$_fun_processBatch INLINECALLDICT
+      s1 s3 XCHG
+      3 BLKDROP
+      TRUE
+      TRUE
     }>ELSE<{
-      s9 s11 XCHG
-      s4 PUSH
-      s9 s11 XCHG
-      s8 s10 XCHG
-      s7 s9 XCHG
-      s6 s8 XCHG
-      s7 s3 XCPU
-      s5 s7 XCHG
-      s0 s6 XCHG
-      s3 s5 XCHG
-      s1 s4 s0 XCHG3
-      $TestContract$_fun_processBatch INLINECALLDICT
+      B{b5ee9c72410101010006000008506179417d16f24c} B>boc <s PUSHSLICE
+      OVER
+      __tact_slice_eq INLINECALLDICT
+      IF:<{
+        s1 s3 XCHG
+        3 BLKDROP
+        TRUE
+        TRUE
+        s2 s4 s6 XCPU2
+        $TestContract$_fun_payout INLINECALLDICT
+      }>ELSE<{
+        B{b5ee9c724101010100060000085061794289e5a25f} B>boc <s PUSHSLICE
+        SWAP
+        __tact_slice_eq INLINECALLDICT
+        IF:<{
+          s2 POP
+          TRUE
+          s2 s3 s5 XCPU2
+          $TestContract$_fun_payout INLINECALLDICT
+        }>ELSE<{
+        }>
+      }>
+      s0 s2 XCHG
     }>
+    s0 s2 XCHG
+  }>
+  $TestContract$_internal_text_8f6033dcdaeb3a4c98eddef36eb561469faf81a06ab78e04942b4773a8a33de5 PROCINLINE:<{
+    4396 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s12 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    s4 s6 PUSH2
+    $TestContract$_fun_calculate_total_payout INLINECALLDICT
+    DROP
+  }>
+  $TestContract$_internal_text_a8cff6a082b5f7494597416974e7e86fb242d81901daa55b0066a7d01d6ac588 PROCINLINE:<{
+    4396 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s12 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    s4 s6 PUSH2
+    $TestContract$_fun_calculate_total_payout INLINECALLDICT
+    DROP
   }>
   $TestContract$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -713,51 +811,61 @@ PROGRAM{
   $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501 PROCINLINE:<{
     $TestContract$_fun_requireOwner INLINECALLDICT
     $TestContract$_fun_requireNotStopped INLINECALLDICT
-    s8 POP
+    s9 POP
     TRUE
     B{b5ee9c7241010101000d0000160000000053746f707065646f94ddb2} B>boc PUSHREF
-    s1 s9 XCHG
+    s1 s10 XCHG
     $TestContract$_fun_reply INLINECALLDICT
+  }>
+  %isInsufficientBalance PROC:<{
+    $TestContract$_contract_load INLINECALLDICT
+    $TestContract$_fun_isInsufficientBalance INLINECALLDICT
+    11 1 BLKDROP2
   }>
   %getTotalBetA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetA INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
   }>
   %getTotalBetB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetB INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
   }>
-  %isFinalized PROC:<{
+  %getBalance PROC:<{
     $TestContract$_contract_load INLINECALLDICT
-    $TestContract$_fun_isFinalized INLINECALLDICT
-    10 1 BLKDROP2
-  }>
-  %getOwner PROC:<{
-    $TestContract$_contract_load INLINECALLDICT
-    $TestContract$_fun_getOwner INLINECALLDICT
-    10 1 BLKDROP2
+    $TestContract$_fun_getBalance INLINECALLDICT
+    11 1 BLKDROP2
   }>
   %getoddA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddA INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
   }>
   %getoddB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddB INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
+  }>
+  %outcome PROC:<{
+    $TestContract$_contract_load INLINECALLDICT
+    $TestContract$_fun_outcome INLINECALLDICT
+    11 1 BLKDROP2
+  }>
+  %finalize PROC:<{
+    $TestContract$_contract_load INLINECALLDICT
+    $TestContract$_fun_finalize INLINECALLDICT
+    11 1 BLKDROP2
   }>
   %owner PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_owner INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
   }>
   %stopped PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_stopped INLINECALLDICT
-    10 1 BLKDROP2
+    11 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -768,7 +876,7 @@ PROGRAM{
     192989407141549587419771644724066226057 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d55425a6e524d4645637853624836774135505374336248594538333463386d34387065767467627542393431} PUSHSLICE
+    x{697066733a2f2f516d655176614a7a50624a57675863626838674454457850346e55595a4c6f6970756e324a75555a675463616d70} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -804,16 +912,6 @@ PROGRAM{
       TRUE
     }>
     DUP
-    3101075882 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $PayoutBatch$_load INLINECALLDICT
-      1 2 BLKDROP2
-      $TestContract$_internal_binary_PayoutBatch INLINECALLDICT
-      TRUE
-    }>
-    DUP
     2490013878 PUSHINT
     EQUAL
     IFJMP:<{
@@ -825,12 +923,13 @@ PROGRAM{
     }>
     0 EQINT
     IF:<{
+      DUP
       HASHSU
       DUP
       77494048698186052660122829516938790422579140609043242735003776192628325471755 PUSHINT
       EQUAL
       IFJMP:<{
-        DROP
+        2DROP
         $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b INLINECALLDICT
         TRUE
         RETALT
@@ -839,18 +938,48 @@ PROGRAM{
       47698113916292376885555840405928649629643658941209572167987956992229504220461 PUSHINT
       EQUAL
       IFJMP:<{
-        DROP
+        2DROP
         $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      64850712608932618184623464593929732674506848145317873863331133023233908096485 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        $TestContract$_internal_text_8f6033dcdaeb3a4c98eddef36eb561469faf81a06ab78e04942b4773a8a33de5 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      76355998061356110397499217566527563193237031683286895061456992496539407140232 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        $TestContract$_internal_text_a8cff6a082b5f7494597416974e7e86fb242d81901daa55b0066a7d01d6ac588 INLINECALLDICT
         TRUE
         RETALT
       }>
       85478235227686204299312064008631277118150318603456584517510472216578858763521 PUSHINT
       EQUAL
       IFJMP:<{
+        DROP
         $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501 INLINECALLDICT
         TRUE
         RETALT
       }>
+      DUP
+      SBITS
+      31 GTINT
+      IFJMP:<{
+        32 PUSHINT
+        SDSKIPFIRST
+        $TestContract$_internal_any_text INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DROP
     }>ELSE<{
       DROP
     }>
@@ -875,7 +1004,7 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $TestContract$_contract_load INLINECALLDICT
-    2 10 BLKSWAP
+    2 11 BLKSWAP
     $TestContract$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $TestContract$_contract_store INLINECALLDICT

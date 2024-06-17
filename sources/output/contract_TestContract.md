@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 1633 bytes
+BOC Size: 1987 bytes
 
 # Types
-Total Types: 12
+Total Types: 11
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -42,31 +42,31 @@ TLB: `_ address:address amount:uint32 = Bet`
 Signature: `Bet{address:address,amount:uint32}`
 
 ## Data
-TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> finalized:bool outcome_a_wins:bool = Data`
-Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,finalized:bool,outcome_a_wins:bool}`
+TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
+Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`
 Signature: `Finalize{outcome_a_wins:bool}`
 
-## PayoutBatch
-TLB: `payout_batch#b8d6a9aa startIndex:int257 batchSize:int257 = PayoutBatch`
-Signature: `PayoutBatch{startIndex:int257,batchSize:int257}`
-
 # Get Methods
-Total Get Methods: 8
+Total Get Methods: 10
+
+## isInsufficientBalance
 
 ## getTotalBetA
 
 ## getTotalBetB
 
-## isFinalized
-
-## getOwner
+## getBalance
 
 ## getoddA
 
 ## getoddB
+
+## outcome
+
+## finalize
 
 ## owner
 
@@ -97,6 +97,7 @@ Total Get Methods: 8
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
+4396: Only for owner
 40368: Contract stopped
 49684: Only the owner can finalize
 53296: Contract not stopped
