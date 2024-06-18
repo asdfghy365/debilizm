@@ -19,15 +19,6 @@ struct Data {
     insufficient_balance: Bool;
 }
 
-struct TrumpBiden {
-    bet_a_name: String;
-    bet_b_name: String;
-    image: String;
-    odds_a: Int as uint32;
-    odds_b: Int as uint32;
-}
-
-
 message Finalize {
     outcome_a_wins: Bool;
 }
@@ -39,16 +30,11 @@ contract TestContract with Deployable, Ownable, Stoppable {
     stopped: Bool;
     data: Data;
     seqno: Int as uint64;
-    newContractAddress: Address;
-    trumpBidenData: TrumpBiden;
-
-    
 
     init(seqno: Int) {
         self.owner = sender();
         self.stopped = false;
         self.seqno = seqno;
-        self.newContractAddress = newAddress(0, 0);
         self.data = Data{
             total_bet_a: 0,
             total_bet_b: 0,
@@ -60,13 +46,6 @@ contract TestContract with Deployable, Ownable, Stoppable {
             outcome_a_wins: false,
             insufficient_balance: false
         };
-         self.trumpBidenData = TrumpBiden{
-            bet_a_name: "Bidon",
-            bet_b_name: "Trump",
-            image: "https://sun9-44.userapi.com/impg/RJUK-ubXxOx4XbE0q8e7csDGVxlsycyeUt3jCw/Zew9iWw00Hg.jpg?size=1280x781&quality=96&sign=542f249f197e0080896132f540ef28eb&type=album",
-            odds_a: 1000,
-            odds_b: 1000
-        };
     }
 
     receive("identify") {
@@ -77,15 +56,15 @@ contract TestContract with Deployable, Ownable, Stoppable {
         // Initialize StateInit for TestContract
     let init: StateInit = initOf TestContract(2);
     let address: Address = contractAddress(init);
-    self.newContractAddress = address;
     send(SendParameters{
         to: address,
         value: ton("0.1"),
         mode: SendIgnoreErrors,
         code: init.code,
         data: init.data,
-        body: "identify".asComment()
+        body: "Initial deployment".asComment()
         });
+        dump(address);
     }
     
 
@@ -225,15 +204,14 @@ contract TestContract with Deployable, Ownable, Stoppable {
 
 
 
-
-
-     get fun getTrumpBidenData(): TrumpBiden {
-        return self.trumpBidenData;
+    get fun isInsufficientBalance(): Bool {
+    return self.data.insufficient_balance;
     }
-    
-    get fun getNewContractAddress(): Address {
-        return self.newContractAddress;
+
+    get fun seqno(): Int {
+        return self.seqno;
     }
+
     
  
     get fun getTotalBetA(): Int {

@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: TestContract
-BOC Size: 2894 bytes
+Contract: Deployer
+BOC Size: 807 bytes
 
 # Types
-Total Types: 12
+Total Types: 11
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -45,38 +45,12 @@ Signature: `Bet{address:address,amount:uint32}`
 TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
 Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
-## TrumpBiden
-TLB: `_ bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 = TrumpBiden`
-Signature: `TrumpBiden{bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint32,odds_b:uint32}`
-
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`
 Signature: `Finalize{outcome_a_wins:bool}`
 
 # Get Methods
-Total Get Methods: 11
-
-## getTrumpBidenData
-
-## getNewContractAddress
-
-## getTotalBetA
-
-## getTotalBetB
-
-## getBalance
-
-## getoddA
-
-## getoddB
-
-## outcome
-
-## finalize
-
-## owner
-
-## stopped
+Total Get Methods: 0
 
 # Error Codes
 2: Stack undeflow

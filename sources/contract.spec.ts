@@ -8,7 +8,7 @@ describe("TestContract Deployment", () => {
         let system = await ContractSystem.create();
         let owner = system.treasure("owner");
         let nonOwner = system.treasure("non-owner");
-        let contract = system.open(await TestContract.fromInit());
+        let contract = system.open(await TestContract.fromInit(BigInt(2)));
         system.name(contract.address, "main");
         let track = system.track(contract);
 
@@ -42,7 +42,7 @@ describe("TestContract Deployment", () => {
                   },
                   {
                     "$type": "processed",
-                    "gasUsed": 8471n,
+                    "gasUsed": 8737n,
                   },
                   {
                     "$type": "sent",
@@ -59,7 +59,7 @@ describe("TestContract Deployment", () => {
                         "from": "@main",
                         "to": "@treasure(owner)",
                         "type": "internal",
-                        "value": "0.990333",
+                        "value": "0.990067",
                       },
                     ],
                   },
@@ -68,12 +68,11 @@ describe("TestContract Deployment", () => {
             ]
         `);
     });
-    
-    
+
     it("should receive 1 on A", async () => {
         let system = await ContractSystem.create();
         let nonOwner = system.treasure("non-owner");
-        let contract = system.open(await TestContract.fromInit());
+        let contract = system.open(await TestContract.fromInit(BigInt(1)));
         system.name(contract.address, "main");
 
         await contract.send(nonOwner, { value: toNano(2) }, "1");
@@ -84,39 +83,21 @@ describe("TestContract Deployment", () => {
 
         const oddA = await contract.getGetoddA();
         console.log("Value of getoddA:", oddA);
-        
+
         const isInsufficientBalance = await contract.getIsInsufficientBalance();
         console.log("is it?:", isInsufficientBalance);
+    });
 
-
-    }) 
-    
-    it("call Payout", async () => {
+    it("second deploy", async () => {
         let system = await ContractSystem.create();
         let owner = system.treasure("owner");
         let nonOwner = system.treasure("non-owner");
-        let contract = system.open(await TestContract.fromInit());
+        let contract = system.open(await TestContract.fromInit(BigInt(1)));
         system.name(contract.address, "main");
-
 
         await contract.send(owner, { value: toNano(1) }, { $$type: "Deploy", queryId: BigInt(0) });
         await system.run();
-        await contract.send(nonOwner, { value: toNano(2) }, "1");
-        await contract.send(nonOwner, { value: toNano(1) }, "2");
-        const balanceBefore = await contract.getGetBalance();
-        console.log("Balance is:", balanceBefore);
-
-     
-
-  
-
-        const balanceAfter = await contract.getGetBalance();
-        console.log("Balance after is:", balanceAfter);
-        
-
-        await contract.send(owner, { value: toNano(1) }, "PayA");
-        
+        await contract.send(nonOwner, { value: toNano(2) }, "Zhopa");
         await system.run();
-    
-    })
+    });
 });

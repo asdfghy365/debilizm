@@ -4,6 +4,8 @@ PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
   DECLPROC __tact_store_address
+  DECLPROC __tact_create_address
+  DECLPROC __tact_compute_contract_address
   DECLPROC __tact_my_balance
   DECLPROC __tact_not_null
   DECLPROC __tact_context_get
@@ -15,26 +17,37 @@ PROGRAM{
   DECLPROC __tact_dict_next_slice_int
   DECLPROC __tact_slice_eq_bits
   DECLPROC __tact_slice_eq
+  DECLPROC __tact_dict_set_code
+  DECLPROC __tact_dict_get_code
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
   DECLPROC $Data$_store
   DECLPROC $Data$_load
+  DECLPROC $TrumpBiden$_store
+  DECLPROC $TrumpBiden$_load
   DECLPROC $Finalize$_load
   DECLPROC $TestContract$_store
   DECLPROC $TestContract$_load
   DECLPROC $StateInit$_not_null
   DECLPROC $Context$_get_value
+  DECLPROC $TrumpBiden$_to_external
+  DECLPROC $TestContract$init$_store
+  DECLPROC $TestContract$init$_load
   DECLPROC $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance
+  DECLPROC $TrumpBiden$_constructor_bet_a_name_bet_b_name_image_odds_a_odds_b
   DECLPROC $TestContract$_contract_init
   DECLPROC $TestContract$_contract_load
   DECLPROC $TestContract$_contract_store
+  DECLPROC $global_contractAddress
   DECLPROC $global_send
+  DECLPROC $TestContract$_init_child
   DECLPROC $TestContract$_fun_handle_bet
   DECLPROC $TestContract$_fun_calculate_total_payout
   DECLPROC $SendParameters$_constructor_to_value_mode
   DECLPROC $TestContract$_fun_payout
-  DECLPROC $TestContract$_fun_isInsufficientBalance
+  DECLPROC $TestContract$_fun_getTrumpBidenData
+  DECLPROC $TestContract$_fun_getNewContractAddress
   DECLPROC $TestContract$_fun_getTotalBetA
   DECLPROC $TestContract$_fun_getTotalBetB
   DECLPROC $TestContract$_fun_getBalance
@@ -50,7 +63,10 @@ PROGRAM{
   DECLPROC $TestContract$_fun_owner
   DECLPROC $TestContract$_fun_requireNotStopped
   DECLPROC $TestContract$_fun_stopped
+  DECLPROC $SendParameters$_constructor_to_value_mode_code_data_body
   DECLPROC $DeployOk$_constructor_queryId
+  DECLPROC $TestContract$_internal_text_766d21891e865f29f0a677076e378ac23ddb4ecf4a39022d4441db6f2cd484d0
+  DECLPROC $TestContract$_internal_text_07359e7bc8224dff39fc14a35cab09e90deb00cdf1a4a1c742907fe2f8272e17
   DECLPROC $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b
   DECLPROC $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d
   DECLPROC $TestContract$_internal_binary_Finalize
@@ -59,7 +75,8 @@ PROGRAM{
   DECLPROC $TestContract$_internal_text_a8cff6a082b5f7494597416974e7e86fb242d81901daa55b0066a7d01d6ac588
   DECLPROC $TestContract$_internal_binary_Deploy
   DECLPROC $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501
-  68330 DECLMETHOD %isInsufficientBalance
+  104525 DECLMETHOD %getTrumpBidenData
+  96669 DECLMETHOD %getNewContractAddress
   116979 DECLMETHOD %getTotalBetA
   129168 DECLMETHOD %getTotalBetB
   106323 DECLMETHOD %getBalance
@@ -102,6 +119,39 @@ PROGRAM{
   __tact_store_address PROCINLINE:<{
     __tact_verify_address INLINECALLDICT
     STSLICER
+  }>
+  __tact_create_address PROCINLINE:<{
+    NEWC
+    2 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    8 STI
+    256 STU
+    ENDC
+    CTOS
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_compute_contract_address PROCINLINE:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    2 STU
+    3 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    STREF
+    STREF
+    ENDC
+    HASHCU
+    __tact_create_address INLINECALLDICT
   }>
   __tact_my_balance PROCINLINE:<{
     BALANCE
@@ -198,6 +248,18 @@ PROGRAM{
     HASHSU
     EQUAL
   }>
+  __tact_dict_set_code PROCINLINE:<{
+    s0 s2 XCHG
+    16 PUSHINT
+    DICTUSETREF
+  }>
+  __tact_dict_get_code PROCINLINE:<{
+    SWAP
+    16 PUSHINT
+    DICTUGETREF
+    NULLSWAPIFNOT
+    135 THROWIFNOT
+  }>
   $Deploy$_load PROCINLINE:<{
     32 LDU
     SWAP
@@ -246,6 +308,46 @@ PROGRAM{
     1 LDI
     9 -ROLL
   }>
+  $TrumpBiden$_store PROCINLINE:<{
+    NEWC
+    s0 s5 XCHG2
+    STSLICER
+    ENDC
+    s0 s5 XCHG2
+    STREF
+    NEWC
+    s0 s3 XCHG2
+    STSLICER
+    ENDC
+    ROT
+    STREF
+    NEWC
+    ROT
+    STSLICER
+    ENDC
+    SWAP
+    STREF
+    s1 s2 XCHG
+    32 STU
+    32 STU
+  }>
+  $TrumpBiden$_load PROCINLINE:<{
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    32 LDU
+    32 LDU
+    5 -ROLL
+  }>
   $Finalize$_load PROCINLINE:<{
     32 LDU
     SWAP
@@ -256,26 +358,50 @@ PROGRAM{
     SWAP
   }>
   $TestContract$_store PROCINLINE:<{
-    s11 s10 XCHG2
+    s1 18 s() XCHG
+    s0 17 s() XCHG
     __tact_store_address INLINECALLDICT
-    s1 s8 XCHG
+    s1 s15 XCHG
     1 STI
     s0 s9 XCHG
-    s6 s8 XCHG
-    s5 s7 XCHG
-    s4 s6 XCHG
-    s3 s5 XCHG
-    s4 s0 s3 XCHG3
-    s0 s2 XCHG
+    s8 s13 XCHG
+    s7 s12 XCHG
+    s6 s11 XCHG
+    s5 s10 XCHG
+    s0 s4 XCHG
+    s3 s13 XCHG
+    s12 s11 s10 XCHG3
     $Data$_store INLINECALLDICT
+    64 STU
+    s0 s3 XCHG2
+    __tact_store_address INLINECALLDICT
+    NEWC
+    s4 s6 s5 XCHG3
+    $TrumpBiden$_store INLINECALLDICT
+    ENDC
+    SWAP
+    STREF
   }>
   $TestContract$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
     SWAP
     1 LDI
     $Data$_load INLINECALLDICT
-    s9 s11 XCHG
-    s9 s10 XCHG
+    s0 s9 XCHG
+    64 LDU
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    $TrumpBiden$_load INLINECALLDICT
+    s5 POP
+    s5 18 s() XCHG
+    s5 17 s() XCHG
+    s5 16 s() XCHG
+    s5 s7 XCHG
+    s5 s6 XCHG
+    4 ROLL
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -287,11 +413,28 @@ PROGRAM{
     s1 s3 XCHG
     3 BLKDROP
   }>
+  $TrumpBiden$_to_external PROCINLINE:<{
+  }>
+  $TestContract$init$_store PROCINLINE:<{
+    SWAP
+    257 PUSHINT
+    STIX
+  }>
+  $TestContract$init$_load PROCINLINE:<{
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
   $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance PROCINLINE:<{
+  }>
+  $TrumpBiden$_constructor_bet_a_name_bet_b_name_image_odds_a_odds_b PROCINLINE:<{
   }>
   $TestContract$_contract_init PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
     FALSE
+    0 PUSHINT
+    DUP
+    __tact_create_address INLINECALLDICT
     0 PUSHINT
     DUP
     1000 PUSHINT
@@ -302,6 +445,24 @@ PROGRAM{
     FALSE
     FALSE
     $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_finalized_outcome_a_wins_insufficient_balance INLINECALLDICT
+    B{b5ee9c7241010101000700000a4269646f6e993af58f} B>boc <s PUSHSLICE
+    B{b5ee9c7241010101000700000a5472756d7012c632a3} B>boc <s PUSHSLICE
+    B{b5ee9c724101020100a60001fe68747470733a2f2f73756e392d34342e757365726170692e636f6d2f696d70672f524a554b2d756258784f783458624530713865376373444756786c73796379655574336a43772f5a657739695777303048672e6a70673f73697a653d3132383078373831267175616c6974793d3936267369676e3d353432663234396631010044393765303038303839363133326635343065663238656226747970653d616c62756d607e7deb} B>boc <s PUSHSLICE
+    1000 PUSHINT
+    DUP
+    $TrumpBiden$_constructor_bet_a_name_bet_b_name_image_odds_a_odds_b INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
+    s13 s15 XCHG
+    s12 s14 XCHG
+    s11 s13 XCHG
+    s10 s12 XCHG
+    s9 s11 XCHG
+    s8 s10 XCHG
+    s7 s9 XCHG
+    s6 s8 XCHG
+    s5 s7 XCHG
+    s5 s6 XCHG
   }>
   $TestContract$_contract_load PROCREF:<{
     c4 PUSH
@@ -313,14 +474,19 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $TestContract$_load INLINECALLDICT
-      1 11 BLKDROP2
+      18 s() POP
+      16 s() 17 s() XCHG
+      s15 16 s() XCHG
+      15 ROLL
     }>
-    DROP
     MYADDR
     11 PLDU
     10 PUSHPOW2
     EQUAL
     137 THROWIFNOT
+    $TestContract$init$_load INLINECALLDICT
+    SWAP
+    ENDS
     $TestContract$_contract_init INLINECALLDICT
   }>
   $TestContract$_contract_store PROCINLINE:<{
@@ -331,10 +497,18 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    11 -ROLL
+    s0 18 s() XCHG
+    s0 17 s() XCHG
+    s0 16 s() XCHG
+    15 -ROLL
     $TestContract$_store INLINECALLDICT
     ENDC
     c4 POP
+  }>
+  $global_contractAddress PROCINLINE:<{
+    0 PUSHINT
+    -ROT
+    __tact_compute_contract_address INLINECALLDICT
   }>
   $global_send PROCREF:<{
     NEWC
@@ -438,21 +612,48 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
+  $TestContract$_init_child PROCREF:<{
+    SWAP
+    CTOS
+    LDDICT
+    DROP
+    NEWDICT
+    SWAP
+    63070 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    SWAP
+    63070 PUSHINT
+    s2 PUSH
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    ENDC
+    SWAP
+    STREF
+    FALSE
+    SWAP
+    1 STI
+    ROT
+    $TestContract$init$_store INLINECALLDICT
+    ENDC
+  }>
   $TestContract$_fun_handle_bet PROCREF:<{
-    s7 POP
-    s7 POP
+    s14 POP
+    s14 POP
     63076 PUSHINT
-    s3 PUSH
+    s10 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
-    s0 s7 XCHG
+    s0 s14 XCHG
     IF:<{
-      s8 s5 XCPU
+      s15 s12 XCPU
       ADD
-      s4 PUSH
+      s11 PUSH
       267 PUSHINT
-      s8 PUSH
+      s15 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -460,23 +661,23 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s6 XCHG2
+        s0 s13 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 s5 XCHG
+        s0 s12 XCHG
       }>
-      s2 s4 XCHG
+      s2 s11 XCHG
       267 PUSHINT
-      s0 s7 s7 XCHG3
+      s0 s14 s14 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
-      s7 s5 XCPU
+      s14 s12 XCPU
       ADD
-      s3 PUSH
+      s10 PUSH
       267 PUSHINT
-      s8 PUSH
+      s15 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -484,45 +685,46 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s6 XCHG2
+        s0 s13 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 s5 XCHG
+        s0 s12 XCHG
       }>
-      s2 s3 XCHG
+      s2 s10 XCHG
       267 PUSHINT
-      s0 s7 s7 XCHG3
+      s0 s14 s14 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s5 s6 XCHG
-      s3 s5 XCHG
-      ROT
+      s12 s13 XCHG
+      s10 s12 XCHG
+      s0 s8 XCHG
+      s0 s9 XCHG
     }>
-    s3 PUSH
+    s10 PUSH
     0 GTINT
     IF:<{
-      s5 PUSH
+      s12 PUSH
       1000 PUSHINT
       MUL
-      s4 PUSH
+      s11 PUSH
       DIV
     }>ELSE<{
       1000 PUSHINT
     }>
-    s6 PUSH
+    s13 PUSH
     0 GTINT
     IF:<{
-      s4 PUSH
+      s11 PUSH
       1000 PUSHINT
       MUL
-      s7 PUSH
+      s14 PUSH
       DIV
     }>ELSE<{
       1000 PUSHINT
     }>
-    s0 s5 XCHG
-    s4 s6 s8 XCHG3
+    s0 s12 XCHG
+    s11 s13 s15 XCHG3
   }>
   $TestContract$_fun_calculate_total_payout PROCREF:<{
     0 PUSHINT
@@ -565,33 +767,57 @@ PROGRAM{
     PUSHNULL
   }>
   $TestContract$_fun_payout PROCREF:<{
-    s10 s12 XCHG
-    5 8 REVERSE
-    s7 s11 XCHG
-    s6 s12 XCHG
-    s5 s11 XCHG
-    s4 s12 XCHG
-    s3 s11 XCHG
-    s12 s11 s12 XCHG3
-    s11 s12 PUSH2
+    17 s() 19 s() XCHG
+    5 15 REVERSE
+    s14 18 s() XCHG
+    s13 19 s() XCHG
+    s12 18 s() XCHG
+    s11 19 s() XCHG
+    s10 18 s() XCHG
+    s9 19 s() XCHG
+    s8 18 s() XCHG
+    s7 19 s() XCHG
+    s6 18 s() XCHG
+    s5 19 s() XCHG
+    s4 18 s() XCHG
+    s3 19 s() XCHG
+    s2 18 s() XCHG
+    s1 19 s() XCHG
+    s0 18 s() XCHG
+    19 s() PUSH
+    19 s() PUSH
     $TestContract$_fun_calculate_total_payout INLINECALLDICT
     __tact_my_balance INLINECALLDICT
     SWAP
     LESS
     IFJMP:<{
-      DROP
-      2 10 BLKDROP2
+      s7 POP
+      17 s() POP
+      17 s() POP
+      s14 16 s() XCHG
+      s13 s15 XCHG
+      s12 s14 XCHG
+      s11 s13 XCHG
+      s10 s12 XCHG
+      s9 s11 XCHG
+      s8 s10 XCHG
+      s7 s9 XCHG
+      s6 s8 XCHG
+      s5 s7 XCHG
       TRUE
+      s0 s7 XCHG
+      2 5 BLKSWAP
     }>
-    s11 PUSH
+    19 s() PUSH
     267 PUSHINT
     257 PUSHINT
     __tact_dict_min_slice_int INLINECALLDICT
     WHILE:<{
     }>DO<{
-      s3 PUSH
+      s10 PUSH
       IF:<{
-        s0 s14 PUSH2
+        DUP
+        21 s() PUSH
         MUL
         1000 PUSHINT
         DIV
@@ -605,7 +831,8 @@ PROGRAM{
         $SendParameters$_constructor_to_value_mode INLINECALLDICT
         $global_send INLINECALLDICT
       }>ELSE<{
-        s0 s14 PUSH2
+        DUP
+        21 s() PUSH
         MUL
         1000 PUSHINT
         DIV
@@ -620,37 +847,45 @@ PROGRAM{
         $global_send INLINECALLDICT
       }>
       267 PUSHINT
-      s13 PUSH
+      21 s() PUSH
       s0 s2 XCHG
       257 PUSHINT
       __tact_dict_next_slice_int INLINECALLDICT
     }>
     2DROP
-    2 11 BLKDROP2
+    18 s() POP
+    18 s() POP
+    s15 17 s() XCHG
+    s14 16 s() XCHG
+    2 14 BLKSWAP
   }>
-  $TestContract$_fun_isInsufficientBalance PROCREF:<{
-    DUP
+  $TestContract$_fun_getTrumpBidenData PROCREF:<{
+    s4 s3 s2 PUSH3
+    s4 s3 PUSH2
+  }>
+  $TestContract$_fun_getNewContractAddress PROCREF:<{
+    s5 PUSH
   }>
   $TestContract$_fun_getTotalBetA PROCREF:<{
-    s8 PUSH
+    s15 PUSH
   }>
   $TestContract$_fun_getTotalBetB PROCREF:<{
-    s7 PUSH
+    s14 PUSH
   }>
   $TestContract$_fun_getBalance PROCREF:<{
     __tact_my_balance INLINECALLDICT
   }>
   $TestContract$_fun_getoddA PROCREF:<{
-    s6 PUSH
+    s13 PUSH
   }>
   $TestContract$_fun_getoddB PROCREF:<{
-    s5 PUSH
+    s12 PUSH
   }>
   $TestContract$_fun_outcome PROCREF:<{
-    OVER
+    s8 PUSH
   }>
   $TestContract$_fun_finalize PROCREF:<{
-    s2 PUSH
+    s9 PUSH
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -692,27 +927,55 @@ PROGRAM{
   }>
   $TestContract$_fun_requireOwner PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
-    s11 s(-1) PUXC
+    18 s() PUSH
+    SWAP
     __tact_slice_eq_bits INLINECALLDICT
     132 THROWIFNOT
   }>
   $TestContract$_fun_owner PROCREF:<{
-    s10 PUSH
+    17 s() PUSH
   }>
   $TestContract$_fun_requireNotStopped PROCREF:<{
     40368 PUSHINT
-    s10 PUSH
+    17 s() PUSH
     NOT
     THROWANYIFNOT
   }>
   $TestContract$_fun_stopped PROCREF:<{
-    s9 PUSH
+    16 s() PUSH
+  }>
+  $SendParameters$_constructor_to_value_mode_code_data_body PROCINLINE:<{
+    TRUE
+    s0 s6 XCHG
+    s0 s5 XCHG
+    s0 s4 XCHG
+    s1 s3 s3 XCHG3
   }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
+  $TestContract$_internal_text_766d21891e865f29f0a677076e378ac23ddb4ecf4a39022d4441db6f2cd484d0 PROCINLINE:<{
+  }>
+  $TestContract$_internal_text_07359e7bc8224dff39fc14a35cab09e90deb00cdf1a4a1c742907fe2f8272e17 PROCINLINE:<{
+    s5 POP
+    __tact_context_sys GETGLOB
+    2 PUSHINT
+    $TestContract$_init_child INLINECALLDICT
+    2DUP
+    $global_contractAddress INLINECALLDICT
+    DUP
+    100000000 PUSHINT
+    2 PUSHINT
+    B{b5ee9c7241010101000e000018000000006964656e746966799daa7708} B>boc PUSHREF
+    s4 s5 XCHG
+    s4 s3 s0 XCHG3
+    s6 s6 s0 XCHG3
+    $SendParameters$_constructor_to_value_mode_code_data_body INLINECALLDICT
+    $global_send INLINECALLDICT
+    s0 s5 XCHG
+  }>
   $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b PROCINLINE:<{
     63076 PUSHINT
-    s3 PUSH
+    s10 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
@@ -723,7 +986,7 @@ PROGRAM{
   }>
   $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d PROCINLINE:<{
     63076 PUSHINT
-    s3 PUSH
+    s10 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
@@ -733,27 +996,31 @@ PROGRAM{
     $TestContract$_fun_handle_bet INLINECALLDICT
   }>
   $TestContract$_internal_binary_Finalize PROCINLINE:<{
-    2 2 BLKDROP2
+    s9 POP
+    s9 POP
     49684 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s11 s(-1) PUXC
+    18 s() PUSH
+    SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     TRUE
-    s0 s2 XCHG
+    s0 s9 XCHG
   }>
   $TestContract$_internal_any_text PROCINLINE:<{
     49684 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s13 s(-1) PUXC
+    20 s() PUSH
+    SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     B{b5ee9c7241010101000f00001a66696e616c697a655f7472756549fcb5e5} B>boc <s PUSHSLICE
     OVER
     __tact_slice_eq INLINECALLDICT
     IF:<{
-      s1 s3 XCHG
-      3 BLKDROP
+      DROP
+      s8 POP
+      s8 POP
       TRUE
       TRUE
     }>ELSE<{
@@ -761,45 +1028,52 @@ PROGRAM{
       OVER
       __tact_slice_eq INLINECALLDICT
       IF:<{
-        s1 s3 XCHG
-        3 BLKDROP
+        DROP
+        s8 POP
+        s8 POP
         TRUE
         TRUE
-        s2 s4 s6 XCPU2
+        s9 s13 s11 XCPU2
+        s3 s10 XCHG
+        s3 s0 s0 XCHG3
         $TestContract$_fun_payout INLINECALLDICT
       }>ELSE<{
         B{b5ee9c724101010100060000085061794289e5a25f} B>boc <s PUSHSLICE
         SWAP
         __tact_slice_eq INLINECALLDICT
         IF:<{
-          s2 POP
+          s9 POP
           TRUE
-          s2 s3 s5 XCPU2
+          s9 s10 s12 XCPU2
           $TestContract$_fun_payout INLINECALLDICT
         }>ELSE<{
         }>
       }>
-      s0 s2 XCHG
+      s8 s8 XCHG2
+      s0 s9 XCHG
     }>
-    s0 s2 XCHG
+    s9 s9 XCHG2
+    s0 s8 XCHG
   }>
   $TestContract$_internal_text_8f6033dcdaeb3a4c98eddef36eb561469faf81a06ab78e04942b4773a8a33de5 PROCINLINE:<{
     4396 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s12 s(-1) PUXC
+    19 s() PUSH
+    SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
-    s4 s6 PUSH2
+    s11 s13 PUSH2
     $TestContract$_fun_calculate_total_payout INLINECALLDICT
     DROP
   }>
   $TestContract$_internal_text_a8cff6a082b5f7494597416974e7e86fb242d81901daa55b0066a7d01d6ac588 PROCINLINE:<{
     4396 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s12 s(-1) PUXC
+    19 s() PUSH
+    SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
-    s4 s6 PUSH2
+    s11 s13 PUSH2
     $TestContract$_fun_calculate_total_payout INLINECALLDICT
     DROP
   }>
@@ -811,61 +1085,88 @@ PROGRAM{
   $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501 PROCINLINE:<{
     $TestContract$_fun_requireOwner INLINECALLDICT
     $TestContract$_fun_requireNotStopped INLINECALLDICT
-    s9 POP
+    16 s() POP
     TRUE
     B{b5ee9c7241010101000d0000160000000053746f707065646f94ddb2} B>boc PUSHREF
-    s1 s10 XCHG
+    s1 17 s() XCHG
     $TestContract$_fun_reply INLINECALLDICT
   }>
-  %isInsufficientBalance PROC:<{
+  %getTrumpBidenData PROC:<{
     $TestContract$_contract_load INLINECALLDICT
-    $TestContract$_fun_isInsufficientBalance INLINECALLDICT
-    11 1 BLKDROP2
+    $TestContract$_fun_getTrumpBidenData INLINECALLDICT
+    15 5 BLKDROP2
+    3 5 BLKDROP2
+    $TrumpBiden$_to_external INLINECALLDICT
+  }>
+  %getNewContractAddress PROC:<{
+    $TestContract$_contract_load INLINECALLDICT
+    $TestContract$_fun_getNewContractAddress INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %getTotalBetA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetA INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %getTotalBetB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetB INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %getBalance PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getBalance INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %getoddA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddA INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %getoddB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddB INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %outcome PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_outcome INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %finalize PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_finalize INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %owner PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_owner INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   %stopped PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_stopped INLINECALLDICT
-    11 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    2 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -876,7 +1177,7 @@ PROGRAM{
     192989407141549587419771644724066226057 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d655176614a7a50624a57675863626838674454457850346e55595a4c6f6970756e324a75555a675463616d70} PUSHSLICE
+    x{697066733a2f2f516d6369746b6273447846774a536953516d477a353469337933367a576f7743674b394b5162746e725147796639} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -925,6 +1226,24 @@ PROGRAM{
     IF:<{
       DUP
       HASHSU
+      DUP
+      53565733917243061283322546356834518345976427385773332035534183455804284503248 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        $TestContract$_internal_text_766d21891e865f29f0a677076e378ac23ddb4ecf4a39022d4441db6f2cd484d0 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      3260926647588922515449091840817034268292685398605308579830962399075746917911 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        $TestContract$_internal_text_07359e7bc8224dff39fc14a35cab09e90deb00cdf1a4a1c742907fe2f8272e17 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
       DUP
       77494048698186052660122829516938790422579140609043242735003776192628325471755 PUSHINT
       EQUAL
@@ -1004,7 +1323,11 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $TestContract$_contract_load INLINECALLDICT
-    2 11 BLKSWAP
+    17 s() 19 s() XCHG
+    16 s() 18 s() XCHG
+    s15 17 s() XCHG
+    s14 16 s() XCHG
+    2 14 BLKSWAP
     $TestContract$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $TestContract$_contract_store INLINECALLDICT

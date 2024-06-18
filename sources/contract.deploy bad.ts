@@ -9,7 +9,7 @@ import { prepareTactDeployment } from "@tact-lang/deployer";
         // Parameters
         const testnet = true;
         const packageName = "contract_TestContract.pkg";
-        const init = await TestContract.init(BigInt(2));
+        const init = await TestContract.init();
 
         // Load required data
         const address = contractAddress(0, init);
