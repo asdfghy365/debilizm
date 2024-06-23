@@ -1,15 +1,16 @@
 import * as fs from "fs";
 import * as path from "path";
 import { Address, contractAddress } from "@ton/core";
-import { TestContract } from "./output/contract_TestContract";
+import { TodoParent } from "./output/contract_TodoParent";
 import { prepareTactDeployment } from "@tact-lang/deployer";
 
 (async () => {
     try {
         // Parameters
         const testnet = true;
-        const packageName = "contract_TestContract.pkg";
-        const init = await TestContract.init(BigInt(2));
+        const packageName = "contract_TodoParent.pkg";
+        const init = await TodoParent.init();
+        
 
         // Load required data
         const address = contractAddress(0, init);

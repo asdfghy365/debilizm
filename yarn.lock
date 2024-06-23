@@ -8824,6 +8824,13 @@ ton-abi@^0.0.1:
   resolved "https://registry.npmjs.org/ton-abi/-/ton-abi-0.0.1.tgz"
   integrity sha512-J166n7HdY6+3vtAGU/+cuY+OxjTgFLcMt95IBROLgT7SCVugaVLeDzxOAsPNd2w+l/omu6lsJh0LW82WHDHaQw==
 
+ton-core@^0.53.0:
+  version "0.53.0"
+  resolved "https://registry.npmjs.org/ton-core/-/ton-core-0.53.0.tgz"
+  integrity sha512-uO/U1oVLdEliWWbwfNQQK+61C+KM0ehcTdHQ6cN0WSEH2UzGfdVFpC4Wb0ph+wUYe/5njl7TA0uL9nif9Q6qwA==
+  dependencies:
+    symbol.inspect "1.0.1"
+
 ton-crypto-primitives@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ton-crypto-primitives/-/ton-crypto-primitives-2.0.0.tgz"
@@ -8831,7 +8838,7 @@ ton-crypto-primitives@2.0.0:
   dependencies:
     jssha "3.2.0"
 
-ton-crypto@^3.0.0:
+ton-crypto@^3.0.0, ton-crypto@>=3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/ton-crypto/-/ton-crypto-3.2.0.tgz"
   integrity sha512-fltdBNQ45gARMuGMEOjPZWPJ5eSql8p3CA0Dj7tPv5lhU5ziT8SxXLAzDraR9HJ8YpjBHLVvYyhMLRiEwxgtMQ==
