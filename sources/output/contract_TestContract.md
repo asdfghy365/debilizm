@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 2438 bytes
+BOC Size: 2935 bytes
 
 # Types
 Total Types: 13
@@ -42,12 +42,12 @@ TLB: `_ address:address amount:uint32 = Bet`
 Signature: `Bet{address:address,amount:uint32}`
 
 ## Data
-TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
-Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
+TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
+Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## BetInfo
-TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string = BetInfo`
-Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string}`
+TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 = BetInfo`
+Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint32,odds_b:uint32,finishDate:uint32}`
 
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`
@@ -106,7 +106,7 @@ Total Get Methods: 10
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 2977: Already initialized
-4396: Only for owner
+20388: Only the owner can withdraw the remaining balance
 40368: Contract stopped
 49684: Only the owner can finalize
 53296: Contract not stopped
