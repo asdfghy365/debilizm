@@ -1,0 +1,236 @@
+;;
+;; Type: StateInit
+;; TLB: _ code:^cell data:^cell = StateInit
+;;
+
+((cell, cell)) $StateInit$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'code, cell vvv'data) = __tact_tuple_destroy_2(v);
+    return (vvv'code, vvv'data);
+}
+
+;;
+;; Type: Context
+;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_value((int, slice, int, slice) v) inline {
+    var (v'bounced, v'sender, v'value, v'raw) = v;
+    return v'value;
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline {
+    return (true, to, value, mode, null(), null(), null());
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
+    return (bounce, to, value, mode, body, code, data);
+}
+
+;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
+;; Type: Data
+;; TLB: _ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data
+;;
+
+builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int, int, int) v) inline_ref {
+    var (v'total_bet_a, v'total_bet_b, v'odds_a, v'odds_b, v'bets_a, v'bets_b, v'bets_total, v'finalized, v'outcome_a_wins, v'insufficient_balance) = v;
+    build_0 = build_0.store_uint(v'total_bet_a, 32);
+    build_0 = build_0.store_uint(v'total_bet_b, 32);
+    build_0 = build_0.store_uint(v'odds_a, 32);
+    build_0 = build_0.store_uint(v'odds_b, 32);
+    build_0 = build_0.store_dict(v'bets_a);
+    build_0 = build_0.store_dict(v'bets_b);
+    build_0 = build_0.store_dict(v'bets_total);
+    build_0 = build_0.store_int(v'finalized, 1);
+    build_0 = build_0.store_int(v'outcome_a_wins, 1);
+    build_0 = build_0.store_int(v'insufficient_balance, 1);
+    return build_0;
+}
+
+(slice, ((int, int, int, int, cell, cell, cell, int, int, int))) $Data$_load(slice sc_0) inline_ref {
+    var v'total_bet_a = sc_0~load_uint(32);
+    var v'total_bet_b = sc_0~load_uint(32);
+    var v'odds_a = sc_0~load_uint(32);
+    var v'odds_b = sc_0~load_uint(32);
+    var v'bets_a = sc_0~load_dict();
+    var v'bets_b = sc_0~load_dict();
+    var v'bets_total = sc_0~load_dict();
+    var v'finalized = sc_0~load_int(1);
+    var v'outcome_a_wins = sc_0~load_int(1);
+    var v'insufficient_balance = sc_0~load_int(1);
+    return (sc_0, (v'total_bet_a, v'total_bet_b, v'odds_a, v'odds_b, v'bets_a, v'bets_b, v'bets_total, v'finalized, v'outcome_a_wins, v'insufficient_balance));
+}
+
+((int, int, int, int, cell, cell, cell, int, int, int)) $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_bets_total_finalized_outcome_a_wins_insufficient_balance(int total_bet_a, int total_bet_b, int odds_a, int odds_b, cell bets_a, cell bets_b, cell bets_total, int finalized, int outcome_a_wins, int insufficient_balance) inline {
+    return (total_bet_a, total_bet_b, odds_a, odds_b, bets_a, bets_b, bets_total, finalized, outcome_a_wins, insufficient_balance);
+}
+
+;;
+;; Type: BetInfo
+;; TLB: _ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 = BetInfo
+;;
+
+builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int) v) inline_ref {
+    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate) = v;
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'title).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'source).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'bet_a_name).end_cell());
+    var build_1 = begin_cell();
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'bet_b_name).end_cell());
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'image).end_cell());
+    build_1 = build_1.store_uint(v'odds_a, 32);
+    build_1 = build_1.store_uint(v'odds_b, 32);
+    build_1 = build_1.store_uint(v'finishDate, 32);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, ((slice, slice, slice, slice, slice, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref {
+    var v'title = sc_0~load_ref().begin_parse();
+    var v'source = sc_0~load_ref().begin_parse();
+    var v'bet_a_name = sc_0~load_ref().begin_parse();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'bet_b_name = sc_1~load_ref().begin_parse();
+    var v'image = sc_1~load_ref().begin_parse();
+    var v'odds_a = sc_1~load_uint(32);
+    var v'odds_b = sc_1~load_uint(32);
+    var v'finishDate = sc_1~load_uint(32);
+    return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate));
+}
+
+(slice, slice, slice, slice, slice, int, int, int) $BetInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int)) v) inline {
+    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate) = v; 
+    return (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate);
+}
+
+((slice, slice, slice, slice, slice, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int finishDate, int odds_a, int odds_b) inline {
+    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate);
+}
+
+((slice, slice, slice, slice, slice, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate) inline {
+    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate);
+}
+
+;;
+;; Type: Finalize
+;; Header: 0xd23bb096
+;; TLB: finalize#d23bb096 outcome_a_wins:bool = Finalize
+;;
+
+(slice, ((int))) $Finalize$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3527127190);
+    var v'outcome_a_wins = sc_0~load_int(1);
+    return (sc_0, (v'outcome_a_wins));
+}
+
+;;
+;; Type: BetInfoInit
+;; Header: 0xb028071f
+;; TLB: bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string = BetInfoInit
+;;
+
+(slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2955413279);
+    var v'title = sc_0~load_ref().begin_parse();
+    var v'source = sc_0~load_ref().begin_parse();
+    var v'bet_a_name = sc_0~load_ref().begin_parse();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'bet_b_name = sc_1~load_ref().begin_parse();
+    var v'image = sc_1~load_ref().begin_parse();
+    return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image));
+}
+
+;;
+;; Type: TestContract
+;;
+
+builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) v) inline {
+    var (v'owner, v'stopped, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance), v'seqno, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate)) = v;
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = build_0.store_int(v'stopped, 1);
+    var build_1 = begin_cell();
+    build_1 = $Data$_store(build_1, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance));
+    build_1 = build_1.store_uint(v'seqno, 64);
+    var build_2 = begin_cell();
+    build_2 = $BetInfo$_store(build_2, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate));
+    build_1 = store_ref(build_1, build_2.end_cell());
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)))) $TestContract$_load(slice sc_0) inline {
+    var v'owner = sc_0~__tact_load_address();
+    var v'stopped = sc_0~load_int(1);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'data = sc_1~$Data$_load();
+    var v'seqno = sc_1~load_uint(64);
+    slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'betInfoData = sc_2~$BetInfo$_load();
+    return (sc_0, (v'owner, v'stopped, v'data, v'seqno, v'betInfoData));
+}
+
+(slice, ((int))) $TestContract$init$_load(slice sc_0) inline {
+    var v'seqno = sc_0~load_int(257);
+    return (sc_0, (v'seqno));
+}
+
+(slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $TestContract$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$TestContract$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (int seqno) = $sc~$TestContract$init$_load();
+        $sc.end_parse();
+        return $TestContract$_contract_init(seqno);
+    }
+}
+
+() $TestContract$_contract_store((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $TestContract$_store(b, v);
+    set_data(b.end_cell());
+}

@@ -1,0 +1,155 @@
+;;
+;; Type: StateInit
+;; TLB: _ code:^cell data:^cell = StateInit
+;;
+
+((cell, cell)) $StateInit$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'code, cell vvv'data) = __tact_tuple_destroy_2(v);
+    return (vvv'code, vvv'data);
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
+    return (bounce, to, value, mode, body, code, data);
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_code_data_body(slice to, int value, int mode, cell code, cell data, cell body) inline {
+    return (true, to, value, mode, body, code, data);
+}
+
+;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
+;; Type: BetInfoInit
+;; Header: 0xb028071f
+;; TLB: bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string = BetInfoInit
+;;
+
+builder $BetInfoInit$_store(builder build_0, (slice, slice, slice, slice, slice) v) inline {
+    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image) = v;
+    build_0 = store_uint(build_0, 2955413279, 32);
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'title).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'source).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'bet_a_name).end_cell());
+    var build_1 = begin_cell();
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'bet_b_name).end_cell());
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'image).end_cell());
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell $BetInfoInit$_store_cell((slice, slice, slice, slice, slice) v) inline {
+    return $BetInfoInit$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2955413279);
+    var v'title = sc_0~load_ref().begin_parse();
+    var v'source = sc_0~load_ref().begin_parse();
+    var v'bet_a_name = sc_0~load_ref().begin_parse();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'bet_b_name = sc_1~load_ref().begin_parse();
+    var v'image = sc_1~load_ref().begin_parse();
+    return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image));
+}
+
+;;
+;; Type: TestContract
+;;
+
+builder $TestContract$init$_store(builder build_0, (int) v) inline {
+    var (v'seqno) = v;
+    build_0 = build_0.store_int(v'seqno, 257);
+    return build_0;
+}
+
+(cell, cell) $TestContract$_init_child(cell sys', int $seqno) inline_ref {
+    slice sc' = sys'.begin_parse();
+    cell source = sc'~load_dict();
+    cell contracts = new_dict();
+    
+    ;; Contract Code: TestContract
+    cell mine = __tact_dict_get_code(source, 63070);
+    contracts = __tact_dict_set_code(contracts, 63070, mine);
+    
+    ;; Build cell
+    builder b = begin_cell();
+    b = b.store_ref(begin_cell().store_dict(contracts).end_cell());
+    b = b.store_int(false, 1);
+    b = $TestContract$init$_store(b, ($seqno));
+    return (mine, b.end_cell());
+}
+
+;;
+;; Type: TodoParent
+;;
+
+builder $TodoParent$_store(builder build_0, (int, cell) v) inline {
+    var (v'numChildren, v'BetList) = v;
+    build_0 = build_0.store_uint(v'numChildren, 64);
+    build_0 = build_0.store_dict(v'BetList);
+    return build_0;
+}
+
+(slice, ((int, cell))) $TodoParent$_load(slice sc_0) inline {
+    var v'numChildren = sc_0~load_uint(64);
+    var v'BetList = sc_0~load_dict();
+    return (sc_0, (v'numChildren, v'BetList));
+}
+
+(int, cell) $TodoParent$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$TodoParent$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        return $TodoParent$_contract_init();
+    }
+}
+
+() $TodoParent$_contract_store((int, cell) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $TodoParent$_store(b, v);
+    set_data(b.end_cell());
+}

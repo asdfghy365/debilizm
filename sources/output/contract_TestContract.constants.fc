@@ -1,0 +1,14 @@
+;; String ""
+slice __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7() asm "B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE";
+
+;; String "finalize_true"
+slice __gen_slice_string_9f81c186e5ad0517b5fcceaf78de38deb3b32d60883492410282297087a0097b() asm "B{b5ee9c7241010101000f00001a66696e616c697a655f7472756549fcb5e5} B>boc <s PUSHSLICE";
+
+;; String "PayA"
+slice __gen_slice_string_1a4c437794f951038f842dff8ae1c99f10cb1101fb1019a616b27b27724340a6() asm "B{b5ee9c72410101010006000008506179417d16f24c} B>boc <s PUSHSLICE";
+
+;; String "PayB"
+slice __gen_slice_string_98651548fbed19fe5d2f9e15197454cbe1d40f76a381a82876b277fde6645ae6() asm "B{b5ee9c724101010100060000085061794289e5a25f} B>boc <s PUSHSLICE";
+
+;; Comment "Stopped"
+cell __gen_cell_comment_8f4b6a166554b4f282855d0333c627d5b58d281ea4ba11e4def91a1053193b2d() asm "B{b5ee9c7241010101000d0000160000000053746f707065646f94ddb2} B>boc PUSHREF";
