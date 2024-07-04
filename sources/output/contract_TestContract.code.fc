@@ -70,9 +70,12 @@
     var (($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate))) = $self;
     int $total_payout = ($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate))~$TestContract$_fun_calculate_total_payout($bets, $odds);
     int $contract_balance = __tact_my_balance();
+    int $payout_ratio_numerator = 1000000;
+    int $payout_ratio_denominator = 1000000;
     if (($contract_balance < $total_payout)) {
         $self'data'insufficient_balance = true;
-        return (($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate)), ());
+        $payout_ratio_numerator = ($contract_balance * 1000000);
+        $payout_ratio_denominator = $total_payout;
     }
     var ($address, $bet_amount, $fresh$flag_1) = __tact_dict_min_slice_int($bets, 267, 257);
     while ($fresh$flag_1) {
@@ -80,12 +83,24 @@
             int $payout_amount = (($bet_amount * $odds) / 1000);
             int $adjusted_bet_amount = (($bet_amount * 90) / 100);
             int $rewards_payoutA = ($payout_amount + $adjusted_bet_amount);
-            $global_send($SendParameters$_constructor_to_value_mode($address, $rewards_payoutA, (64 + 2)));
+            int $total_payout_amount = ($adjusted_bet_amount + $rewards_payoutA);
+            if ($self'data'insufficient_balance) {
+                $total_payout_amount = (($total_payout_amount * $payout_ratio_numerator) / $payout_ratio_denominator);
+                $global_send($SendParameters$_constructor_to_value_mode($address, $total_payout_amount, (64 + 2)));
+            } else {
+                $global_send($SendParameters$_constructor_to_value_mode($address, $rewards_payoutA, (64 + 2)));
+            }
         } else {
             int $payout_amount = (($bet_amount * $odds) / 1000);
             int $adjusted_bet_amount = (($bet_amount * 90) / 100);
             int $rewards_payoutB = ($payout_amount + $adjusted_bet_amount);
-            $global_send($SendParameters$_constructor_to_value_mode($address, $rewards_payoutB, (64 + 2)));
+            int $total_payout_amount = ($adjusted_bet_amount + $rewards_payoutB);
+            if ($self'data'insufficient_balance) {
+                $total_payout_amount = (($total_payout_amount * $payout_ratio_numerator) / $payout_ratio_denominator);
+                $global_send($SendParameters$_constructor_to_value_mode($address, $total_payout_amount, (64 + 2)));
+            } else {
+                $global_send($SendParameters$_constructor_to_value_mode($address, $rewards_payoutB, (64 + 2)));
+            }
         }
         ($address, $bet_amount, $fresh$flag_1) = __tact_dict_next_slice_int($bets, 267, $address, 257);
     }
@@ -114,6 +129,11 @@
     throw_unless(20388, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
     $global_send($SendParameters$_constructor_to_value_mode($self'owner, 0, (128 + 2)));
     return (($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate)), ());
+}
+
+((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)), int) $TestContract$_fun_payoutStatus((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $self) impure inline_ref {
+    var (($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate))) = $self;
+    return (($self'owner, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate)), $self'data'insufficient_balance);
 }
 
 ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)), int) $TestContract$_fun_getTotalBetA((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $self) impure inline_ref {
@@ -269,6 +289,12 @@
 ;; Get methods of a Contract TestContract
 ;;
 
+_ %payoutStatus() method_id(77247) {
+    var self = $TestContract$_contract_load();
+    var res = self~$TestContract$_fun_payoutStatus();
+    return res;
+}
+
 _ %getTotalBetA() method_id(116979) {
     var self = $TestContract$_contract_load();
     var res = self~$TestContract$_fun_getTotalBetA();
@@ -341,7 +367,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmSkwqwGGRR3Fs8PbcwRHubCjZXUKkjhabZd7ZeaPQZyLv";
+    return "ipfs://QmZaecQrimHrKodveHX7z2h9D1QrZHrfsR8aSf3WTyWcS7";
 }
 
 _ lazy_deployment_completed() method_id {

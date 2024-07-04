@@ -126,6 +126,9 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 ;; $TestContract$_fun_sendRemainingBalanceToOwner
 ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)), ()) $TestContract$_fun_sendRemainingBalanceToOwner((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $self) impure inline_ref;
 
+;; $TestContract$_fun_payoutStatus
+((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)), int) $TestContract$_fun_payoutStatus((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $self) impure inline_ref;
+
 ;; $TestContract$_fun_getTotalBetA
 ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)), int) $TestContract$_fun_getTotalBetA((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $self) impure inline_ref;
 

@@ -1,5 +1,5 @@
-ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\Projects\tacttutor\tact-template
-ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.code.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.headers.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.stdlib.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.storage.fc` 
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\arman\TonBets
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/arman/TonBets/sources/output/contract_TodoParent.code.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.headers.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.stdlib.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_store_address

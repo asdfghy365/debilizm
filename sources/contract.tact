@@ -180,30 +180,62 @@ contract TestContract with Deployable, Ownable, Stoppable {
     fun payout(bets: map<Address, Int>, odds: Int) {
         let total_payout: Int = self.calculate_total_payout(bets, odds);
         let contract_balance: Int = myBalance();
+        let payout_ratio_numerator: Int = 1_000_000; // scaling i guess? 
+        let payout_ratio_denominator: Int = 1_000_000; // scaling denominator
         if (contract_balance < total_payout) {
             self.data.insufficient_balance = true;
-            return;
+            payout_ratio_numerator = contract_balance * 1_000_000;
+            payout_ratio_denominator = total_payout;
         }
+
         foreach (address, bet_amount in bets) { // gets payout amount
+           
             if (self.data.outcome_a_wins) {
-                let payout_amount: Int = (bet_amount * odds) / 1000;
-                let adjusted_bet_amount: Int = bet_amount * 90 / 100;
+                let payout_amount: Int = (bet_amount * odds) / 1000; // reward
+                let adjusted_bet_amount: Int = bet_amount * 90 / 100; // initial bet + fee
                 let rewards_payoutA: Int = payout_amount + adjusted_bet_amount;
+                let total_payout_amount: Int= adjusted_bet_amount + rewards_payoutA;
+
+                if (self.data.insufficient_balance) {
+                total_payout_amount = (total_payout_amount * payout_ratio_numerator) / payout_ratio_denominator;
+
+                send(SendParameters{
+                    to: address,
+                    value: total_payout_amount,
+                    mode: SendRemainingValue + SendIgnoreErrors
+                });
+            }
+                else {
                 send(SendParameters{
                     to: address,
                     value: rewards_payoutA,
                     mode: SendRemainingValue + SendIgnoreErrors
                 });
-            } else {
+                }
+            } 
+            else {
                 let payout_amount: Int = (bet_amount * odds) / 1000;
                 let adjusted_bet_amount: Int = bet_amount * 90 / 100;
                 let rewards_payoutB: Int = payout_amount + adjusted_bet_amount;
+                let total_payout_amount: Int= adjusted_bet_amount + rewards_payoutB;
+                if (self.data.insufficient_balance) {
+                total_payout_amount = (total_payout_amount * payout_ratio_numerator) / payout_ratio_denominator;
+
+                send(SendParameters{
+                    to: address,
+                    value: total_payout_amount,
+                    mode: SendRemainingValue + SendIgnoreErrors
+                });
+            }
+                else {
                 send(SendParameters{
                     to: address,
                     value: rewards_payoutB,
                     mode: SendRemainingValue + SendIgnoreErrors
                 });
-            }
+                }
+            } 
+             
         }
         self.data.finalized = true;
         self.betInfoData.finishDate = now();
@@ -242,7 +274,9 @@ contract TestContract with Deployable, Ownable, Stoppable {
     });
 }
 
-    
+    get fun payoutStatus(): Bool {
+        return self.data.insufficient_balance;
+    }
 
     get fun getTotalBetA(): Int {
         return self.data.total_bet_a;
