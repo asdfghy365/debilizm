@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 2991 bytes
+BOC Size: 3107 bytes
 
 # Types
 Total Types: 13
@@ -46,8 +46,8 @@ TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a
 Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## BetInfo
-TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 = BetInfo`
-Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint32,odds_b:uint32,finishDate:uint32}`
+TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 total_bet_a:uint32 total_bet_b:uint32 = BetInfo`
+Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint32,odds_b:uint32,finishDate:uint32,total_bet_a:uint32,total_bet_b:uint32}`
 
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`

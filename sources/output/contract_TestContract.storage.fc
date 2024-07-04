@@ -105,11 +105,11 @@ builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int
 
 ;;
 ;; Type: BetInfo
-;; TLB: _ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 = BetInfo
+;; TLB: _ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 total_bet_a:uint32 total_bet_b:uint32 = BetInfo
 ;;
 
-builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int) v) inline_ref {
-    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate) = v;
+builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int, int, int) v) inline_ref {
+    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate, v'total_bet_a, v'total_bet_b) = v;
     build_0 = build_0.store_ref(begin_cell().store_slice(v'title).end_cell());
     build_0 = build_0.store_ref(begin_cell().store_slice(v'source).end_cell());
     build_0 = build_0.store_ref(begin_cell().store_slice(v'bet_a_name).end_cell());
@@ -119,11 +119,13 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
     build_1 = build_1.store_uint(v'odds_a, 32);
     build_1 = build_1.store_uint(v'odds_b, 32);
     build_1 = build_1.store_uint(v'finishDate, 32);
+    build_1 = build_1.store_uint(v'total_bet_a, 32);
+    build_1 = build_1.store_uint(v'total_bet_b, 32);
     build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
 }
 
-(slice, ((slice, slice, slice, slice, slice, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref {
+(slice, ((slice, slice, slice, slice, slice, int, int, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref {
     var v'title = sc_0~load_ref().begin_parse();
     var v'source = sc_0~load_ref().begin_parse();
     var v'bet_a_name = sc_0~load_ref().begin_parse();
@@ -133,20 +135,22 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
     var v'odds_a = sc_1~load_uint(32);
     var v'odds_b = sc_1~load_uint(32);
     var v'finishDate = sc_1~load_uint(32);
-    return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate));
+    var v'total_bet_a = sc_1~load_uint(32);
+    var v'total_bet_b = sc_1~load_uint(32);
+    return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate, v'total_bet_a, v'total_bet_b));
 }
 
-(slice, slice, slice, slice, slice, int, int, int) $BetInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int)) v) inline {
-    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate) = v; 
-    return (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate);
+(slice, slice, slice, slice, slice, int, int, int, int, int) $BetInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline {
+    var (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate, v'total_bet_a, v'total_bet_b) = v; 
+    return (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate, v'total_bet_a, v'total_bet_b);
 }
 
-((slice, slice, slice, slice, slice, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int finishDate, int odds_a, int odds_b) inline {
-    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate);
+((slice, slice, slice, slice, slice, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int finishDate, int odds_a, int odds_b, int total_bet_a, int total_bet_b) inline {
+    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate, total_bet_a, total_bet_b);
 }
 
-((slice, slice, slice, slice, slice, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate) inline {
-    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate);
+((slice, slice, slice, slice, slice, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate, int total_bet_a, int total_bet_b) inline {
+    return (title, source, bet_a_name, bet_b_name, image, odds_a, odds_b, finishDate, total_bet_a, total_bet_b);
 }
 
 ;;
@@ -182,21 +186,21 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
 ;; Type: TestContract
 ;;
 
-builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) v) inline {
-    var (v'owner, v'stopped, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance), v'seqno, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate)) = v;
+builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline {
+    var (v'owner, v'stopped, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance), v'seqno, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate, v'betInfoData'total_bet_a, v'betInfoData'total_bet_b)) = v;
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = build_0.store_int(v'stopped, 1);
     var build_1 = begin_cell();
     build_1 = $Data$_store(build_1, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance));
     build_1 = build_1.store_uint(v'seqno, 64);
     var build_2 = begin_cell();
-    build_2 = $BetInfo$_store(build_2, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate));
+    build_2 = $BetInfo$_store(build_2, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate, v'betInfoData'total_bet_a, v'betInfoData'total_bet_b));
     build_1 = store_ref(build_1, build_2.end_cell());
     build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
 }
 
-(slice, ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)))) $TestContract$_load(slice sc_0) inline {
+(slice, ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)))) $TestContract$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
     var v'stopped = sc_0~load_int(1);
     slice sc_1 = sc_0~load_ref().begin_parse();
@@ -212,7 +216,7 @@ builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, 
     return (sc_0, (v'seqno));
 }
 
-(slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) $TestContract$_contract_load() impure inline_ref {
+(slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -227,7 +231,7 @@ builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, 
     }
 }
 
-() $TestContract$_contract_store((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int)) v) impure inline {
+() $TestContract$_contract_store((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

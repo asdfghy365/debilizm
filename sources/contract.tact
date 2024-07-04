@@ -29,6 +29,8 @@ struct BetInfo {
     odds_a: Int as uint32;
     odds_b: Int as uint32;
     finishDate: Int as uint32;
+    total_bet_a: Int as uint32;
+    total_bet_b: Int as uint32;
 
 }
 
@@ -75,7 +77,9 @@ contract TestContract with Deployable, Ownable, Stoppable {
         image: "",
         finishDate: -1,
         odds_a: self.data.odds_a,
-        odds_b: self.data.odds_b
+        odds_b: self.data.odds_b,
+        total_bet_a: self.data.total_bet_a,
+        total_bet_b: self.data.total_bet_b
     };
     }
 
@@ -89,7 +93,9 @@ contract TestContract with Deployable, Ownable, Stoppable {
         image: msg.image,
         odds_a: self.data.odds_a,
         odds_b: self.data.odds_b,
-        finishDate: self.betInfoData.finishDate
+        finishDate: self.betInfoData.finishDate,
+        total_bet_a: self.data.total_bet_a,
+        total_bet_b: self.data.total_bet_b
     };
     }
 
