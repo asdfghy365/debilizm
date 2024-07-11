@@ -477,10 +477,10 @@ export type Data = {
 export function storeData(src: Data) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(src.total_bet_a, 32);
-        b_0.storeUint(src.total_bet_b, 32);
-        b_0.storeUint(src.odds_a, 32);
-        b_0.storeUint(src.odds_b, 32);
+        b_0.storeUint(src.total_bet_a, 64);
+        b_0.storeUint(src.total_bet_b, 64);
+        b_0.storeUint(src.odds_a, 64);
+        b_0.storeUint(src.odds_b, 64);
         b_0.storeDict(src.bets_a, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
         b_0.storeDict(src.bets_b, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
         b_0.storeDict(src.bets_total, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
@@ -492,10 +492,10 @@ export function storeData(src: Data) {
 
 export function loadData(slice: Slice) {
     let sc_0 = slice;
-    let _total_bet_a = sc_0.loadUintBig(32);
-    let _total_bet_b = sc_0.loadUintBig(32);
-    let _odds_a = sc_0.loadUintBig(32);
-    let _odds_b = sc_0.loadUintBig(32);
+    let _total_bet_a = sc_0.loadUintBig(64);
+    let _total_bet_b = sc_0.loadUintBig(64);
+    let _odds_a = sc_0.loadUintBig(64);
+    let _odds_b = sc_0.loadUintBig(64);
     let _bets_a = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
     let _bets_b = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
     let _bets_total = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
@@ -555,6 +555,8 @@ export type BetInfo = {
     odds_a: bigint;
     odds_b: bigint;
     finishDate: bigint;
+    total_bet_a: bigint;
+    total_bet_b: bigint;
 }
 
 export function storeBetInfo(src: BetInfo) {
@@ -566,9 +568,11 @@ export function storeBetInfo(src: BetInfo) {
         let b_1 = new Builder();
         b_1.storeStringRefTail(src.bet_b_name);
         b_1.storeStringRefTail(src.image);
-        b_1.storeUint(src.odds_a, 32);
-        b_1.storeUint(src.odds_b, 32);
+        b_1.storeUint(src.odds_a, 64);
+        b_1.storeUint(src.odds_b, 64);
         b_1.storeUint(src.finishDate, 32);
+        b_1.storeUint(src.total_bet_a, 64);
+        b_1.storeUint(src.total_bet_b, 64);
         b_0.storeRef(b_1.endCell());
     };
 }
@@ -581,10 +585,12 @@ export function loadBetInfo(slice: Slice) {
     let sc_1 = sc_0.loadRef().beginParse();
     let _bet_b_name = sc_1.loadStringRefTail();
     let _image = sc_1.loadStringRefTail();
-    let _odds_a = sc_1.loadUintBig(32);
-    let _odds_b = sc_1.loadUintBig(32);
+    let _odds_a = sc_1.loadUintBig(64);
+    let _odds_b = sc_1.loadUintBig(64);
     let _finishDate = sc_1.loadUintBig(32);
-    return { $$type: 'BetInfo' as const, title: _title, source: _source, bet_a_name: _bet_a_name, bet_b_name: _bet_b_name, image: _image, odds_a: _odds_a, odds_b: _odds_b, finishDate: _finishDate };
+    let _total_bet_a = sc_1.loadUintBig(64);
+    let _total_bet_b = sc_1.loadUintBig(64);
+    return { $$type: 'BetInfo' as const, title: _title, source: _source, bet_a_name: _bet_a_name, bet_b_name: _bet_b_name, image: _image, odds_a: _odds_a, odds_b: _odds_b, finishDate: _finishDate, total_bet_a: _total_bet_a, total_bet_b: _total_bet_b };
 }
 
 function loadTupleBetInfo(source: TupleReader) {
@@ -596,7 +602,9 @@ function loadTupleBetInfo(source: TupleReader) {
     let _odds_a = source.readBigNumber();
     let _odds_b = source.readBigNumber();
     let _finishDate = source.readBigNumber();
-    return { $$type: 'BetInfo' as const, title: _title, source: _source, bet_a_name: _bet_a_name, bet_b_name: _bet_b_name, image: _image, odds_a: _odds_a, odds_b: _odds_b, finishDate: _finishDate };
+    let _total_bet_a = source.readBigNumber();
+    let _total_bet_b = source.readBigNumber();
+    return { $$type: 'BetInfo' as const, title: _title, source: _source, bet_a_name: _bet_a_name, bet_b_name: _bet_b_name, image: _image, odds_a: _odds_a, odds_b: _odds_b, finishDate: _finishDate, total_bet_a: _total_bet_a, total_bet_b: _total_bet_b };
 }
 
 function storeTupleBetInfo(source: BetInfo) {
@@ -609,6 +617,8 @@ function storeTupleBetInfo(source: BetInfo) {
     builder.writeNumber(source.odds_a);
     builder.writeNumber(source.odds_b);
     builder.writeNumber(source.finishDate);
+    builder.writeNumber(source.total_bet_a);
+    builder.writeNumber(source.total_bet_b);
     return builder.build();
 }
 
@@ -741,8 +751,8 @@ function initTodoParent_init_args(src: TodoParent_init_args) {
 }
 
 async function TodoParent_init() {
-    const __code = Cell.fromBase64('te6ccgECGQEAA+UAART/APSkE/S88sgLAQIBYgIDApzQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxa2zzy4ILI+EMBzH8BygBZAss/9ADJ7VQWBAIBWA0OAq4BkjB/4HAh10nCH5UwINcLH94gghCwKAcfuo6vMNMfAYIQsCgHH7ry4IHUAdAB1AHQAdQB0AHUAdDUAdAB1DDQECUQJBAjbBXbPH/gghCUapi2uuMCMHAFBgK+BqT4QyHbPFxwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBiBAQFSQiBulTBZ9FowlEEz9BTiUxcHCAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/CgBoAdD0BDBtAYIA9l4BgBD0D2+h8uCHAYIA9l4iAoAQ9BfIAcj0AMkBzHABygBYAYEBAc8AyQGacFnIcAHLAXMBywFwAcsAEszMyfkAyHIBywFwAcsAEsoHy//J0CDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhHYIIQBfXhAFBlcgsJAZbIVUCCELAoBx9QBssfyFAFzxbJUATMyFADzxbJWMzIWM8WyQHMyMhQA88WyVjMyFADzxbJWMzJAczJEDUQJBA3R2B/BgUEQTPbPAELATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAsByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADACYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBWA8QAgFIEhMCEbG29s82zxsIYBYRAJWy9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSAAAiACAWIUFQB1sm7jQ1aXBmczovL1FtWVoyMVU1anVYTkVVcEhGMWJjbllkdTlicDdFdnJjOXR1OXR0R3BiTWk5cE6CACD6ejtnm2eNhDFhcAD6V92omhpAADAULtRNDUAfhj0gABl9M/9ARZbBLgMPgo1wsKgwm68uCJ2zwYAAIhAARwbQ==');
-    const __system = Cell.fromBase64('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');
+    const __code = Cell.fromBase64('te6ccgECGwEABIIAART/APSkE/S88sgLAQIBYgIDAt7QAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVEts88uCCyPhDAcx/AcoAVSBaINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEss/9ADJ7VQYBAIBWA8QA9ztou37AZIwf+BwIddJwh+VMCDXCx/eIMAAItdJwSGwklt/4CCCELAoBx+6jq8w0x8BghCwKAcfuvLggdQB0AHUAdAB1AHQAdQB0NQB0AHUMNAQJRAkECNsFds8f+AgghCUapi2uuMCwACRMOMNcAUGBwKWBqT4QyHbPFxwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFMhCAkBUDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH8LAVr5AYLwCVGQGUruYRzolcVQOt+F/YZN55BXRhQvYI0+svqtFOS6joXbPH/bMeAMAGgB0PQEMG0BggD2XgGAEPQPb6Hy4IcBggD2XiICgBD0F8gByPQAyQHMcAHKAFgBgQEBzwDJAZpwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiEhwghAF9eEAUHZyDAoBvMhVQIIQsCgHH1AGyx/IUAXPFslQBMzIUAPPFslYzMhYzxbJAczIyFADzxbJWMzIUAPPFslYzMkBzMkQRRA0EDhBYH8GBQRBM9s8gQEBVCAEIG6VMFn0WjCUQTP0FOINATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPA0BGCJwgwZ/VSBtbW3bPA0ByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADgCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBWBESAgFIFBUCEbG29s82zxsMYBgTAJWy9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSAAAiACAWIWFwB1sm7jQ1aXBmczovL1FtUEhQS1JlSnZWckF4bkNkZnFTQW1kbTlEUDVjdUp0UWM5am5WakJ1bjE2YWaCACD6ejtnm2eNhjGBkAD6V92omhpAADAYbtRNDUAfhj0gABjij6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdM/9ARVIGwT4DD4KNcLCoMJuvLgids8GgACIQAKcG34Qlk=');
+    const __system = Cell.fromBase64('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');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -777,9 +787,9 @@ const TodoParent_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     2977: { message: `Already initialized` },
-    20388: { message: `Only the owner can withdraw the remaining balance` },
+    5194: { message: `Bet amount must be greater than the fixed fee` },
     40368: { message: `Contract stopped` },
-    49684: { message: `Only the owner can finalize` },
+    44933: { message: `Only the admin can finalize` },
     53296: { message: `Contract not stopped` },
     63076: { message: `Betting is over` },
 }
@@ -794,8 +804,8 @@ const TodoParent_types: ABIType[] = [
     {"name":"ChangeOwner","header":2174598809,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"ChangeOwnerOk","header":846932810,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"Bet","header":null,"fields":[{"name":"address","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
-    {"name":"Data","header":null,"fields":[{"name":"total_bet_a","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"total_bet_b","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"odds_a","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"odds_b","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"bets_a","type":{"kind":"dict","key":"address","value":"int"}},{"name":"bets_b","type":{"kind":"dict","key":"address","value":"int"}},{"name":"bets_total","type":{"kind":"dict","key":"address","value":"int"}},{"name":"finalized","type":{"kind":"simple","type":"bool","optional":false}},{"name":"outcome_a_wins","type":{"kind":"simple","type":"bool","optional":false}},{"name":"insufficient_balance","type":{"kind":"simple","type":"bool","optional":false}}]},
-    {"name":"BetInfo","header":null,"fields":[{"name":"title","type":{"kind":"simple","type":"string","optional":false}},{"name":"source","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_a_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_b_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"image","type":{"kind":"simple","type":"string","optional":false}},{"name":"odds_a","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"odds_b","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"finishDate","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
+    {"name":"Data","header":null,"fields":[{"name":"total_bet_a","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"total_bet_b","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"odds_a","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"odds_b","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"bets_a","type":{"kind":"dict","key":"address","value":"int"}},{"name":"bets_b","type":{"kind":"dict","key":"address","value":"int"}},{"name":"bets_total","type":{"kind":"dict","key":"address","value":"int"}},{"name":"finalized","type":{"kind":"simple","type":"bool","optional":false}},{"name":"outcome_a_wins","type":{"kind":"simple","type":"bool","optional":false}},{"name":"insufficient_balance","type":{"kind":"simple","type":"bool","optional":false}}]},
+    {"name":"BetInfo","header":null,"fields":[{"name":"title","type":{"kind":"simple","type":"string","optional":false}},{"name":"source","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_a_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_b_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"image","type":{"kind":"simple","type":"string","optional":false}},{"name":"odds_a","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"odds_b","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"finishDate","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"total_bet_a","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"total_bet_b","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"Finalize","header":3527127190,"fields":[{"name":"outcome_a_wins","type":{"kind":"simple","type":"bool","optional":false}}]},
     {"name":"BetInfoInit","header":2955413279,"fields":[{"name":"title","type":{"kind":"simple","type":"string","optional":false}},{"name":"source","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_a_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"bet_b_name","type":{"kind":"simple","type":"string","optional":false}},{"name":"image","type":{"kind":"simple","type":"string","optional":false}}]},
 ]
@@ -806,6 +816,8 @@ const TodoParent_getters: ABIGetter[] = [
 ]
 
 const TodoParent_receivers: ABIReceiver[] = [
+    {"receiver":"internal","message":{"kind":"empty"}},
+    {"receiver":"internal","message":{"kind":"text","text":"withdraw"}},
     {"receiver":"internal","message":{"kind":"typed","type":"BetInfoInit"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
@@ -840,9 +852,15 @@ export class TodoParent implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: BetInfoInit | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: null | 'withdraw' | BetInfoInit | Deploy) {
         
         let body: Cell | null = null;
+        if (message === null) {
+            body = new Cell();
+        }
+        if (message === 'withdraw') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'BetInfoInit') {
             body = beginCell().store(storeBetInfoInit(message)).endCell();
         }

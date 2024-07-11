@@ -11,6 +11,11 @@ slice __tact_verify_address(slice address) inline {
     return address;
 }
 
+(slice, slice) __tact_load_address(slice cs) inline {
+    slice raw = cs~load_msg_addr();
+    return (cs, __tact_verify_address(raw));
+}
+
 builder __tact_store_address(builder b, slice address) inline {
     return b.store_slice(__tact_verify_address(address));
 }
@@ -125,8 +130,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline {
     send_raw_message($c, $params'mode);
 }
 
-((int, cell), ()) $TodoParent$_fun_forward((int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'numChildren, $self'BetList)) = $self;
+((slice, int, cell), ()) $TodoParent$_fun_forward((slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -142,15 +147,15 @@ slice $global_contractAddress((cell, cell) $s) impure inline {
         if (($balanceBeforeMessage < 0)) {
             raw_reserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (128 | 2), $body, $code, $data));
-            return (($self'numChildren, $self'BetList), ());
+            return (($self'owner, $self'numChildren, $self'BetList), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (64 | 2), $body, $code, $data));
-    return (($self'numChildren, $self'BetList), ());
+    return (($self'owner, $self'numChildren, $self'BetList), ());
 }
 
-((int, cell), ()) $TodoParent$_fun_notify((int, cell) $self, cell $body) impure inline {
-    var (($self'numChildren, $self'BetList)) = $self;
-    ($self'numChildren, $self'BetList)~$TodoParent$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'numChildren, $self'BetList), ());
+((slice, int, cell), ()) $TodoParent$_fun_notify((slice, int, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
+    ($self'owner, $self'numChildren, $self'BetList)~$TodoParent$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'owner, $self'numChildren, $self'BetList), ());
 }
