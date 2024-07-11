@@ -6,6 +6,9 @@
 ;; __tact_verify_address
 slice __tact_verify_address(slice address) inline;
 
+;; __tact_load_address
+(slice, slice) __tact_load_address(slice cs) inline;
+
 ;; __tact_store_address
 builder __tact_store_address(builder b, slice address) inline;
 
@@ -58,10 +61,10 @@ cell $BetInfoInit$_store_cell((slice, slice, slice, slice, slice) v) inline;
 (slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline;
 
 ;; $TodoParent$_store
-builder $TodoParent$_store(builder build_0, (int, cell) v) inline;
+builder $TodoParent$_store(builder build_0, (slice, int, cell) v) inline;
 
 ;; $TodoParent$_load
-(slice, ((int, cell))) $TodoParent$_load(slice sc_0) inline;
+(slice, ((slice, int, cell))) $TodoParent$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -70,13 +73,13 @@ builder $TodoParent$_store(builder build_0, (int, cell) v) inline;
 builder $TestContract$init$_store(builder build_0, (int) v) inline;
 
 ;; $TodoParent$_contract_init
-(int, cell) $TodoParent$_contract_init() impure inline_ref;
+(slice, int, cell) $TodoParent$_contract_init() impure inline_ref;
 
 ;; $TodoParent$_contract_load
-(int, cell) $TodoParent$_contract_load() impure inline_ref;
+(slice, int, cell) $TodoParent$_contract_load() impure inline_ref;
 
 ;; $TodoParent$_contract_store
-() $TodoParent$_contract_store((int, cell) v) impure inline;
+() $TodoParent$_contract_store((slice, int, cell) v) impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
@@ -87,20 +90,26 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $TestContract$_init_child
 (cell, cell) $TestContract$_init_child(cell sys', int $seqno) inline_ref;
 
+;; $SendParameters$_constructor_to_value_mode
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline;
+
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
+;; $TodoParent$_fun_withdraw
+((slice, int, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell) $self) impure inline_ref;
+
 ;; $TodoParent$_fun_numChildren
-((int, cell), int) $TodoParent$_fun_numChildren((int, cell) $self) impure inline_ref;
+((slice, int, cell), int) $TodoParent$_fun_numChildren((slice, int, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_getAllAddresses
-((int, cell), cell) $TodoParent$_fun_getAllAddresses((int, cell) $self) impure inline_ref;
+((slice, int, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_forward
-((int, cell), ()) $TodoParent$_fun_forward((int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, int, cell), ()) $TodoParent$_fun_forward((slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $TodoParent$_fun_notify
-((int, cell), ()) $TodoParent$_fun_notify((int, cell) $self, cell $body) impure inline;
+((slice, int, cell), ()) $TodoParent$_fun_notify((slice, int, cell) $self, cell $body) impure inline;
 
 ;; $SendParameters$_constructor_to_value_mode_code_data_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_code_data_body(slice to, int value, int mode, cell code, cell data, cell body) inline;

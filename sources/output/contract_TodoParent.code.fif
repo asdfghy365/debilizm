@@ -2,6 +2,7 @@ ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\arman\TonBets
 ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/arman/TonBets/sources/output/contract_TodoParent.code.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.headers.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.stdlib.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
   DECLPROC __tact_store_address
   DECLPROC __tact_create_address
   DECLPROC __tact_compute_contract_address
@@ -29,13 +30,17 @@ PROGRAM{
   DECLPROC $global_contractAddress
   DECLPROC $global_send
   DECLPROC $TestContract$_init_child
+  DECLPROC $SendParameters$_constructor_to_value_mode
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
+  DECLPROC $TodoParent$_fun_withdraw
   DECLPROC $TodoParent$_fun_numChildren
   DECLPROC $TodoParent$_fun_getAllAddresses
   DECLPROC $TodoParent$_fun_forward
   DECLPROC $TodoParent$_fun_notify
   DECLPROC $SendParameters$_constructor_to_value_mode_code_data_body
   DECLPROC $DeployOk$_constructor_queryId
+  DECLPROC %$TodoParent$_internal_empty
+  DECLPROC $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4
   DECLPROC $TodoParent$_internal_binary_BetInfoInit
   DECLPROC $TodoParent$_internal_binary_Deploy
   115153 DECLMETHOD %numChildren
@@ -64,6 +69,11 @@ PROGRAM{
     10 PUSHPOW2
     EQUAL
     136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
   }>
   __tact_store_address PROCINLINE:<{
     __tact_verify_address INLINECALLDICT
@@ -246,14 +256,18 @@ PROGRAM{
     s2 s3 XCHG
   }>
   $TodoParent$_store PROCINLINE:<{
-    s0 s2 XCHG
+    2SWAP
+    __tact_store_address INLINECALLDICT
+    s1 s2 XCHG
     64 STU
     STDICT
   }>
   $TodoParent$_load PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
     64 LDU
     LDDICT
-    -ROT
+    3 -ROLL
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -269,6 +283,8 @@ PROGRAM{
   $TodoParent$_contract_init PROCREF:<{
     0 PUSHINT
     PUSHNULL
+    __tact_context_get_sender INLINECALLDICT
+    -ROT
   }>
   $TodoParent$_contract_load PROCREF:<{
     c4 PUSH
@@ -280,7 +296,7 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $TodoParent$_load INLINECALLDICT
-      1 2 BLKDROP2
+      1 3 BLKDROP2
     }>
     DROP
     MYADDR
@@ -298,7 +314,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    -ROT
+    3 -ROLL
     $TodoParent$_store INLINECALLDICT
     ENDC
     c4 POP
@@ -437,7 +453,21 @@ PROGRAM{
     $TestContract$init$_store INLINECALLDICT
     ENDC
   }>
+  $SendParameters$_constructor_to_value_mode PROCINLINE:<{
+    TRUE
+    3 -ROLL
+    PUSHNULL
+    PUSHNULL
+    PUSHNULL
+  }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
+  }>
+  $TodoParent$_fun_withdraw PROCREF:<{
+    s2 PUSH
+    0 PUSHINT
+    7 PUSHPOW2
+    $SendParameters$_constructor_to_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
   }>
   $TodoParent$_fun_numChildren PROCREF:<{
     OVER
@@ -483,6 +513,11 @@ PROGRAM{
   }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
+  %$TodoParent$_internal_empty PROCINLINE:<{
+  }>
+  $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4 PROCINLINE:<{
+    $TodoParent$_fun_withdraw INLINECALLDICT
+  }>
   $TodoParent$_internal_binary_BetInfoInit PROCINLINE:<{
     s0 s6 XCHG
     INC
@@ -491,25 +526,23 @@ PROGRAM{
     $TestContract$_init_child INLINECALLDICT
     2DUP
     $global_contractAddress INLINECALLDICT
-    s1 s8 XCHG
-    257 PUSHINT
-    s4 s1 PUXC
-    __tact_dict_set_int_slice INLINECALLDICT
-    s1 s7 PUSH2
+    s2 s1 PUSH2
     $global_contractAddress INLINECALLDICT
-    s7 s6 s0 XCHG3
+    s8 s7 s0 XCHG3
     100000000 PUSHINT
-    s6 s5 XCHG2
+    s7 s6 XCHG2
     2 PUSHINT
-    s0 s11 XCHG
+    s0 s12 XCHG
     $BetInfoInit$_store_cell INLINECALLDICT
-    s3 s5 XCHG
-    s2 s4 XCHG
-    s3 s7 XCHG
-    s7 s6 s0 XCHG3
+    s4 s5 XCHG
+    s3 s4 XCHG
+    s3 s8 XCHG
+    s1 s6 s0 XCHG3
     $SendParameters$_constructor_to_value_mode_code_data_body INLINECALLDICT
     $global_send INLINECALLDICT
-    SWAP
+    257 PUSHINT
+    s0 s0 s3 XCPUXC
+    __tact_dict_set_int_slice INLINECALLDICT
   }>
   $TodoParent$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -519,12 +552,12 @@ PROGRAM{
   %numChildren PROC:<{
     $TodoParent$_contract_load INLINECALLDICT
     $TodoParent$_fun_numChildren INLINECALLDICT
-    2 1 BLKDROP2
+    3 1 BLKDROP2
   }>
   %getAllAddresses PROC:<{
     $TodoParent$_contract_load INLINECALLDICT
     $TodoParent$_fun_getAllAddresses INLINECALLDICT
-    2 1 BLKDROP2
+    3 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -533,7 +566,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d546a66705a726b59486741564a4a346a4a4b6b6a4644624579376d6568464c634235764d46684e6950454542} PUSHSLICE
+    x{697066733a2f2f516d5048504b52654a76567241786e4364667153416d646d3944503563754a745163396a6e566a42756e31366166} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -542,6 +575,8 @@ PROGRAM{
     SWAP
   }>
   $TodoParent$_contract_router_internal PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
     SWAP
     IFJMP:<{
       DROP
@@ -557,6 +592,17 @@ PROGRAM{
       32 PLDU
     }>
     DUP
+    0 EQINT
+    s2 PUSH
+    SBITS
+    33 LESSINT
+    AND
+    IFJMP:<{
+      2DROP
+      %$TodoParent$_internal_empty INLINECALLDICT
+      TRUE
+    }>
+    DUP
     2955413279 PUSHINT
     EQUAL
     IFJMP:<{
@@ -566,15 +612,29 @@ PROGRAM{
       $TodoParent$_internal_binary_BetInfoInit INLINECALLDICT
       TRUE
     }>
+    DUP
     2490013878 PUSHINT
     EQUAL
     IFJMP:<{
+      DROP
       $Deploy$_load INLINECALLDICT
       NIP
       $TodoParent$_internal_binary_Deploy INLINECALLDICT
       TRUE
     }>
-    DROP
+    0 EQINT
+    IF:<{
+      HASHSU
+      4214924782860224305093503934954653493962198591343413308822612294567774196964 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
     FALSE
   }>
   recv_internal PROC:<{
@@ -596,7 +656,7 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $TodoParent$_contract_load INLINECALLDICT
-    2SWAP
+    2 3 BLKSWAP
     $TodoParent$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $TodoParent$_contract_store INLINECALLDICT

@@ -67,15 +67,15 @@ cell $DeployOk$_store_cell((int) v) inline {
 
 ;;
 ;; Type: Data
-;; TLB: _ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data
+;; TLB: _ total_bet_a:uint64 total_bet_b:uint64 odds_a:uint64 odds_b:uint64 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data
 ;;
 
 builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int, int, int) v) inline_ref {
     var (v'total_bet_a, v'total_bet_b, v'odds_a, v'odds_b, v'bets_a, v'bets_b, v'bets_total, v'finalized, v'outcome_a_wins, v'insufficient_balance) = v;
-    build_0 = build_0.store_uint(v'total_bet_a, 32);
-    build_0 = build_0.store_uint(v'total_bet_b, 32);
-    build_0 = build_0.store_uint(v'odds_a, 32);
-    build_0 = build_0.store_uint(v'odds_b, 32);
+    build_0 = build_0.store_uint(v'total_bet_a, 64);
+    build_0 = build_0.store_uint(v'total_bet_b, 64);
+    build_0 = build_0.store_uint(v'odds_a, 64);
+    build_0 = build_0.store_uint(v'odds_b, 64);
     build_0 = build_0.store_dict(v'bets_a);
     build_0 = build_0.store_dict(v'bets_b);
     build_0 = build_0.store_dict(v'bets_total);
@@ -86,10 +86,10 @@ builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int
 }
 
 (slice, ((int, int, int, int, cell, cell, cell, int, int, int))) $Data$_load(slice sc_0) inline_ref {
-    var v'total_bet_a = sc_0~load_uint(32);
-    var v'total_bet_b = sc_0~load_uint(32);
-    var v'odds_a = sc_0~load_uint(32);
-    var v'odds_b = sc_0~load_uint(32);
+    var v'total_bet_a = sc_0~load_uint(64);
+    var v'total_bet_b = sc_0~load_uint(64);
+    var v'odds_a = sc_0~load_uint(64);
+    var v'odds_b = sc_0~load_uint(64);
     var v'bets_a = sc_0~load_dict();
     var v'bets_b = sc_0~load_dict();
     var v'bets_total = sc_0~load_dict();
@@ -105,7 +105,7 @@ builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int
 
 ;;
 ;; Type: BetInfo
-;; TLB: _ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 total_bet_a:uint32 total_bet_b:uint32 = BetInfo
+;; TLB: _ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 = BetInfo
 ;;
 
 builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int, int, int) v) inline_ref {
@@ -116,11 +116,11 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
     var build_1 = begin_cell();
     build_1 = build_1.store_ref(begin_cell().store_slice(v'bet_b_name).end_cell());
     build_1 = build_1.store_ref(begin_cell().store_slice(v'image).end_cell());
-    build_1 = build_1.store_uint(v'odds_a, 32);
-    build_1 = build_1.store_uint(v'odds_b, 32);
+    build_1 = build_1.store_uint(v'odds_a, 64);
+    build_1 = build_1.store_uint(v'odds_b, 64);
     build_1 = build_1.store_uint(v'finishDate, 32);
-    build_1 = build_1.store_uint(v'total_bet_a, 32);
-    build_1 = build_1.store_uint(v'total_bet_b, 32);
+    build_1 = build_1.store_uint(v'total_bet_a, 64);
+    build_1 = build_1.store_uint(v'total_bet_b, 64);
     build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
 }
@@ -132,11 +132,11 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'bet_b_name = sc_1~load_ref().begin_parse();
     var v'image = sc_1~load_ref().begin_parse();
-    var v'odds_a = sc_1~load_uint(32);
-    var v'odds_b = sc_1~load_uint(32);
+    var v'odds_a = sc_1~load_uint(64);
+    var v'odds_b = sc_1~load_uint(64);
     var v'finishDate = sc_1~load_uint(32);
-    var v'total_bet_a = sc_1~load_uint(32);
-    var v'total_bet_b = sc_1~load_uint(32);
+    var v'total_bet_a = sc_1~load_uint(64);
+    var v'total_bet_b = sc_1~load_uint(64);
     return (sc_0, (v'title, v'source, v'bet_a_name, v'bet_b_name, v'image, v'odds_a, v'odds_b, v'finishDate, v'total_bet_a, v'total_bet_b));
 }
 
@@ -186,9 +186,10 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
 ;; Type: TestContract
 ;;
 
-builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline {
-    var (v'owner, v'stopped, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance), v'seqno, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate, v'betInfoData'total_bet_a, v'betInfoData'total_bet_b)) = v;
+builder $TestContract$_store(builder build_0, (slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline {
+    var (v'owner, v'admin, v'stopped, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance), v'seqno, (v'betInfoData'title, v'betInfoData'source, v'betInfoData'bet_a_name, v'betInfoData'bet_b_name, v'betInfoData'image, v'betInfoData'odds_a, v'betInfoData'odds_b, v'betInfoData'finishDate, v'betInfoData'total_bet_a, v'betInfoData'total_bet_b)) = v;
     build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = __tact_store_address(build_0, v'admin);
     build_0 = build_0.store_int(v'stopped, 1);
     var build_1 = begin_cell();
     build_1 = $Data$_store(build_1, (v'data'total_bet_a, v'data'total_bet_b, v'data'odds_a, v'data'odds_b, v'data'bets_a, v'data'bets_b, v'data'bets_total, v'data'finalized, v'data'outcome_a_wins, v'data'insufficient_balance));
@@ -200,15 +201,16 @@ builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, 
     return build_0;
 }
 
-(slice, ((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)))) $TestContract$_load(slice sc_0) inline {
+(slice, ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)))) $TestContract$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
+    var v'admin = sc_0~__tact_load_address();
     var v'stopped = sc_0~load_int(1);
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'data = sc_1~$Data$_load();
     var v'seqno = sc_1~load_uint(64);
     slice sc_2 = sc_1~load_ref().begin_parse();
     var v'betInfoData = sc_2~$BetInfo$_load();
-    return (sc_0, (v'owner, v'stopped, v'data, v'seqno, v'betInfoData));
+    return (sc_0, (v'owner, v'admin, v'stopped, v'data, v'seqno, v'betInfoData));
 }
 
 (slice, ((int))) $TestContract$init$_load(slice sc_0) inline {
@@ -216,7 +218,7 @@ builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, 
     return (sc_0, (v'seqno));
 }
 
-(slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_contract_load() impure inline_ref {
+(slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -231,7 +233,7 @@ builder $TestContract$_store(builder build_0, (slice, int, (int, int, int, int, 
     }
 }
 
-() $TestContract$_contract_store((slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) impure inline {
+() $TestContract$_contract_store((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

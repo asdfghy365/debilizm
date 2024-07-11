@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 3107 bytes
+BOC Size: 2985 bytes
 
 # Types
 Total Types: 13
@@ -42,12 +42,12 @@ TLB: `_ address:address amount:uint32 = Bet`
 Signature: `Bet{address:address,amount:uint32}`
 
 ## Data
-TLB: `_ total_bet_a:uint32 total_bet_b:uint32 odds_a:uint32 odds_b:uint32 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
-Signature: `Data{total_bet_a:uint32,total_bet_b:uint32,odds_a:uint32,odds_b:uint32,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
+TLB: `_ total_bet_a:uint64 total_bet_b:uint64 odds_a:uint64 odds_b:uint64 bets_a:dict<address, int> bets_b:dict<address, int> bets_total:dict<address, int> finalized:bool outcome_a_wins:bool insufficient_balance:bool = Data`
+Signature: `Data{total_bet_a:uint64,total_bet_b:uint64,odds_a:uint64,odds_b:uint64,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## BetInfo
-TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint32 odds_b:uint32 finishDate:uint32 total_bet_a:uint32 total_bet_b:uint32 = BetInfo`
-Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint32,odds_b:uint32,finishDate:uint32,total_bet_a:uint32,total_bet_b:uint32}`
+TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 = BetInfo`
+Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64}`
 
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`
@@ -58,7 +58,7 @@ TLB: `bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet
 Signature: `BetInfoInit{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string}`
 
 # Get Methods
-Total Get Methods: 11
+Total Get Methods: 12
 
 ## payoutStatus
 
@@ -77,6 +77,8 @@ Total Get Methods: 11
 ## finalize
 
 ## getBetInfo
+
+## getMap
 
 ## owner
 
@@ -108,8 +110,8 @@ Total Get Methods: 11
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 2977: Already initialized
-20388: Only the owner can withdraw the remaining balance
+5194: Bet amount must be greater than the fixed fee
 40368: Contract stopped
-49684: Only the owner can finalize
+44933: Only the admin can finalize
 53296: Contract not stopped
 63076: Betting is over

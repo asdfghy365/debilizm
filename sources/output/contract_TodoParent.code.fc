@@ -10,43 +10,61 @@
 ;; Contract TodoParent functions
 ;;
 
-(int, cell) $TodoParent$_contract_init() impure inline_ref {
-    var (($self'numChildren, $self'BetList)) = (null(), null());
+(slice, int, cell) $TodoParent$_contract_init() impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList)) = (null(), null(), null());
     $self'numChildren = 0;
     $self'BetList = null();
-    return ($self'numChildren, $self'BetList);
+    $self'owner = __tact_context_get_sender();
+    return ($self'owner, $self'numChildren, $self'BetList);
 }
 
-((int, cell), int) $TodoParent$_fun_numChildren((int, cell) $self) impure inline_ref {
-    var (($self'numChildren, $self'BetList)) = $self;
-    return (($self'numChildren, $self'BetList), $self'numChildren);
+((slice, int, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
+    $global_send($SendParameters$_constructor_to_value_mode($self'owner, 0, 128));
+    return (($self'owner, $self'numChildren, $self'BetList), ());
 }
 
-((int, cell), cell) $TodoParent$_fun_getAllAddresses((int, cell) $self) impure inline_ref {
-    var (($self'numChildren, $self'BetList)) = $self;
-    return (($self'numChildren, $self'BetList), $self'BetList);
+((slice, int, cell), int) $TodoParent$_fun_numChildren((slice, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
+    return (($self'owner, $self'numChildren, $self'BetList), $self'numChildren);
+}
+
+((slice, int, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
+    return (($self'owner, $self'numChildren, $self'BetList), $self'BetList);
 }
 
 ;;
 ;; Receivers of a Contract TodoParent
 ;;
 
-(((int, cell)), ()) $TodoParent$_internal_binary_BetInfoInit((int, cell) $self, (slice, slice, slice, slice, slice) $msg) impure inline {
-    var ($self'numChildren, $self'BetList) = $self;
+(((slice, int, cell)), ()) %$TodoParent$_internal_empty((slice, int, cell) $self) impure inline {
+    var ($self'owner, $self'numChildren, $self'BetList) = $self;
+    return (($self'owner, $self'numChildren, $self'BetList), ());
+}
+
+((slice, int, cell), ()) $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4((slice, int, cell) $self) impure inline {
+    var ($self'owner, $self'numChildren, $self'BetList) = $self;
+    ($self'owner, $self'numChildren, $self'BetList)~$TodoParent$_fun_withdraw();
+    return (($self'owner, $self'numChildren, $self'BetList), ());
+}
+
+(((slice, int, cell)), ()) $TodoParent$_internal_binary_BetInfoInit((slice, int, cell) $self, (slice, slice, slice, slice, slice) $msg) impure inline {
+    var ($self'owner, $self'numChildren, $self'BetList) = $self;
     var ($msg'title, $msg'source, $msg'bet_a_name, $msg'bet_b_name, $msg'image) = $msg;
     $self'numChildren = ($self'numChildren + 1);
     var ($init'code, $init'data) = $TestContract$_init_child(__tact_context_sys, $self'numChildren);
     slice $childAddress = $global_contractAddress(($init'code, $init'data));
-    $self'BetList~__tact_dict_set_int_slice(257, $self'numChildren, $childAddress);
     $global_send($SendParameters$_constructor_to_value_mode_code_data_body($global_contractAddress(($init'code, $init'data)), 100000000, 2, $init'code, $init'data, $BetInfoInit$_store_cell(($msg'title, $msg'source, $msg'bet_a_name, $msg'bet_b_name, $msg'image))));
-    return (($self'numChildren, $self'BetList), ());
+    $self'BetList~__tact_dict_set_int_slice(257, $self'numChildren, $childAddress);
+    return (($self'owner, $self'numChildren, $self'BetList), ());
 }
 
-(((int, cell)), ()) $TodoParent$_internal_binary_Deploy((int, cell) $self, (int) $deploy) impure inline {
-    var ($self'numChildren, $self'BetList) = $self;
+(((slice, int, cell)), ()) $TodoParent$_internal_binary_Deploy((slice, int, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'numChildren, $self'BetList) = $self;
     var ($deploy'queryId) = $deploy;
-    ($self'numChildren, $self'BetList)~$TodoParent$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
-    return (($self'numChildren, $self'BetList), ());
+    ($self'owner, $self'numChildren, $self'BetList)~$TodoParent$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'numChildren, $self'BetList), ());
 }
 
 ;;
@@ -75,7 +93,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmTjfpZrkYHgAVJJ4jJKkjFDbEy7mehFLcB5vMFhNiPEEB";
+    return "ipfs://QmPHPKReJvVrAxnCdfqSAmdm9DP5cuJtQc9jnVjBun16af";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -86,7 +104,7 @@ _ lazy_deployment_completed() method_id {
 ;; Routing of a Contract TodoParent
 ;;
 
-((int, cell), int) $TodoParent$_contract_router_internal((int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+((slice, int, cell), int) $TodoParent$_contract_router_internal((slice, int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
     ;; Handle bounced messages
     if (msg_bounced) {
         return (self, true);
@@ -98,6 +116,12 @@ _ lazy_deployment_completed() method_id {
         op = in_msg.preload_uint(32);
     }
     
+    
+    ;; Receive empty message
+    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
+        self~%$TodoParent$_internal_empty();
+        return (self, true);
+    }
     
     ;; Receive BetInfoInit message
     if (op == 2955413279) {
@@ -111,6 +135,17 @@ _ lazy_deployment_completed() method_id {
         var msg = in_msg~$Deploy$_load();
         self~$TodoParent$_internal_binary_Deploy(msg);
         return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "withdraw" message
+        if (text_op == 0x095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4) {
+            self~$TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4();
+            return (self, true);
+        }
     }
     
     return (self, false);

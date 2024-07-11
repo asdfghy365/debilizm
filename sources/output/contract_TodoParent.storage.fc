@@ -14,6 +14,10 @@
 ;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
 ;;
 
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline {
+    return (true, to, value, mode, null(), null(), null());
+}
+
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
     return (bounce, to, value, mode, body, code, data);
 }
@@ -120,20 +124,22 @@ builder $TestContract$init$_store(builder build_0, (int) v) inline {
 ;; Type: TodoParent
 ;;
 
-builder $TodoParent$_store(builder build_0, (int, cell) v) inline {
-    var (v'numChildren, v'BetList) = v;
+builder $TodoParent$_store(builder build_0, (slice, int, cell) v) inline {
+    var (v'owner, v'numChildren, v'BetList) = v;
+    build_0 = __tact_store_address(build_0, v'owner);
     build_0 = build_0.store_uint(v'numChildren, 64);
     build_0 = build_0.store_dict(v'BetList);
     return build_0;
 }
 
-(slice, ((int, cell))) $TodoParent$_load(slice sc_0) inline {
+(slice, ((slice, int, cell))) $TodoParent$_load(slice sc_0) inline {
+    var v'owner = sc_0~__tact_load_address();
     var v'numChildren = sc_0~load_uint(64);
     var v'BetList = sc_0~load_dict();
-    return (sc_0, (v'numChildren, v'BetList));
+    return (sc_0, (v'owner, v'numChildren, v'BetList));
 }
 
-(int, cell) $TodoParent$_contract_load() impure inline_ref {
+(slice, int, cell) $TodoParent$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -146,7 +152,7 @@ builder $TodoParent$_store(builder build_0, (int, cell) v) inline {
     }
 }
 
-() $TodoParent$_contract_store((int, cell) v) impure inline {
+() $TodoParent$_contract_store((slice, int, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);
