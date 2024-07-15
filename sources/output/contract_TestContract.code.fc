@@ -118,11 +118,6 @@
     return (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b)), $self'data'total_bet_b);
 }
 
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getBalance((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref {
-    var (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b))) = $self;
-    return (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b)), __tact_my_balance());
-}
-
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getoddA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref {
     var (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b))) = $self;
     return (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b)), $self'data'odds_a);
@@ -136,11 +131,6 @@
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_outcome((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref {
     var (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b))) = $self;
     return (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b)), $self'data'outcome_a_wins);
-}
-
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_finalize((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref {
-    var (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b))) = $self;
-    return (($self'owner, $self'admin, $self'stopped, ($self'data'total_bet_a, $self'data'total_bet_b, $self'data'odds_a, $self'data'odds_b, $self'data'bets_a, $self'data'bets_b, $self'data'bets_total, $self'data'finalized, $self'data'outcome_a_wins, $self'data'insufficient_balance), $self'seqno, ($self'betInfoData'title, $self'betInfoData'source, $self'betInfoData'bet_a_name, $self'betInfoData'bet_b_name, $self'betInfoData'image, $self'betInfoData'odds_a, $self'betInfoData'odds_b, $self'betInfoData'finishDate, $self'betInfoData'total_bet_a, $self'betInfoData'total_bet_b)), $self'data'finalized);
 }
 
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_fun_getBetInfo((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref {
@@ -301,12 +291,6 @@ _ %getTotalBetB() method_id(129168) {
     return res;
 }
 
-_ %getBalance() method_id(106323) {
-    var self = $TestContract$_contract_load();
-    var res = self~$TestContract$_fun_getBalance();
-    return res;
-}
-
 _ %getoddA() method_id(96091) {
     var self = $TestContract$_contract_load();
     var res = self~$TestContract$_fun_getoddA();
@@ -322,12 +306,6 @@ _ %getoddB() method_id(83768) {
 _ %outcome() method_id(106447) {
     var self = $TestContract$_contract_load();
     var res = self~$TestContract$_fun_outcome();
-    return res;
-}
-
-_ %finalize() method_id(78104) {
-    var self = $TestContract$_contract_load();
-    var res = self~$TestContract$_fun_finalize();
     return res;
 }
 
@@ -374,7 +352,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmWu7KdYPJ45Cg2pZHd71rbT7PL3RB5efdtv8SH3xuWtHw";
+    return "ipfs://QmcsAakWE2Ko7KAkHiMG8LtU4xpxDEA4oRrf8usief6crq";
 }
 
 _ lazy_deployment_completed() method_id {

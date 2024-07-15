@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 3612 bytes
+BOC Size: 3560 bytes
 
 # Types
 Total Types: 16
@@ -70,7 +70,7 @@ TLB: `bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet
 Signature: `BetInfoInit{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string}`
 
 # Get Methods
-Total Get Methods: 14
+Total Get Methods: 12
 
 ## payoutStatus
 
@@ -80,15 +80,11 @@ Total Get Methods: 14
 
 ## getTotalBetB
 
-## getBalance
-
 ## getoddA
 
 ## getoddB
 
 ## outcome
-
-## finalize
 
 ## getBetInfo
 

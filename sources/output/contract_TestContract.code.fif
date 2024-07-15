@@ -46,11 +46,9 @@ PROGRAM{
   DECLPROC $TestContract$_fun_getTodoParentAddress
   DECLPROC $TestContract$_fun_getTotalBetA
   DECLPROC $TestContract$_fun_getTotalBetB
-  DECLPROC $TestContract$_fun_getBalance
   DECLPROC $TestContract$_fun_getoddA
   DECLPROC $TestContract$_fun_getoddB
   DECLPROC $TestContract$_fun_outcome
-  DECLPROC $TestContract$_fun_finalize
   DECLPROC $TestContract$_fun_getBetInfo
   DECLPROC $TestContract$_fun_getMap
   DECLPROC $TestContract$_fun_getBet
@@ -79,11 +77,9 @@ PROGRAM{
   95503 DECLMETHOD %getTodoParentAddress
   116979 DECLMETHOD %getTotalBetA
   129168 DECLMETHOD %getTotalBetB
-  106323 DECLMETHOD %getBalance
   96091 DECLMETHOD %getoddA
   83768 DECLMETHOD %getoddB
   106447 DECLMETHOD %outcome
-  78104 DECLMETHOD %finalize
   95159 DECLMETHOD %getBetInfo
   80934 DECLMETHOD %getMap
   105559 DECLMETHOD %getBet
@@ -909,9 +905,6 @@ PROGRAM{
   $TestContract$_fun_getTotalBetB PROCREF:<{
     19 s() PUSH
   }>
-  $TestContract$_fun_getBalance PROCREF:<{
-    __tact_my_balance INLINECALLDICT
-  }>
   $TestContract$_fun_getoddA PROCREF:<{
     18 s() PUSH
   }>
@@ -920,9 +913,6 @@ PROGRAM{
   }>
   $TestContract$_fun_outcome PROCREF:<{
     s12 PUSH
-  }>
-  $TestContract$_fun_finalize PROCREF:<{
-    s13 PUSH
   }>
   $TestContract$_fun_getBetInfo PROCREF:<{
     s9 s8 s7 PUSH3
@@ -1316,13 +1306,6 @@ PROGRAM{
     15 BLKDROP
     8 1 BLKDROP2
   }>
-  %getBalance PROC:<{
-    $TestContract$_contract_load INLINECALLDICT
-    $TestContract$_fun_getBalance INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    8 1 BLKDROP2
-  }>
   %getoddA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddA INLINECALLDICT
@@ -1340,13 +1323,6 @@ PROGRAM{
   %outcome PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_outcome INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    8 1 BLKDROP2
-  }>
-  %finalize PROC:<{
-    $TestContract$_contract_load INLINECALLDICT
-    $TestContract$_fun_finalize INLINECALLDICT
     16 s() POP
     15 BLKDROP
     8 1 BLKDROP2
@@ -1407,7 +1383,7 @@ PROGRAM{
     192989407141549587419771644724066226057 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5775374b6459504a3435436732705a4864373172625437504c33524235656664747638534833787557744877} PUSHSLICE
+    x{697066733a2f2f516d637341616b5745324b6f374b416b48694d47384c745534787078444541346f52726638757369656636637271} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

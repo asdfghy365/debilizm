@@ -311,10 +311,6 @@ contract TestContract with Deployable, Ownable, Stoppable {
         return self.data.total_bet_b;
     }
 
-    get fun getBalance(): Int {
-        return myBalance();  
-    }
-
     get fun getoddA(): Int {
         return self.data.odds_a;
     }
@@ -325,10 +321,6 @@ contract TestContract with Deployable, Ownable, Stoppable {
 
     get fun outcome(): Bool {
         return self.data.outcome_a_wins;
-    }
-
-    get fun finalize(): Bool {
-        return self.data.finalized;
     }
 
     get fun getBetInfo(): BetInfo {

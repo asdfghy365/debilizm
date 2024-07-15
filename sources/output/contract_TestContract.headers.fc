@@ -138,9 +138,6 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 ;; $TestContract$_fun_getTotalBetB
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetB((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
-;; $TestContract$_fun_getBalance
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getBalance((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
-
 ;; $TestContract$_fun_getoddA
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getoddA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
@@ -149,9 +146,6 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 
 ;; $TestContract$_fun_outcome
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_outcome((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
-
-;; $TestContract$_fun_finalize
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_finalize((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getBetInfo
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_fun_getBetInfo((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
