@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 2985 bytes
+BOC Size: 3612 bytes
 
 # Types
-Total Types: 13
+Total Types: 16
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -49,6 +49,18 @@ Signature: `Data{total_bet_a:uint64,total_bet_b:uint64,odds_a:uint64,odds_b:uint
 TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 = BetInfo`
 Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64}`
 
+## BetDetails
+TLB: `_ user:address amount:int257 betContract:address outcome:int257 = BetDetails`
+Signature: `BetDetails{user:address,amount:int257,betContract:address,outcome:int257}`
+
+## BetArray
+TLB: `_ map:dict<int, ^BetDetails{user:address,amount:int257,betContract:address,outcome:int257}> length:int257 = BetArray`
+Signature: `BetArray{map:dict<int, ^BetDetails{user:address,amount:int257,betContract:address,outcome:int257}>,length:int257}`
+
+## BetDetailsMessage
+TLB: `bet_details_message#7bd9acf4 user:address amount:int257 betContract:address outcome:int257 = BetDetailsMessage`
+Signature: `BetDetailsMessage{user:address,amount:int257,betContract:address,outcome:int257}`
+
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`
 Signature: `Finalize{outcome_a_wins:bool}`
@@ -58,9 +70,11 @@ TLB: `bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet
 Signature: `BetInfoInit{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string}`
 
 # Get Methods
-Total Get Methods: 12
+Total Get Methods: 14
 
 ## payoutStatus
+
+## getTodoParentAddress
 
 ## getTotalBetA
 
@@ -79,6 +93,9 @@ Total Get Methods: 12
 ## getBetInfo
 
 ## getMap
+
+## getBet
+Argument: address
 
 ## owner
 
@@ -111,6 +128,7 @@ Total Get Methods: 12
 137: Masterchain support is not enabled for this contract
 2977: Already initialized
 5194: Bet amount must be greater than the fixed fee
+12446: No space left in the array for new items!
 40368: Contract stopped
 44933: Only the admin can finalize
 53296: Contract not stopped

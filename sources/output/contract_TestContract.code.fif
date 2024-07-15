@@ -22,7 +22,8 @@ PROGRAM{
   DECLPROC $Data$_load
   DECLPROC $BetInfo$_store
   DECLPROC $BetInfo$_load
-  DECLPROC $Finalize$_load
+  DECLPROC $BetDetailsMessage$_store
+  DECLPROC $BetDetailsMessage$_store_cell
   DECLPROC $BetInfoInit$_load
   DECLPROC $TestContract$_store
   DECLPROC $TestContract$_load
@@ -42,6 +43,7 @@ PROGRAM{
   DECLPROC $TestContract$_fun_payout
   DECLPROC $TestContract$_fun_chargeback
   DECLPROC $TestContract$_fun_payoutStatus
+  DECLPROC $TestContract$_fun_getTodoParentAddress
   DECLPROC $TestContract$_fun_getTotalBetA
   DECLPROC $TestContract$_fun_getTotalBetB
   DECLPROC $TestContract$_fun_getBalance
@@ -51,6 +53,7 @@ PROGRAM{
   DECLPROC $TestContract$_fun_finalize
   DECLPROC $TestContract$_fun_getBetInfo
   DECLPROC $TestContract$_fun_getMap
+  DECLPROC $TestContract$_fun_getBet
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $TestContract$_fun_forward
   DECLPROC $TestContract$_fun_reply
@@ -60,18 +63,20 @@ PROGRAM{
   DECLPROC $TestContract$_fun_requireNotStopped
   DECLPROC $TestContract$_fun_stopped
   DECLPROC $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b
+  DECLPROC $BetDetailsMessage$_constructor_user_amount_betContract_outcome
+  DECLPROC $SendParameters$_constructor_to_value_mode_body
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $TestContract$_internal_binary_BetInfoInit
   DECLPROC $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b
   DECLPROC $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d
   DECLPROC $TestContract$_internal_text_661213cef1397c0b35665e953b6fd81184ea522c28d67a571a8db787803c02b7
   DECLPROC $TestContract$_internal_text_739474efea42dbeff12b241c8526ed1225b0be5500bae1a04447b16a62d72901
-  DECLPROC $TestContract$_internal_binary_Finalize
   DECLPROC $TestContract$_internal_any_text
   DECLPROC $TestContract$_internal_text_a724187afb678ba0ac26b7b57049d3a9225e34ebece690d5af6b77a326666a55
   DECLPROC $TestContract$_internal_binary_Deploy
   DECLPROC $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501
   77247 DECLMETHOD %payoutStatus
+  95503 DECLMETHOD %getTodoParentAddress
   116979 DECLMETHOD %getTotalBetA
   129168 DECLMETHOD %getTotalBetB
   106323 DECLMETHOD %getBalance
@@ -81,6 +86,7 @@ PROGRAM{
   78104 DECLMETHOD %finalize
   95159 DECLMETHOD %getBetInfo
   80934 DECLMETHOD %getMap
+  105559 DECLMETHOD %getBet
   83229 DECLMETHOD %owner
   74107 DECLMETHOD %stopped
   113617 DECLMETHOD supported_interfaces
@@ -340,14 +346,29 @@ PROGRAM{
     s7 s9 XCHG
     s7 s8 XCHG
   }>
-  $Finalize$_load PROCINLINE:<{
-    32 LDU
+  $BetDetailsMessage$_store PROCINLINE:<{
+    2077863156 PUSHINT
+    s0 s5 XCHG2
+    32 STU
+    s0 s3 XCHG2
+    __tact_store_address INLINECALLDICT
+    257 PUSHINT
+    STIX
     SWAP
-    3527127190 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    1 LDI
+    __tact_store_address INLINECALLDICT
     SWAP
+    NEWC
+    257 PUSHINT
+    STIX
+    ENDC
+    SWAP
+    STREF
+  }>
+  $BetDetailsMessage$_store_cell PROCINLINE:<{
+    NEWC
+    4 -ROLL
+    $BetDetailsMessage$_store INLINECALLDICT
+    ENDC
   }>
   $BetInfoInit$_load PROCINLINE:<{
     32 LDU
@@ -678,7 +699,7 @@ PROGRAM{
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
     s0 s2 XCHG
-    30000000 PUSHINT
+    50000000 PUSHINT
     SUB
     5194 PUSHINT
     OVER
@@ -879,6 +900,9 @@ PROGRAM{
   $TestContract$_fun_payoutStatus PROCREF:<{
     s11 PUSH
   }>
+  $TestContract$_fun_getTodoParentAddress PROCREF:<{
+    23 s() PUSH
+  }>
   $TestContract$_fun_getTotalBetA PROCREF:<{
     20 s() PUSH
   }>
@@ -908,6 +932,13 @@ PROGRAM{
   }>
   $TestContract$_fun_getMap PROCREF:<{
     s14 PUSH
+  }>
+  $TestContract$_fun_getBet PROCREF:<{
+    267 PUSHINT
+    16 s() PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -968,6 +999,14 @@ PROGRAM{
   }>
   $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b PROCINLINE:<{
   }>
+  $BetDetailsMessage$_constructor_user_amount_betContract_outcome PROCINLINE:<{
+  }>
+  $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
+    TRUE
+    4 -ROLL
+    PUSHNULL
+    PUSHNULL
+  }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $TestContract$_internal_binary_BetInfoInit PROCINLINE:<{
@@ -1026,9 +1065,59 @@ PROGRAM{
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    23 s() 25 s() XCHG
+    22 s() 24 s() XCHG
+    21 s() 25 s() XCHG
+    20 s() 24 s() XCHG
+    19 s() 25 s() XCHG
+    18 s() 24 s() XCHG
+    17 s() 25 s() XCHG
+    16 s() 24 s() XCHG
+    s15 25 s() XCHG
+    s14 24 s() XCHG
+    s13 25 s() XCHG
+    s12 24 s() XCHG
+    s11 25 s() XCHG
+    s10 24 s() XCHG
+    s9 25 s() XCHG
+    s8 24 s() XCHG
+    s7 25 s() XCHG
+    s6 24 s() XCHG
+    s5 25 s() XCHG
+    s4 24 s() XCHG
+    s3 25 s() XCHG
+    s2 24 s() XCHG
+    s1 25 s() XCHG
+    s0 24 s() XCHG
     TRUE
-    SWAP
+    26 s() PUSH
     $TestContract$_fun_handle_bet INLINECALLDICT
+    MYADDR
+    s2 25 s() XCHG
+    s1 26 s() XCHG
+    1 PUSHINT
+    $BetDetailsMessage$_constructor_user_amount_betContract_outcome INLINECALLDICT
+    s1 s3 XCHG
+    50000000 PUSHINT
+    s3 s4 XCHG2
+    3 PUSHINT
+    s0 s4 XCHG
+    $BetDetailsMessage$_store_cell INLINECALLDICT
+    24 s() PUSH
+    3 -ROLL
+    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
+    21 s() 23 s() XCHG
+    20 s() 22 s() XCHG
+    19 s() 21 s() XCHG
+    18 s() 20 s() XCHG
+    17 s() 19 s() XCHG
+    16 s() 18 s() XCHG
+    s15 17 s() XCHG
+    s14 16 s() XCHG
+    s13 s15 XCHG
+    2 13 BLKSWAP
   }>
   $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d PROCINLINE:<{
     63076 PUSHINT
@@ -1037,9 +1126,59 @@ PROGRAM{
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    23 s() 25 s() XCHG
+    22 s() 24 s() XCHG
+    21 s() 25 s() XCHG
+    20 s() 24 s() XCHG
+    19 s() 25 s() XCHG
+    18 s() 24 s() XCHG
+    17 s() 25 s() XCHG
+    16 s() 24 s() XCHG
+    s15 25 s() XCHG
+    s14 24 s() XCHG
+    s13 25 s() XCHG
+    s12 24 s() XCHG
+    s11 25 s() XCHG
+    s10 24 s() XCHG
+    s9 25 s() XCHG
+    s8 24 s() XCHG
+    s7 25 s() XCHG
+    s6 24 s() XCHG
+    s5 25 s() XCHG
+    s4 24 s() XCHG
+    s3 25 s() XCHG
+    s2 24 s() XCHG
+    s1 25 s() XCHG
+    s0 24 s() XCHG
     FALSE
-    SWAP
+    26 s() PUSH
     $TestContract$_fun_handle_bet INLINECALLDICT
+    MYADDR
+    s2 25 s() XCHG
+    s1 26 s() XCHG
+    2 PUSHINT
+    $BetDetailsMessage$_constructor_user_amount_betContract_outcome INLINECALLDICT
+    s1 s3 XCHG
+    50000000 PUSHINT
+    s3 s4 XCHG2
+    3 PUSHINT
+    s0 s4 XCHG
+    $BetDetailsMessage$_store_cell INLINECALLDICT
+    24 s() PUSH
+    3 -ROLL
+    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
+    21 s() 23 s() XCHG
+    20 s() 22 s() XCHG
+    19 s() 21 s() XCHG
+    18 s() 20 s() XCHG
+    17 s() 19 s() XCHG
+    16 s() 18 s() XCHG
+    s15 17 s() XCHG
+    s14 16 s() XCHG
+    s13 s15 XCHG
+    2 13 BLKSWAP
   }>
   $TestContract$_internal_text_661213cef1397c0b35665e953b6fd81184ea522c28d67a571a8db787803c02b7 PROCINLINE:<{
     s12 POP
@@ -1072,21 +1211,6 @@ PROGRAM{
     16 s() PUSH
     s15 s0 s0 XCHG3
     $TestContract$_fun_payout INLINECALLDICT
-  }>
-  $TestContract$_internal_binary_Finalize PROCINLINE:<{
-    s3 POP
-    s12 POP
-    s12 POP
-    44933 PUSHINT
-    __tact_context_get_sender INLINECALLDICT
-    22 s() PUSH
-    SWAP
-    __tact_slice_eq_bits INLINECALLDICT
-    THROWANYIFNOT
-    TRUE
-    s11 s12 XCHG2
-    NOW
-    s0 s2 XCHG
   }>
   $TestContract$_internal_any_text PROCINLINE:<{
     44933 PUSHINT
@@ -1171,6 +1295,13 @@ PROGRAM{
     15 BLKDROP
     8 1 BLKDROP2
   }>
+  %getTodoParentAddress PROC:<{
+    $TestContract$_contract_load INLINECALLDICT
+    $TestContract$_fun_getTodoParentAddress INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    8 1 BLKDROP2
+  }>
   %getTotalBetA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetA INLINECALLDICT
@@ -1235,6 +1366,24 @@ PROGRAM{
     15 BLKDROP
     8 1 BLKDROP2
   }>
+  %getBet PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $TestContract$_contract_load INLINECALLDICT
+    23 s() 24 s() XCHG
+    22 s() 23 s() XCHG
+    21 s() 22 s() XCHG
+    20 s() 21 s() XCHG
+    19 s() 20 s() XCHG
+    18 s() 19 s() XCHG
+    17 s() 18 s() XCHG
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
+    15 ROLL
+    $TestContract$_fun_getBet INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    8 1 BLKDROP2
+  }>
   %owner PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_owner INLINECALLDICT
@@ -1258,7 +1407,7 @@ PROGRAM{
     192989407141549587419771644724066226057 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d51746f4b55534639527252337a54656b6652324742793976384254533879665a786b76394b45354b43313735} PUSHSLICE
+    x{697066733a2f2f516d5775374b6459504a3435436732705a4864373172625437504c33524235656664747638534833787557744877} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1291,16 +1440,6 @@ PROGRAM{
       $BetInfoInit$_load INLINECALLDICT
       1 5 BLKDROP2
       $TestContract$_internal_binary_BetInfoInit INLINECALLDICT
-      TRUE
-    }>
-    DUP
-    3527127190 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $Finalize$_load INLINECALLDICT
-      NIP
-      $TestContract$_internal_binary_Finalize INLINECALLDICT
       TRUE
     }>
     DUP

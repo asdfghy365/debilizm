@@ -34,34 +34,6 @@ struct BetInfo {
 
 }
 
-struct BetDetails {
-    user: Address;
-    amount: Int;
-    betContract: Address;
-    outcome: Int;  // 1 or 2
-}
-
-struct BetArray {
-    map: map<Int, BetDetails>;
-    length: Int = 0;
-}
-
-const MaxArraySize: Int = 5_000;
-
-extends mutates fun append(self: BetArray, item: BetDetails) {
-    require(self.length + 1 <= MaxArraySize, "No space left in the array for new items!");
-    self.map.set(self.length, item);
-    self.length += 1;
-}
-
-message BetDetailsMessage {
-    user: Address;
-    amount: Int;
-    betContract: Address;
-    outcome: Int;  // 1 or 2
-}
-
-
 message Finalize {
     outcome_a_wins: Bool;
 }
@@ -73,8 +45,6 @@ message BetInfoInit {
     bet_b_name: String;
     image: String;
 }
-
-
 
 contract TestContract with Deployable, Ownable, Stoppable {
     owner: Address;
@@ -112,7 +82,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
         odds_b: self.data.odds_b,
         total_bet_a: 0,
         total_bet_b: 0
-        };
+    };
     }
 
     receive(msg: BetInfoInit) {
@@ -132,45 +102,17 @@ contract TestContract with Deployable, Ownable, Stoppable {
     }
 
     receive("1") {
-    require(!self.data.finalized, "Betting is over");
-    let bet_amount: Int = context().value;
-    let sender_address: Address = sender();
-    self.handle_bet(true, bet_amount);
-
-    let betDetailsMessage: BetDetailsMessage = BetDetailsMessage{
-        user: sender_address,
-        amount: bet_amount,
-        betContract: myAddress(),
-        outcome: 1
-    };
-
-    send(SendParameters{
-        to: self.owner,
-        value: ton("0.05"),  
-        mode: SendPayGasSeparately + SendIgnoreErrors,
-        body: betDetailsMessage.toCell()  
-    });
-}
+        require(!self.data.finalized, "Betting is over");
+        let bet_amount: Int = context().value;
+        let sender_address: Address = sender();
+        self.handle_bet(true, bet_amount);
+    }
 
     receive("2") {
         require(!self.data.finalized, "Betting is over");
         let bet_amount: Int = context().value;
         let sender_address: Address = sender();
         self.handle_bet(false, bet_amount);
-
-        let betDetailsMessage: BetDetailsMessage = BetDetailsMessage{
-        user: sender_address,
-        amount: bet_amount,
-        betContract: myAddress(),
-        outcome: 2
-    };
-
-    send(SendParameters{
-        to: self.owner,
-        value: ton("0.05"),  
-        mode: SendPayGasSeparately + SendIgnoreErrors,
-        body: betDetailsMessage.toCell()  
-    });
     }
 
     receive("PayA") {
@@ -190,7 +132,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
     require(!self.data.finalized, "Betting is over");
 
     let sender_address: Address = sender();
-    let fixed_gas_fee: Int = ton("0.05"); // Fixed gas fee per bet
+    let fixed_gas_fee: Int = ton("0.03"); // Fixed gas fee per bet
     let net_bet_amount: Int = bet_amount - fixed_gas_fee; // Deduct the fixed fee
 
     require(net_bet_amount > 0, "Bet amount must be greater than the fixed fee");
@@ -209,22 +151,29 @@ contract TestContract with Deployable, Ownable, Stoppable {
         self.data.bets_total.set(sender_address, final_bet_b);
     }
 
-     
+    // Calculate odds
     if (self.data.total_bet_a > 0) {
         self.data.odds_a = ((self.data.total_bet_b * 1000) / self.data.total_bet_a) * 90 / 100;
     } else {
-        self.data.odds_a = 1000;  
+        self.data.odds_a = 1000; // Default odds if no bets on B
     }
 
     if (self.data.total_bet_b > 0) {
         self.data.odds_b = ((self.data.total_bet_a * 1000) / self.data.total_bet_b) * 90 / 100;
     } else {
-        self.data.odds_b = 1000;  
+        self.data.odds_b = 1000; // Default odds if no bets on A
     }
 
     self.betInfoData.odds_a = self.data.odds_a;
     self.betInfoData.odds_b = self.data.odds_b;
 }
+
+    receive(msg: Finalize) {
+        require(sender() == self.admin, "Only the admin can finalize");
+        self.data.finalized = true;
+        self.betInfoData.finishDate = now();
+        self.data.outcome_a_wins = msg.outcome_a_wins;
+    }
 
     receive(msg: String) { 
         require(sender() == self.admin, "Only the admin can finalize");
@@ -299,10 +248,6 @@ contract TestContract with Deployable, Ownable, Stoppable {
         return self.data.insufficient_balance;
     }
 
-    get fun getTodoParentAddress(): Address {
-    return self.owner;  
-}
-
     get fun getTotalBetA(): Int {
         return self.data.total_bet_a;
     }
@@ -348,15 +293,11 @@ contract TodoParent with Deployable {
     owner: Address;
     numChildren: Int as uint64;
     BetList: map<Int, Address>;
-    AllBets: map<Address, Address>; // bet contracts map
-    UserBets: map<Address, BetArray>;
-
 
     init() {
         self.numChildren = 0;
         self.BetList = emptyMap();
         self.owner = sender();
-        self.UserBets = emptyMap();
     }    
 
      receive() {
@@ -389,30 +330,9 @@ contract TodoParent with Deployable {
         self.BetList.set(self.numChildren, childAddress);
     }
 
-     receive(msg: BetDetailsMessage) {
-        // Retrieve the user's BetArray, or initialize a new one if it doesn't exist
-        let userBetArrayOpt: BetArray? = self.UserBets.get(msg.user);
-        let userBetArray: BetArray = userBetArrayOpt != null ? userBetArrayOpt!! : BetArray{map: emptyMap(), length: 0};
-
-        // Append the new BetDetails to the user's BetArray
-        userBetArray.append(BetDetails{
-            user: msg.user,
-            amount: msg.amount,
-            betContract: msg.betContract,
-            outcome: msg.outcome
-        });
-
-        // Update the UserBets map with the new BetArray
-        self.UserBets.set(msg.user, userBetArray);
-    }
-
 
     get fun numChildren(): Int {
         return self.numChildren;
-    }
-
-    get fun getUserBets(user: Address): BetArray? {
-        return self.UserBets.get(user);
     }
 
     get fun getAllAddresses(): map<Int, Address> {

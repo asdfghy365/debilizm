@@ -49,6 +49,12 @@ forall X -> X __tact_not_null(X x) inline {
     throw_if(128, null?(x)); return x;
 }
 
+(cell, int) __tact_dict_delete(cell dict, int key_len, slice index) asm(index dict key_len) "DICTDEL";
+
+((cell), ()) __tact_dict_set_ref(cell dict, int key_len, slice index, cell value) asm(value index dict key_len) "DICTSETREF";
+
+(cell, int) __tact_dict_get_ref(cell dict, int key_len, slice index) asm(index dict key_len) "DICTGETREF" "NULLSWAPIFNOT";
+
 (int, slice, int, slice) __tact_context_get() inline {
     return __tact_context;
 }
@@ -61,12 +67,39 @@ builder __tact_store_bool(builder b, int v) inline {
     return b.store_int(v, 1);
 }
 
+(cell, ()) __tact_dict_set_int_cell(cell d, int kl, int k, cell v) inline {
+    if (null?(v)) {
+        var (r, ok) = idict_delete?(d, kl, k);
+        return (r, ());
+    } else {
+        return (idict_set_ref(d, kl, k, v), ());
+    }
+}
+
 (cell, ()) __tact_dict_set_int_slice(cell d, int kl, int k, slice v) inline {
     if (null?(v)) {
         var (r, ok) = idict_delete?(d, kl, k);
         return (r, ());
     } else {
         return (idict_set(d, kl, k, v), ());
+    }
+}
+
+(cell, ()) __tact_dict_set_slice_cell(cell d, int kl, slice k, cell v) inline {
+    if (null?(v)) {
+        var (r, ok) = __tact_dict_delete(d, kl, k);
+        return (r, ());
+    } else {
+        return __tact_dict_set_ref(d, kl, k, v);
+    }
+}
+
+cell __tact_dict_get_slice_cell(cell d, int kl, slice k) inline {
+    var (r, ok) = __tact_dict_get_ref(d, kl, k);
+    if (ok) {
+        return r;
+    } else {
+        return null();
     }
 }
 
@@ -79,6 +112,8 @@ cell __tact_dict_get_code(cell dict, int id) inline {
     throw_unless(135, ok);
     return data;
 }
+
+forall X0, X1 -> tuple __tact_tuple_create_2((X0, X1) v) asm "2 TUPLE";
 
 forall X0, X1 -> (X0, X1) __tact_tuple_destroy_2(tuple v) asm "2 UNTUPLE";
 
@@ -130,8 +165,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline {
     send_raw_message($c, $params'mode);
 }
 
-((slice, int, cell), ()) $TodoParent$_fun_forward((slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
+((slice, int, cell, cell, cell), ()) $TodoParent$_fun_forward((slice, int, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -147,15 +182,15 @@ slice $global_contractAddress((cell, cell) $s) impure inline {
         if (($balanceBeforeMessage < 0)) {
             raw_reserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (128 | 2), $body, $code, $data));
-            return (($self'owner, $self'numChildren, $self'BetList), ());
+            return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (64 | 2), $body, $code, $data));
-    return (($self'owner, $self'numChildren, $self'BetList), ());
+    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-((slice, int, cell), ()) $TodoParent$_fun_notify((slice, int, cell) $self, cell $body) impure inline {
-    var (($self'owner, $self'numChildren, $self'BetList)) = $self;
-    ($self'owner, $self'numChildren, $self'BetList)~$TodoParent$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'owner, $self'numChildren, $self'BetList), ());
+((slice, int, cell, cell, cell), ()) $TodoParent$_fun_notify((slice, int, cell, cell, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
+    ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)~$TodoParent$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }

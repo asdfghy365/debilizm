@@ -33,8 +33,17 @@ slice __tact_context_get_sender() inline;
 ;; __tact_store_bool
 builder __tact_store_bool(builder b, int v) inline;
 
+;; __tact_dict_set_int_cell
+(cell, ()) __tact_dict_set_int_cell(cell d, int kl, int k, cell v) inline;
+
 ;; __tact_dict_set_int_slice
 (cell, ()) __tact_dict_set_int_slice(cell d, int kl, int k, slice v) inline;
+
+;; __tact_dict_set_slice_cell
+(cell, ()) __tact_dict_set_slice_cell(cell d, int kl, slice k, cell v) inline;
+
+;; __tact_dict_get_slice_cell
+cell __tact_dict_get_slice_cell(cell d, int kl, slice k) inline;
 
 ;; __tact_dict_set_code
 cell __tact_dict_set_code(cell dict, int id, cell code) inline;
@@ -51,6 +60,30 @@ builder $DeployOk$_store(builder build_0, (int) v) inline;
 ;; $DeployOk$_store_cell
 cell $DeployOk$_store_cell((int) v) inline;
 
+;; $BetDetails$_store
+builder $BetDetails$_store(builder build_0, (slice, int, slice, int) v) inline;
+
+;; $BetDetails$_store_cell
+cell $BetDetails$_store_cell((slice, int, slice, int) v) inline;
+
+;; $BetArray$_store
+builder $BetArray$_store(builder build_0, (cell, int) v) inline;
+
+;; $BetArray$_store_cell
+cell $BetArray$_store_cell((cell, int) v) inline;
+
+;; $BetArray$_load
+(slice, ((cell, int))) $BetArray$_load(slice sc_0) inline;
+
+;; $BetArray$_as_optional
+tuple $BetArray$_as_optional((cell, int) v) inline;
+
+;; $BetArray$_load_opt
+tuple $BetArray$_load_opt(cell cl) inline;
+
+;; $BetDetailsMessage$_load
+(slice, ((slice, int, slice, int))) $BetDetailsMessage$_load(slice sc_0) inline;
+
 ;; $BetInfoInit$_store
 builder $BetInfoInit$_store(builder build_0, (slice, slice, slice, slice, slice) v) inline;
 
@@ -61,31 +94,46 @@ cell $BetInfoInit$_store_cell((slice, slice, slice, slice, slice) v) inline;
 (slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline;
 
 ;; $TodoParent$_store
-builder $TodoParent$_store(builder build_0, (slice, int, cell) v) inline;
+builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) inline;
 
 ;; $TodoParent$_load
-(slice, ((slice, int, cell))) $TodoParent$_load(slice sc_0) inline;
+(slice, ((slice, int, cell, cell, cell))) $TodoParent$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
+
+;; $BetArray$_not_null
+((cell, int)) $BetArray$_not_null(tuple v) inline;
+
+;; $BetArray$_to_tuple
+tuple $BetArray$_to_tuple(((cell, int)) v) inline;
+
+;; $BetArray$_to_opt_tuple
+tuple $BetArray$_to_opt_tuple(tuple v) inline;
+
+;; $BetArray$_to_opt_external
+tuple $BetArray$_to_opt_external(tuple v) inline;
 
 ;; $TestContract$init$_store
 builder $TestContract$init$_store(builder build_0, (int) v) inline;
 
 ;; $TodoParent$_contract_init
-(slice, int, cell) $TodoParent$_contract_init() impure inline_ref;
+(slice, int, cell, cell, cell) $TodoParent$_contract_init() impure inline_ref;
 
 ;; $TodoParent$_contract_load
-(slice, int, cell) $TodoParent$_contract_load() impure inline_ref;
+(slice, int, cell, cell, cell) $TodoParent$_contract_load() impure inline_ref;
 
 ;; $TodoParent$_contract_store
-() $TodoParent$_contract_store((slice, int, cell) v) impure inline;
+() $TodoParent$_contract_store((slice, int, cell, cell, cell) v) impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
 
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
+
+;; $BetArray$_fun_append
+((cell, int), ()) $BetArray$_fun_append((cell, int) $self, (slice, int, slice, int) $item) impure inline_ref;
 
 ;; $TestContract$_init_child
 (cell, cell) $TestContract$_init_child(cell sys', int $seqno) inline_ref;
@@ -97,22 +145,31 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $TodoParent$_fun_withdraw
-((slice, int, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell) $self) impure inline_ref;
+((slice, int, cell, cell, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell, cell, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_numChildren
-((slice, int, cell), int) $TodoParent$_fun_numChildren((slice, int, cell) $self) impure inline_ref;
+((slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, int, cell, cell, cell) $self) impure inline_ref;
+
+;; $TodoParent$_fun_getUserBets
+((slice, int, cell, cell, cell), tuple) $TodoParent$_fun_getUserBets((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref;
 
 ;; $TodoParent$_fun_getAllAddresses
-((slice, int, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell) $self) impure inline_ref;
+((slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell, cell, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_forward
-((slice, int, cell), ()) $TodoParent$_fun_forward((slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, int, cell, cell, cell), ()) $TodoParent$_fun_forward((slice, int, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $TodoParent$_fun_notify
-((slice, int, cell), ()) $TodoParent$_fun_notify((slice, int, cell) $self, cell $body) impure inline;
+((slice, int, cell, cell, cell), ()) $TodoParent$_fun_notify((slice, int, cell, cell, cell) $self, cell $body) impure inline;
 
 ;; $SendParameters$_constructor_to_value_mode_code_data_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_code_data_body(slice to, int value, int mode, cell code, cell data, cell body) inline;
+
+;; $BetArray$_constructor_map_length
+((cell, int)) $BetArray$_constructor_map_length(cell map, int length) inline;
+
+;; $BetDetails$_constructor_user_amount_betContract_outcome
+((slice, int, slice, int)) $BetDetails$_constructor_user_amount_betContract_outcome(slice user, int amount, slice betContract, int outcome) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;

@@ -32,6 +32,10 @@ _ $Context$_get_value((int, slice, int, slice) v) inline {
     return (bounce, to, value, mode, body, code, data);
 }
 
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline {
+    return (true, to, value, mode, body, null(), null());
+}
+
 ;;
 ;; Type: Deploy
 ;; Header: 0x946a98b6
@@ -154,15 +158,29 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
 }
 
 ;;
-;; Type: Finalize
-;; Header: 0xd23bb096
-;; TLB: finalize#d23bb096 outcome_a_wins:bool = Finalize
+;; Type: BetDetailsMessage
+;; Header: 0x7bd9acf4
+;; TLB: bet_details_message#7bd9acf4 user:address amount:int257 betContract:address outcome:int257 = BetDetailsMessage
 ;;
 
-(slice, ((int))) $Finalize$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3527127190);
-    var v'outcome_a_wins = sc_0~load_int(1);
-    return (sc_0, (v'outcome_a_wins));
+builder $BetDetailsMessage$_store(builder build_0, (slice, int, slice, int) v) inline {
+    var (v'user, v'amount, v'betContract, v'outcome) = v;
+    build_0 = store_uint(build_0, 2077863156, 32);
+    build_0 = __tact_store_address(build_0, v'user);
+    build_0 = build_0.store_int(v'amount, 257);
+    build_0 = __tact_store_address(build_0, v'betContract);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_int(v'outcome, 257);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell $BetDetailsMessage$_store_cell((slice, int, slice, int) v) inline {
+    return $BetDetailsMessage$_store(begin_cell(), v).end_cell();
+}
+
+((slice, int, slice, int)) $BetDetailsMessage$_constructor_user_amount_betContract_outcome(slice user, int amount, slice betContract, int outcome) inline {
+    return (user, amount, betContract, outcome);
 }
 
 ;;

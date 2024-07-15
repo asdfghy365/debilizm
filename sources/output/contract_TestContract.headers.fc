@@ -66,8 +66,11 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
 ;; $BetInfo$_load
 (slice, ((slice, slice, slice, slice, slice, int, int, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref;
 
-;; $Finalize$_load
-(slice, ((int))) $Finalize$_load(slice sc_0) inline;
+;; $BetDetailsMessage$_store
+builder $BetDetailsMessage$_store(builder build_0, (slice, int, slice, int) v) inline;
+
+;; $BetDetailsMessage$_store_cell
+cell $BetDetailsMessage$_store_cell((slice, int, slice, int) v) inline;
 
 ;; $BetInfoInit$_load
 (slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline;
@@ -126,6 +129,9 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 ;; $TestContract$_fun_payoutStatus
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_payoutStatus((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
+;; $TestContract$_fun_getTodoParentAddress
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), slice) $TestContract$_fun_getTodoParentAddress((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+
 ;; $TestContract$_fun_getTotalBetA
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
@@ -153,6 +159,9 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 ;; $TestContract$_fun_getMap
 ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), cell) $TestContract$_fun_getMap((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
 
+;; $TestContract$_fun_getBet
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getBet((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, slice $address) impure inline_ref;
+
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
@@ -179,6 +188,12 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 
 ;; $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b
 ((slice, slice, slice, slice, slice, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate, int total_bet_a, int total_bet_b) inline;
+
+;; $BetDetailsMessage$_constructor_user_amount_betContract_outcome
+((slice, int, slice, int)) $BetDetailsMessage$_constructor_user_amount_betContract_outcome(slice user, int amount, slice betContract, int outcome) inline;
+
+;; $SendParameters$_constructor_to_value_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;
