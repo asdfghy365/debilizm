@@ -34,10 +34,8 @@ PROGRAM{
   DECLPROC $TodoParent$_store
   DECLPROC $TodoParent$_load
   DECLPROC $StateInit$_not_null
+  DECLPROC $BetArray$_get_map
   DECLPROC $BetArray$_not_null
-  DECLPROC $BetArray$_to_tuple
-  DECLPROC $BetArray$_to_opt_tuple
-  DECLPROC $BetArray$_to_opt_external
   DECLPROC $TestContract$init$_store
   DECLPROC $TodoParent$_contract_init
   DECLPROC $TodoParent$_contract_load
@@ -50,7 +48,7 @@ PROGRAM{
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $TodoParent$_fun_withdraw
   DECLPROC $TodoParent$_fun_numChildren
-  DECLPROC $TodoParent$_fun_getUserBets
+  DECLPROC $TodoParent$_fun_UserBetInfo
   DECLPROC $TodoParent$_fun_getAllAddresses
   DECLPROC $TodoParent$_fun_forward
   DECLPROC $TodoParent$_fun_notify
@@ -64,7 +62,7 @@ PROGRAM{
   DECLPROC $TodoParent$_internal_binary_BetDetailsMessage
   DECLPROC $TodoParent$_internal_binary_Deploy
   115153 DECLMETHOD %numChildren
-  105058 DECLMETHOD %getUserBets
+  86585 DECLMETHOD %UserBetInfo
   108251 DECLMETHOD %getAllAddresses
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
@@ -238,17 +236,10 @@ PROGRAM{
   $BetDetails$_store PROCINLINE:<{
     s4 s3 XCHG2
     __tact_store_address INLINECALLDICT
-    257 PUSHINT
-    STIX
+    32 STU
     ROT
     __tact_store_address INLINECALLDICT
-    SWAP
-    NEWC
-    257 PUSHINT
-    STIX
-    ENDC
-    SWAP
-    STREF
+    8 STU
   }>
   $BetDetails$_store_cell PROCINLINE:<{
     NEWC
@@ -259,8 +250,7 @@ PROGRAM{
   $BetArray$_store PROCINLINE:<{
     s0 s2 XCHG
     STDICT
-    257 PUSHINT
-    STIX
+    32 STU
   }>
   $BetArray$_store_cell PROCINLINE:<{
     NEWC
@@ -270,8 +260,7 @@ PROGRAM{
   }>
   $BetArray$_load PROCINLINE:<{
     LDDICT
-    257 PUSHINT
-    LDIX
+    32 LDU
     -ROT
   }>
   $BetArray$_as_optional PROCINLINE:<{
@@ -293,7 +282,7 @@ PROGRAM{
   $BetDetailsMessage$_load PROCINLINE:<{
     32 LDU
     SWAP
-    2077863156 PUSHINT
+    3696589863 PUSHINT
     EQUAL
     129 THROWIFNOT
     __tact_load_address INLINECALLDICT
@@ -302,14 +291,8 @@ PROGRAM{
     LDIX
     __tact_load_address INLINECALLDICT
     SWAP
-    LDREF
-    SWAP
-    CTOS
-    257 PUSHINT
-    LDIX
-    DROP
-    s1 s4 XCHG
-    s3 s3 s0 XCHG3
+    8 LDU
+    4 -ROLL
   }>
   $BetInfoInit$_store PROCINLINE:<{
     2955413279 PUSHINT
@@ -424,35 +407,14 @@ PROGRAM{
     128 THROWIF
     2 UNTUPLE
   }>
+  $BetArray$_get_map PROCINLINE:<{
+    DROP
+  }>
   $BetArray$_not_null PROCINLINE:<{
     DUP
     ISNULL
     128 THROWIF
     2 UNTUPLE
-  }>
-  $BetArray$_to_tuple PROCINLINE:<{
-    2 TUPLE
-  }>
-  $BetArray$_to_opt_tuple PROCINLINE:<{
-    DUP
-    ISNULL
-    IF:<{
-      DROP
-      PUSHNULL
-    }>ELSE<{
-      $BetArray$_not_null INLINECALLDICT
-      $BetArray$_to_tuple INLINECALLDICT
-    }>
-  }>
-  $BetArray$_to_opt_external PROCINLINE:<{
-    $BetArray$_to_opt_tuple INLINECALLDICT
-    DUP
-    ISNULL
-    IF:<{
-      DROP
-      PUSHNULL
-    }>ELSE<{
-    }>
   }>
   $TestContract$init$_store PROCINLINE:<{
     SWAP
@@ -671,12 +633,24 @@ PROGRAM{
   $TodoParent$_fun_numChildren PROCREF:<{
     s3 PUSH
   }>
-  $TodoParent$_fun_getUserBets PROCREF:<{
+  $TodoParent$_fun_UserBetInfo PROCREF:<{
+    OVER
+    267 PUSHINT
+    s2 PUSH
+    __tact_dict_get_slice_cell INLINECALLDICT
+    $BetArray$_load_opt INLINECALLDICT
+    ISNULL
+    IFJMP:<{
+      DROP
+      PUSHNULL
+    }>
     267 PUSHINT
     s2 PUSH
     s0 s2 XCHG
     __tact_dict_get_slice_cell INLINECALLDICT
     $BetArray$_load_opt INLINECALLDICT
+    $BetArray$_not_null INLINECALLDICT
+    $BetArray$_get_map INLINECALLDICT
   }>
   $TodoParent$_fun_getAllAddresses PROCREF:<{
     s2 PUSH
@@ -794,13 +768,12 @@ PROGRAM{
     $TodoParent$_fun_numChildren INLINECALLDICT
     5 1 BLKDROP2
   }>
-  %getUserBets PROC:<{
+  %UserBetInfo PROC:<{
     __tact_verify_address INLINECALLDICT
     $TodoParent$_contract_load INLINECALLDICT
     5 ROLL
-    $TodoParent$_fun_getUserBets INLINECALLDICT
+    $TodoParent$_fun_UserBetInfo INLINECALLDICT
     5 1 BLKDROP2
-    $BetArray$_to_opt_external INLINECALLDICT
   }>
   %getAllAddresses PROC:<{
     $TodoParent$_contract_load INLINECALLDICT
@@ -814,7 +787,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d53323374677538463277734d61427a4665344831353574654831454252536e6b666f526d544a565732755046} PUSHSLICE
+    x{697066733a2f2f516d6453706562486d346f5747686443575a65646e566e347856524c7244424c3474764e5345424c654555653752} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -861,7 +834,7 @@ PROGRAM{
       TRUE
     }>
     DUP
-    2077863156 PUSHINT
+    3696589863 PUSHINT
     EQUAL
     IFJMP:<{
       DROP

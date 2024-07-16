@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 3560 bytes
+BOC Size: 3554 bytes
 
 # Types
 Total Types: 16
@@ -50,16 +50,16 @@ TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image
 Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64}`
 
 ## BetDetails
-TLB: `_ user:address amount:int257 betContract:address outcome:int257 = BetDetails`
-Signature: `BetDetails{user:address,amount:int257,betContract:address,outcome:int257}`
+TLB: `_ user:address amount:uint32 betContract:address outcome:uint8 = BetDetails`
+Signature: `BetDetails{user:address,amount:uint32,betContract:address,outcome:uint8}`
 
 ## BetArray
-TLB: `_ map:dict<int, ^BetDetails{user:address,amount:int257,betContract:address,outcome:int257}> length:int257 = BetArray`
-Signature: `BetArray{map:dict<int, ^BetDetails{user:address,amount:int257,betContract:address,outcome:int257}>,length:int257}`
+TLB: `_ map:dict<int, ^BetDetails{user:address,amount:uint32,betContract:address,outcome:uint8}> length:uint32 = BetArray`
+Signature: `BetArray{map:dict<int, ^BetDetails{user:address,amount:uint32,betContract:address,outcome:uint8}>,length:uint32}`
 
 ## BetDetailsMessage
-TLB: `bet_details_message#7bd9acf4 user:address amount:int257 betContract:address outcome:int257 = BetDetailsMessage`
-Signature: `BetDetailsMessage{user:address,amount:int257,betContract:address,outcome:int257}`
+TLB: `bet_details_message#dc557c27 user:address amount:int257 betContract:address outcome:uint8 = BetDetailsMessage`
+Signature: `BetDetailsMessage{user:address,amount:int257,betContract:address,outcome:uint8}`
 
 ## Finalize
 TLB: `finalize#d23bb096 outcome_a_wins:bool = Finalize`

@@ -61,17 +61,15 @@ cell $DeployOk$_store_cell((int) v) inline {
 
 ;;
 ;; Type: BetDetails
-;; TLB: _ user:address amount:int257 betContract:address outcome:int257 = BetDetails
+;; TLB: _ user:address amount:uint32 betContract:address outcome:uint8 = BetDetails
 ;;
 
 builder $BetDetails$_store(builder build_0, (slice, int, slice, int) v) inline {
     var (v'user, v'amount, v'betContract, v'outcome) = v;
     build_0 = __tact_store_address(build_0, v'user);
-    build_0 = build_0.store_int(v'amount, 257);
+    build_0 = build_0.store_uint(v'amount, 32);
     build_0 = __tact_store_address(build_0, v'betContract);
-    var build_1 = begin_cell();
-    build_1 = build_1.store_int(v'outcome, 257);
-    build_0 = store_ref(build_0, build_1.end_cell());
+    build_0 = build_0.store_uint(v'outcome, 8);
     return build_0;
 }
 
@@ -87,13 +85,13 @@ cell $BetDetails$_store_cell((slice, int, slice, int) v) inline {
 
 ;;
 ;; Type: BetArray
-;; TLB: _ map:dict<int, ^BetDetails{user:address,amount:int257,betContract:address,outcome:int257}> length:int257 = BetArray
+;; TLB: _ map:dict<int, ^BetDetails{user:address,amount:uint32,betContract:address,outcome:uint8}> length:uint32 = BetArray
 ;;
 
 builder $BetArray$_store(builder build_0, (cell, int) v) inline {
     var (v'map, v'length) = v;
     build_0 = build_0.store_dict(v'map);
-    build_0 = build_0.store_int(v'length, 257);
+    build_0 = build_0.store_uint(v'length, 32);
     return build_0;
 }
 
@@ -103,7 +101,7 @@ cell $BetArray$_store_cell((cell, int) v) inline {
 
 (slice, ((cell, int))) $BetArray$_load(slice sc_0) inline {
     var v'map = sc_0~load_dict();
-    var v'length = sc_0~load_int(257);
+    var v'length = sc_0~load_uint(32);
     return (sc_0, (v'map, v'length));
 }
 
@@ -120,29 +118,15 @@ tuple $BetArray$_load_opt(cell cl) inline {
     return $BetArray$_as_optional(sc~$BetArray$_load());
 }
 
+_ $BetArray$_get_map((cell, int) v) inline {
+    var (v'map, v'length) = v;
+    return v'map;
+}
+
 ((cell, int)) $BetArray$_not_null(tuple v) inline {
     throw_if(128, null?(v));
     var (cell vvv'map, int vvv'length) = __tact_tuple_destroy_2(v);
     return (vvv'map, vvv'length);
-}
-
-tuple $BetArray$_to_tuple(((cell, int)) v) inline {
-    var (v'map, v'length) = v;
-    return __tact_tuple_create_2(v'map, v'length);
-}
-
-tuple $BetArray$_to_opt_tuple(tuple v) inline {
-    if (null?(v)) { return null(); } 
-    return $BetArray$_to_tuple($BetArray$_not_null(v)); 
-}
-
-tuple $BetArray$_to_opt_external(tuple v) inline {
-    var loaded = $BetArray$_to_opt_tuple(v);
-    if (null?(loaded)) {
-        return null();
-    } else {
-        return (loaded);
-    }
 }
 
 ((cell, int)) $BetArray$_constructor_map_length(cell map, int length) inline {
@@ -151,17 +135,16 @@ tuple $BetArray$_to_opt_external(tuple v) inline {
 
 ;;
 ;; Type: BetDetailsMessage
-;; Header: 0x7bd9acf4
-;; TLB: bet_details_message#7bd9acf4 user:address amount:int257 betContract:address outcome:int257 = BetDetailsMessage
+;; Header: 0xdc557c27
+;; TLB: bet_details_message#dc557c27 user:address amount:int257 betContract:address outcome:uint8 = BetDetailsMessage
 ;;
 
 (slice, ((slice, int, slice, int))) $BetDetailsMessage$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2077863156);
+    throw_unless(129, sc_0~load_uint(32) == 3696589863);
     var v'user = sc_0~__tact_load_address();
     var v'amount = sc_0~load_int(257);
     var v'betContract = sc_0~__tact_load_address();
-    slice sc_1 = sc_0~load_ref().begin_parse();
-    var v'outcome = sc_1~load_int(257);
+    var v'outcome = sc_0~load_uint(8);
     return (sc_0, (v'user, v'amount, v'betContract, v'outcome));
 }
 

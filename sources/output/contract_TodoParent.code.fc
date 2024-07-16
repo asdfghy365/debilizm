@@ -40,9 +40,12 @@
     return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $self'numChildren);
 }
 
-((slice, int, cell, cell, cell), tuple) $TodoParent$_fun_getUserBets((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref {
+((slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref {
     var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)));
+    if (null?($BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)))) {
+        return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), null());
+    }
+    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $BetArray$_get_map($BetArray$_not_null($BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)))));
 }
 
 ((slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell, cell, cell) $self) impure inline_ref {
@@ -103,11 +106,11 @@ _ %numChildren() method_id(115153) {
     return res;
 }
 
-_ %getUserBets(slice $$user) method_id(105058) {
+_ %UserBetInfo(slice $$user) method_id(86585) {
     slice $user = __tact_verify_address($$user);
     var self = $TodoParent$_contract_load();
-    var res = self~$TodoParent$_fun_getUserBets($user);
-    return $BetArray$_to_opt_external(res);
+    var res = self~$TodoParent$_fun_UserBetInfo($user);
+    return res;
 }
 
 _ %getAllAddresses() method_id(108251) {
@@ -126,7 +129,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmS23tgu8F2wsMaBzFe4H155teH1EBRSnkfoRmTJVW2uPF";
+    return "ipfs://QmdSpebHm4oWGhdCWZednVn4xVRLrDBL4tvNSEBLeEUe7R";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -164,7 +167,7 @@ _ lazy_deployment_completed() method_id {
     }
     
     ;; Receive BetDetailsMessage message
-    if (op == 2077863156) {
+    if (op == 3696589863) {
         var msg = in_msg~$BetDetailsMessage$_load();
         self~$TodoParent$_internal_binary_BetDetailsMessage(msg);
         return (self, true);

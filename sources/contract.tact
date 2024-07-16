@@ -36,14 +36,14 @@ struct BetInfo {
 
 struct BetDetails {
     user: Address;
-    amount: Int;
+    amount: Int as uint32;
     betContract: Address;
-    outcome: Int;  // 1 or 2
+    outcome: Int as uint8;  // 1 or 2
 }
 
 struct BetArray {
     map: map<Int, BetDetails>;
-    length: Int = 0;
+    length: Int as uint32 = 0;
 }
 
 const MaxArraySize: Int = 5_000;
@@ -58,7 +58,7 @@ message BetDetailsMessage {
     user: Address;
     amount: Int;
     betContract: Address;
-    outcome: Int;  // 1 or 2
+    outcome: Int as uint8;  // 1 or 2
 }
 
 
@@ -83,11 +83,13 @@ contract TestContract with Deployable, Ownable, Stoppable {
     data: Data;
     seqno: Int as uint64;
     betInfoData: BetInfo;
+  
 
     init(seqno: Int) {
         self.owner = sender();
         self.stopped = false;
         self.seqno = seqno;
+        
         self.admin = address("0QDoKkeydaB-dQV2eqgch6ZzT70MoBvQC8GC0Jk7mj2rcsMh");
         self.data = Data{
             total_bet_a: 0,
@@ -323,6 +325,8 @@ contract TestContract with Deployable, Ownable, Stoppable {
         return self.data.outcome_a_wins;
     }
 
+
+
     get fun getBetInfo(): BetInfo {
         return self.betInfoData;
     }
@@ -334,6 +338,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
     get fun getBet(address: Address): Int? {
     return self.data.bets_total.get(address);
 }
+
 }
 
 contract TodoParent with Deployable {
@@ -402,10 +407,13 @@ contract TodoParent with Deployable {
     get fun numChildren(): Int {
         return self.numChildren;
     }
-
-    get fun getUserBets(user: Address): BetArray? {
-        return self.UserBets.get(user);
+ 
+    get fun UserBetInfo(user: Address): map<Int, BetDetails> {
+    if (self.UserBets.get(user) == null) {
+        return emptyMap(); // Return an empty map if BetArray is null
     }
+    return self.UserBets.get(user)!!.map;
+}
 
     get fun getAllAddresses(): map<Int, Address> {
         return self.BetList;

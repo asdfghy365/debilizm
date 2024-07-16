@@ -159,19 +159,17 @@ builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int
 
 ;;
 ;; Type: BetDetailsMessage
-;; Header: 0x7bd9acf4
-;; TLB: bet_details_message#7bd9acf4 user:address amount:int257 betContract:address outcome:int257 = BetDetailsMessage
+;; Header: 0xdc557c27
+;; TLB: bet_details_message#dc557c27 user:address amount:int257 betContract:address outcome:uint8 = BetDetailsMessage
 ;;
 
 builder $BetDetailsMessage$_store(builder build_0, (slice, int, slice, int) v) inline {
     var (v'user, v'amount, v'betContract, v'outcome) = v;
-    build_0 = store_uint(build_0, 2077863156, 32);
+    build_0 = store_uint(build_0, 3696589863, 32);
     build_0 = __tact_store_address(build_0, v'user);
     build_0 = build_0.store_int(v'amount, 257);
     build_0 = __tact_store_address(build_0, v'betContract);
-    var build_1 = begin_cell();
-    build_1 = build_1.store_int(v'outcome, 257);
-    build_0 = store_ref(build_0, build_1.end_cell());
+    build_0 = build_0.store_uint(v'outcome, 8);
     return build_0;
 }
 

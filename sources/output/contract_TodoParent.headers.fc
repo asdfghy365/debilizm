@@ -102,17 +102,11 @@ builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) in
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
 
+;; $BetArray$_get_map
+_ $BetArray$_get_map((cell, int) v) inline;
+
 ;; $BetArray$_not_null
 ((cell, int)) $BetArray$_not_null(tuple v) inline;
-
-;; $BetArray$_to_tuple
-tuple $BetArray$_to_tuple(((cell, int)) v) inline;
-
-;; $BetArray$_to_opt_tuple
-tuple $BetArray$_to_opt_tuple(tuple v) inline;
-
-;; $BetArray$_to_opt_external
-tuple $BetArray$_to_opt_external(tuple v) inline;
 
 ;; $TestContract$init$_store
 builder $TestContract$init$_store(builder build_0, (int) v) inline;
@@ -150,8 +144,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $TodoParent$_fun_numChildren
 ((slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, int, cell, cell, cell) $self) impure inline_ref;
 
-;; $TodoParent$_fun_getUserBets
-((slice, int, cell, cell, cell), tuple) $TodoParent$_fun_getUserBets((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref;
+;; $TodoParent$_fun_UserBetInfo
+((slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref;
 
 ;; $TodoParent$_fun_getAllAddresses
 ((slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell, cell, cell) $self) impure inline_ref;
