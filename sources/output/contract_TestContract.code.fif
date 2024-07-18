@@ -506,9 +506,8 @@ PROGRAM{
     B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE
     B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE
     0 PUSHINT
-    s13 s0 s0 PUSH3
-    s15 PUSH
-    s0 s2 XCHG
+    s13 s12 s15 PUSH3
+    17 s() PUSH
     $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b INLINECALLDICT
     22 s() 23 s() XCHG
     20 s() 22 s() XCHG
@@ -681,28 +680,29 @@ PROGRAM{
   $TestContract$_fun_handle_bet PROCREF:<{
     s5 POP
     s5 POP
-    17 s() POP
-    17 s() POP
+    2DROP
+    s15 POP
+    s15 POP
     63076 PUSHINT
-    s12 PUSH
+    s10 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
-    s0 s2 XCHG
+    s0 s15 XCHG
     50000000 PUSHINT
     SUB
     5194 PUSHINT
     OVER
     0 GTINT
     THROWANYIFNOT
-    s0 s3 XCHG
+    SWAP
     IF:<{
-      s0 18 s() XCHG
-      s2 PUSH
+      s0 16 s() XCHG
+      16 s() PUSH
       ADD
-      s14 PUSH
+      s12 PUSH
       267 PUSHINT
-      s3 PUSH
+      16 s() PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -710,29 +710,29 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s3 XCHG2
+        SWAP
+        s0 17 s() XCHG
         ADD
       }>ELSE<{
         DROP
-        s0 s2 XCHG
+        s0 16 s() XCHG
       }>
-      s0 s14 XCHG
+      s0 s12 XCHG
       267 PUSHINT
-      s2 s15 PUSH2
+      s15 s13 PUSH2
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s2 s12 XCHG
+      s2 s10 XCHG
       267 PUSHINT
-      s0 s0 s15 XCHG3
+      s0 s15 s13 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
-      s0 17 s() XCHG
-      s2 PUSH
+      s15 s15 XCPU
       ADD
-      s13 PUSH
+      s11 PUSH
       267 PUSHINT
-      s3 PUSH
+      16 s() PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -740,32 +740,33 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s0 s3 XCHG2
+        SWAP
+        s0 16 s() XCHG
         ADD
       }>ELSE<{
         DROP
-        s0 s2 XCHG
+        s0 s15 XCHG
       }>
-      s0 s13 XCHG
+      s0 s11 XCHG
       267 PUSHINT
-      s2 s14 PUSH2
+      s15 s12 PUSH2
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s2 s12 XCHG
+      s2 s10 XCHG
       267 PUSHINT
-      s0 s0 s14 XCHG3
+      s0 s15 s12 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s15 16 s() XCHG
-      s10 s15 XCHG
+      s10 s12 XCHG
+      s9 s10 XCHG
     }>
-    s10 PUSH
+    s14 PUSH
     0 GTINT
     IF:<{
-      s15 PUSH
+      s13 PUSH
       1000 PUSHINT
       MUL
-      s11 PUSH
+      s15 PUSH
       DIV
       90 MULCONST
       100 PUSHINT
@@ -773,13 +774,13 @@ PROGRAM{
     }>ELSE<{
       1000 PUSHINT
     }>
-    16 s() PUSH
+    s14 PUSH
     0 GTINT
     IF:<{
-      s11 PUSH
+      s15 PUSH
       1000 PUSHINT
       MUL
-      17 s() PUSH
+      s15 PUSH
       DIV
       90 MULCONST
       100 PUSHINT
@@ -788,12 +789,14 @@ PROGRAM{
       1000 PUSHINT
     }>
     2DUP
-    s14 20 s() XCHG
-    s3 18 s() XCHG
-    s2 17 s() XCHG
-    s3 s3 XCHG2
-    s0 s4 XCHG
-    s14 s1 s14 XCHG3
+    18 s() PUSH
+    18 s() PUSH
+    s5 18 s() XCHG
+    s4 17 s() XCHG
+    s5 16 s() XCHG
+    s6 s14 XCHG
+    s3 s4 XCHG
+    s2 s3 XCHG
   }>
   $SendParameters$_constructor_to_value_mode PROCINLINE:<{
     TRUE

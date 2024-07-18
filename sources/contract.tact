@@ -112,8 +112,8 @@ contract TestContract with Deployable, Ownable, Stoppable {
         finishDate: 0,
         odds_a: self.data.odds_a,
         odds_b: self.data.odds_b,
-        total_bet_a: 0,
-        total_bet_b: 0
+        total_bet_a: self.data.total_bet_a,
+        total_bet_b: self.data.total_bet_b
         };
     }
 
@@ -226,6 +226,10 @@ contract TestContract with Deployable, Ownable, Stoppable {
 
     self.betInfoData.odds_a = self.data.odds_a;
     self.betInfoData.odds_b = self.data.odds_b;
+    
+    self.betInfoData.total_bet_a = self.data.total_bet_a;
+    self.betInfoData.total_bet_b = self.data.total_bet_b;
+
 }
 
     receive(msg: String) { 
@@ -413,7 +417,7 @@ contract TodoParent with Deployable {
         return emptyMap(); // Return an empty map if BetArray is null
     }
     return self.UserBets.get(user)!!.map;
-}
+    }
 
     get fun getAllAddresses(): map<Int, Address> {
         return self.BetList;
