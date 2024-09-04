@@ -31,7 +31,7 @@ struct BetInfo {
     finishDate: Int as uint32;
     total_bet_a: Int as uint64;
     total_bet_b: Int as uint64;
-
+    winnerOption: Int as uint8;
 }
 
 struct BetDetails {
@@ -39,6 +39,7 @@ struct BetDetails {
     amount: Int as uint32;
     betContract: Address;
     outcome: Int as uint8;  // 1 or 2
+
 }
 
 struct BetArray {
@@ -90,7 +91,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
         self.stopped = false;
         self.seqno = seqno;
         
-        self.admin = address("0QDoKkeydaB-dQV2eqgch6ZzT70MoBvQC8GC0Jk7mj2rcsMh");
+        self.admin = address("UQDQasFg09OAtqdLhcn8Jpx3sxw7vsfh8ZOC9QkJUMY8R--p");
         self.data = Data{
             total_bet_a: 0,
             total_bet_b: 0,
@@ -112,6 +113,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
         finishDate: 0,
         odds_a: self.data.odds_a,
         odds_b: self.data.odds_b,
+        winnerOption: 0,
         total_bet_a: self.data.total_bet_a,
         total_bet_b: self.data.total_bet_b
         };
@@ -129,6 +131,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
         odds_b: self.data.odds_b,
         finishDate: self.betInfoData.finishDate,
         total_bet_a: self.data.total_bet_a,
+        winnerOption: 0,
         total_bet_b: self.data.total_bet_b
     };
     }
@@ -143,7 +146,7 @@ contract TestContract with Deployable, Ownable, Stoppable {
         user: sender_address,
         amount: bet_amount,
         betContract: myAddress(),
-        outcome: 1
+        outcome: 1,
     };
 
     send(SendParameters{
@@ -180,13 +183,17 @@ contract TestContract with Deployable, Ownable, Stoppable {
         self.data.outcome_a_wins = true;
         self.data.finalized = true;
         self.payout(self.data.bets_a, self.data.odds_a);
+        self.betInfoData.winnerOption = 1;
     }
 
       receive("PayB") {
         require(sender() == self.admin, "Only the admin can finalize");
         self.data.finalized = true;
         self.payout(self.data.bets_b, self.data.odds_b);
+        self.betInfoData.winnerOption = 2;
     }
+
+    
 
     fun handle_bet(bet_on_a: Bool, bet_amount: Int) {
     require(!self.data.finalized, "Betting is over");
@@ -279,6 +286,10 @@ contract TestContract with Deployable, Ownable, Stoppable {
         self.chargeback(self.data.bets_total);
     }
 
+    receive ("finalize") {
+        self.data.finalized = true;
+    }
+
     fun chargeback(bets: map<Address, Int>) {
     foreach (address, bet_amount in bets) {
         if (bet_amount != null) {
@@ -340,21 +351,47 @@ contract TestContract with Deployable, Ownable, Stoppable {
     }
 
     get fun getBet(address: Address): Int? {
-    return self.data.bets_total.get(address);
-}
+        return self.data.bets_total.get(address);
+    }
+
+    get fun checkOutcome(user: Address): Int {
+        
+        let userBet: Int? = self.data.bets_total.get(user);
+        
+        if (userBet == null) {
+            return -1;  // no bets
+        }
+
+        if (self.data.outcome_a_wins) {
+            if (self.data.bets_a.get(user) != null) {
+                return 1;  
+            } else {
+                return 0;  // 2 lose
+            }
+        } 
+            else {
+            if (self.data.bets_b.get(user) != null) {
+                return 1;  // 2 win
+            } else {
+                return 0;  // 1 lose
+            }
+        }
+    }
 
 }
 
 contract TodoParent with Deployable {
     owner: Address;
+    receiver: Address;
     numChildren: Int as uint64;
     BetList: map<Int, Address>;
-    AllBets: map<Address, Address>; // bet contracts map
+    AllBets: map<Address, Address>;  
     UserBets: map<Address, BetArray>;
 
 
     init() {
         self.numChildren = 0;
+        self.receiver = address("UQArzvSthd5pNXBY32ygutsJq8UW4-NtXXtONAud0G1dDcnF");
         self.BetList = emptyMap();
         self.owner = sender();
         self.UserBets = emptyMap();
@@ -364,18 +401,20 @@ contract TodoParent with Deployable {
     }
 
     receive("withdraw") {
+        require(sender() == self.owner, "Only owner can create bets");
         self.withdraw();
    }
 
   fun withdraw() {
     send(SendParameters{
-        to: self.owner,
+        to: self.receiver,
         value: 0,
         mode: SendRemainingBalance 
     });
 }
 
     receive(msg: BetInfoInit) {
+        require(sender() == self.owner, "Only owner can create bets");
         self.numChildren = self.numChildren + 1;
         let init: StateInit = initOf TestContract(self.numChildren);
         let childAddress: Address = contractAddress(init);
@@ -391,7 +430,7 @@ contract TodoParent with Deployable {
     }
 
      receive(msg: BetDetailsMessage) {
-        // Retrieve the user's BetArray, or initialize a new one if it doesn't exist
+        require(sender() == self.owner, "Only owner can create bets");
         let userBetArrayOpt: BetArray? = self.UserBets.get(msg.user);
         let userBetArray: BetArray = userBetArrayOpt != null ? userBetArrayOpt!! : BetArray{map: emptyMap(), length: 0};
 
@@ -400,7 +439,7 @@ contract TodoParent with Deployable {
             user: msg.user,
             amount: msg.amount,
             betContract: msg.betContract,
-            outcome: msg.outcome
+            outcome: msg.outcome,
         });
 
         // Update the UserBets map with the new BetArray
@@ -422,4 +461,6 @@ contract TodoParent with Deployable {
     get fun getAllAddresses(): map<Int, Address> {
         return self.BetList;
     }
+
+    
 }
