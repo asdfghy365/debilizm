@@ -1,5 +1,5 @@
-ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\arman\TonBets
-ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/arman/TonBets/sources/output/contract_TodoParent.code.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.headers.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.stdlib.fc` incl:`D:/arman/TonBets/sources/output/contract_TodoParent.storage.fc` 
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\Projects\tacttutor\tact-template
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.code.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.headers.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.stdlib.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.constants.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TodoParent.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
@@ -15,6 +15,7 @@ PROGRAM{
   DECLPROC __tact_dict_set_int_slice
   DECLPROC __tact_dict_set_slice_cell
   DECLPROC __tact_dict_get_slice_cell
+  DECLPROC __tact_slice_eq_bits
   DECLPROC __tact_dict_set_code
   DECLPROC __tact_dict_get_code
   DECLPROC $Deploy$_load
@@ -200,6 +201,9 @@ PROGRAM{
       PUSHNULL
     }>
   }>
+  __tact_slice_eq_bits PROCINLINE:<{
+    SDEQ
+  }>
   __tact_dict_set_code PROCINLINE:<{
     s0 s2 XCHG
     16 PUSHINT
@@ -372,9 +376,10 @@ PROGRAM{
     s2 s3 XCHG
   }>
   $TodoParent$_store PROCINLINE:<{
-    s5 s4 XCHG2
+    s6 s5 XCHG2
     __tact_store_address INLINECALLDICT
-    s1 s2 XCHG
+    s0 s3 XCHG2
+    __tact_store_address INLINECALLDICT
     64 STU
     STDICT
     s1 s2 XCHG
@@ -389,6 +394,8 @@ PROGRAM{
   $TodoParent$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
     SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
     64 LDU
     LDDICT
     LDDICT
@@ -397,6 +404,7 @@ PROGRAM{
     CTOS
     LDDICT
     DROP
+    s1 s6 XCHG
     s1 s5 XCHG
     s1 s4 XCHG
     s3 s3 s0 XCHG3
@@ -424,9 +432,10 @@ PROGRAM{
   $TodoParent$_contract_init PROCREF:<{
     PUSHNULL
     0 PUSHINT
+    B{b5ee9c72410101010024000043800579de95b0bbcd26ae0b1bed94175b613578a2dc7c6dabaf69c68173ba0daba1b09f3e93e6} B>boc <s PUSHSLICE
     PUSHNULL
     __tact_context_get_sender INLINECALLDICT
-    s0 s3 XCHG
+    s3 s1 s4 XCHG3
     PUSHNULL
   }>
   $TodoParent$_contract_load PROCREF:<{
@@ -439,7 +448,7 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $TodoParent$_load INLINECALLDICT
-      1 5 BLKDROP2
+      1 6 BLKDROP2
     }>
     DROP
     MYADDR
@@ -457,7 +466,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    5 -ROLL
+    6 -ROLL
     $TodoParent$_store INLINECALLDICT
     ENDC
     c4 POP
@@ -700,9 +709,19 @@ PROGRAM{
   %$TodoParent$_internal_empty PROCINLINE:<{
   }>
   $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4 PROCINLINE:<{
+    15338 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s7 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
     $TodoParent$_fun_withdraw INLINECALLDICT
   }>
   $TodoParent$_internal_binary_BetInfoInit PROCINLINE:<{
+    15338 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s12 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
     s0 s8 XCHG
     INC
     __tact_context_sys GETGLOB
@@ -731,6 +750,11 @@ PROGRAM{
     s0 s2 XCHG
   }>
   $TodoParent$_internal_binary_BetDetailsMessage PROCINLINE:<{
+    15338 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
     s4 PUSH
     267 PUSHINT
     s5 PUSH
@@ -766,19 +790,19 @@ PROGRAM{
   %numChildren PROC:<{
     $TodoParent$_contract_load INLINECALLDICT
     $TodoParent$_fun_numChildren INLINECALLDICT
-    5 1 BLKDROP2
+    6 1 BLKDROP2
   }>
   %UserBetInfo PROC:<{
     __tact_verify_address INLINECALLDICT
     $TodoParent$_contract_load INLINECALLDICT
-    5 ROLL
+    6 ROLL
     $TodoParent$_fun_UserBetInfo INLINECALLDICT
-    5 1 BLKDROP2
+    6 1 BLKDROP2
   }>
   %getAllAddresses PROC:<{
     $TodoParent$_contract_load INLINECALLDICT
     $TodoParent$_fun_getAllAddresses INLINECALLDICT
-    5 1 BLKDROP2
+    6 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -787,7 +811,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6453706562486d346f5747686443575a65646e566e347856524c7244424c3474764e5345424c654555653752} PUSHSLICE
+    x{697066733a2f2f516d5177584d704d6d5036663358787870745648396a326f4a5a7055786f5061334459646971376b7737416e7952} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -887,7 +911,7 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $TodoParent$_contract_load INLINECALLDICT
-    2 5 BLKSWAP
+    2 6 BLKSWAP
     $TodoParent$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $TodoParent$_contract_store INLINECALLDICT

@@ -4,19 +4,21 @@
 
 #include "contract_TodoParent.headers.fc";
 #include "contract_TodoParent.stdlib.fc";
+#include "contract_TodoParent.constants.fc";
 #include "contract_TodoParent.storage.fc";
 
 ;;
 ;; Contract TodoParent functions
 ;;
 
-(slice, int, cell, cell, cell) $TodoParent$_contract_init() impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = (null(), null(), null(), null(), null());
+(slice, slice, int, cell, cell, cell) $TodoParent$_contract_init() impure inline_ref {
+    var (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = (null(), null(), null(), null(), null(), null());
     $self'numChildren = 0;
+    $self'receiver = __gen_slice_address_be5d42e3d6df90336a1bd54dc31251c8629ca08f352591ec9857169e9e45461b();
     $self'BetList = null();
     $self'owner = __tact_context_get_sender();
     $self'UserBets = null();
-    return ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets);
+    return ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets);
 }
 
 ((cell, int), ()) $BetArray$_fun_append((cell, int) $self, (slice, int, slice, int) $item) impure inline_ref {
@@ -29,71 +31,74 @@
     return (($self'map, $self'length), ());
 }
 
-((slice, int, cell, cell, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell, cell, cell) $self) impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
-    $global_send($SendParameters$_constructor_to_value_mode($self'owner, 0, 128));
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+((slice, slice, int, cell, cell, cell), ()) $TodoParent$_fun_withdraw((slice, slice, int, cell, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
+    $global_send($SendParameters$_constructor_to_value_mode($self'receiver, 0, 128));
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-((slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, int, cell, cell, cell) $self) impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $self'numChildren);
+((slice, slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, slice, int, cell, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $self'numChildren);
 }
 
-((slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
+((slice, slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, slice, int, cell, cell, cell) $self, slice $user) impure inline_ref {
+    var (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
     if (null?($BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)))) {
-        return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), null());
+        return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), null());
     }
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $BetArray$_get_map($BetArray$_not_null($BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)))));
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $BetArray$_get_map($BetArray$_not_null($BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $user)))));
 }
 
-((slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell, cell, cell) $self) impure inline_ref {
-    var (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $self'BetList);
+((slice, slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, slice, int, cell, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)) = $self;
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), $self'BetList);
 }
 
 ;;
 ;; Receivers of a Contract TodoParent
 ;;
 
-(((slice, int, cell, cell, cell)), ()) %$TodoParent$_internal_empty((slice, int, cell, cell, cell) $self) impure inline {
-    var ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+(((slice, slice, int, cell, cell, cell)), ()) %$TodoParent$_internal_empty((slice, slice, int, cell, cell, cell) $self) impure inline {
+    var ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-((slice, int, cell, cell, cell), ()) $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4((slice, int, cell, cell, cell) $self) impure inline {
-    var ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
-    ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)~$TodoParent$_fun_withdraw();
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+((slice, slice, int, cell, cell, cell), ()) $TodoParent$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4((slice, slice, int, cell, cell, cell) $self) impure inline {
+    var ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
+    throw_unless(15338, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
+    ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)~$TodoParent$_fun_withdraw();
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-(((slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_BetInfoInit((slice, int, cell, cell, cell) $self, (slice, slice, slice, slice, slice) $msg) impure inline {
-    var ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
+(((slice, slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_BetInfoInit((slice, slice, int, cell, cell, cell) $self, (slice, slice, slice, slice, slice) $msg) impure inline {
+    var ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
     var ($msg'title, $msg'source, $msg'bet_a_name, $msg'bet_b_name, $msg'image) = $msg;
+    throw_unless(15338, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
     $self'numChildren = ($self'numChildren + 1);
     var ($init'code, $init'data) = $TestContract$_init_child(__tact_context_sys, $self'numChildren);
     slice $childAddress = $global_contractAddress(($init'code, $init'data));
     $global_send($SendParameters$_constructor_to_value_mode_code_data_body($global_contractAddress(($init'code, $init'data)), 100000000, 2, $init'code, $init'data, $BetInfoInit$_store_cell(($msg'title, $msg'source, $msg'bet_a_name, $msg'bet_b_name, $msg'image))));
     $self'BetList~__tact_dict_set_int_slice(257, $self'numChildren, $childAddress);
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-(((slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_BetDetailsMessage((slice, int, cell, cell, cell) $self, (slice, int, slice, int) $msg) impure inline {
-    var ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
+(((slice, slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_BetDetailsMessage((slice, slice, int, cell, cell, cell) $self, (slice, int, slice, int) $msg) impure inline {
+    var ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
     var ($msg'user, $msg'amount, $msg'betContract, $msg'outcome) = $msg;
+    throw_unless(15338, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
     tuple $userBetArrayOpt = $BetArray$_load_opt(__tact_dict_get_slice_cell($self'UserBets, 267, $msg'user));
     var ($userBetArray'map, $userBetArray'length) = ((~ null?($userBetArrayOpt)) ? $BetArray$_not_null($userBetArrayOpt) : $BetArray$_constructor_map_length(null(), 0));
     ($userBetArray'map, $userBetArray'length)~$BetArray$_fun_append($BetDetails$_tensor_cast($BetDetails$_constructor_user_amount_betContract_outcome($msg'user, $msg'amount, $msg'betContract, $msg'outcome)));
     $self'UserBets~__tact_dict_set_slice_cell(267, $msg'user, $BetArray$_store_cell(($userBetArray'map, $userBetArray'length)));
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
-(((slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_Deploy((slice, int, cell, cell, cell) $self, (int) $deploy) impure inline {
-    var ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
+(((slice, slice, int, cell, cell, cell)), ()) $TodoParent$_internal_binary_Deploy((slice, slice, int, cell, cell, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets) = $self;
     var ($deploy'queryId) = $deploy;
-    ($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)~$TodoParent$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
-    return (($self'owner, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
+    ($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets)~$TodoParent$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'receiver, $self'numChildren, $self'BetList, $self'AllBets, $self'UserBets), ());
 }
 
 ;;
@@ -129,7 +134,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmdSpebHm4oWGhdCWZednVn4xVRLrDBL4tvNSEBLeEUe7R";
+    return "ipfs://QmQwXMpMmP6f3XxxptVH9j2oJZpUxoPa3DYdiq7kw7AnyR";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -140,7 +145,7 @@ _ lazy_deployment_completed() method_id {
 ;; Routing of a Contract TodoParent
 ;;
 
-((slice, int, cell, cell, cell), int) $TodoParent$_contract_router_internal((slice, int, cell, cell, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+((slice, slice, int, cell, cell, cell), int) $TodoParent$_contract_router_internal((slice, slice, int, cell, cell, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
     ;; Handle bounced messages
     if (msg_bounced) {
         return (self, true);

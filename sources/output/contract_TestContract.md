@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TestContract
-BOC Size: 3559 bytes
+BOC Size: 3889 bytes
 
 # Types
 Total Types: 16
@@ -46,8 +46,8 @@ TLB: `_ total_bet_a:uint64 total_bet_b:uint64 odds_a:uint64 odds_b:uint64 bets_a
 Signature: `Data{total_bet_a:uint64,total_bet_b:uint64,odds_a:uint64,odds_b:uint64,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## BetInfo
-TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 = BetInfo`
-Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64}`
+TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 winnerOption:uint8 = BetInfo`
+Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64,winnerOption:uint8}`
 
 ## BetDetails
 TLB: `_ user:address amount:uint32 betContract:address outcome:uint8 = BetDetails`
@@ -70,7 +70,7 @@ TLB: `bet_info_init#b028071f title:^string source:^string bet_a_name:^string bet
 Signature: `BetInfoInit{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string}`
 
 # Get Methods
-Total Get Methods: 12
+Total Get Methods: 13
 
 ## payoutStatus
 
@@ -92,6 +92,9 @@ Total Get Methods: 12
 
 ## getBet
 Argument: address
+
+## checkOutcome
+Argument: user
 
 ## owner
 
@@ -125,6 +128,7 @@ Argument: address
 2977: Already initialized
 5194: Bet amount must be greater than the fixed fee
 12446: No space left in the array for new items!
+15338: Only owner can create bets
 40368: Contract stopped
 44933: Only the admin can finalize
 53296: Contract not stopped

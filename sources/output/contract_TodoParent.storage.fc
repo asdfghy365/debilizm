@@ -213,9 +213,10 @@ builder $TestContract$init$_store(builder build_0, (int) v) inline {
 ;; Type: TodoParent
 ;;
 
-builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) inline {
-    var (v'owner, v'numChildren, v'BetList, v'AllBets, v'UserBets) = v;
+builder $TodoParent$_store(builder build_0, (slice, slice, int, cell, cell, cell) v) inline {
+    var (v'owner, v'receiver, v'numChildren, v'BetList, v'AllBets, v'UserBets) = v;
     build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = __tact_store_address(build_0, v'receiver);
     build_0 = build_0.store_uint(v'numChildren, 64);
     build_0 = build_0.store_dict(v'BetList);
     build_0 = build_0.store_dict(v'AllBets);
@@ -225,17 +226,18 @@ builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) in
     return build_0;
 }
 
-(slice, ((slice, int, cell, cell, cell))) $TodoParent$_load(slice sc_0) inline {
+(slice, ((slice, slice, int, cell, cell, cell))) $TodoParent$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
+    var v'receiver = sc_0~__tact_load_address();
     var v'numChildren = sc_0~load_uint(64);
     var v'BetList = sc_0~load_dict();
     var v'AllBets = sc_0~load_dict();
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'UserBets = sc_1~load_dict();
-    return (sc_0, (v'owner, v'numChildren, v'BetList, v'AllBets, v'UserBets));
+    return (sc_0, (v'owner, v'receiver, v'numChildren, v'BetList, v'AllBets, v'UserBets));
 }
 
-(slice, int, cell, cell, cell) $TodoParent$_contract_load() impure inline_ref {
+(slice, slice, int, cell, cell, cell) $TodoParent$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -248,7 +250,7 @@ builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) in
     }
 }
 
-() $TodoParent$_contract_store((slice, int, cell, cell, cell) v) impure inline {
+() $TodoParent$_contract_store((slice, slice, int, cell, cell, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

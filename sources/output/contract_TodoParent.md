@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: TodoParent
-BOC Size: 1614 bytes
+BOC Size: 1751 bytes
 
 # Types
 Total Types: 16
@@ -46,8 +46,8 @@ TLB: `_ total_bet_a:uint64 total_bet_b:uint64 odds_a:uint64 odds_b:uint64 bets_a
 Signature: `Data{total_bet_a:uint64,total_bet_b:uint64,odds_a:uint64,odds_b:uint64,bets_a:dict<address, int>,bets_b:dict<address, int>,bets_total:dict<address, int>,finalized:bool,outcome_a_wins:bool,insufficient_balance:bool}`
 
 ## BetInfo
-TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 = BetInfo`
-Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64}`
+TLB: `_ title:^string source:^string bet_a_name:^string bet_b_name:^string image:^string odds_a:uint64 odds_b:uint64 finishDate:uint32 total_bet_a:uint64 total_bet_b:uint64 winnerOption:uint8 = BetInfo`
+Signature: `BetInfo{title:^string,source:^string,bet_a_name:^string,bet_b_name:^string,image:^string,odds_a:uint64,odds_b:uint64,finishDate:uint32,total_bet_a:uint64,total_bet_b:uint64,winnerOption:uint8}`
 
 ## BetDetails
 TLB: `_ user:address amount:uint32 betContract:address outcome:uint8 = BetDetails`
@@ -107,6 +107,7 @@ Argument: user
 2977: Already initialized
 5194: Bet amount must be greater than the fixed fee
 12446: No space left in the array for new items!
+15338: Only owner can create bets
 40368: Contract stopped
 44933: Only the admin can finalize
 53296: Contract not stopped

@@ -45,6 +45,9 @@ builder __tact_store_bool(builder b, int v) inline;
 ;; __tact_dict_get_slice_cell
 cell __tact_dict_get_slice_cell(cell d, int kl, slice k) inline;
 
+;; __tact_slice_eq_bits
+int __tact_slice_eq_bits(slice a, slice b) inline;
+
 ;; __tact_dict_set_code
 cell __tact_dict_set_code(cell dict, int id, cell code) inline;
 
@@ -94,10 +97,10 @@ cell $BetInfoInit$_store_cell((slice, slice, slice, slice, slice) v) inline;
 (slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline;
 
 ;; $TodoParent$_store
-builder $TodoParent$_store(builder build_0, (slice, int, cell, cell, cell) v) inline;
+builder $TodoParent$_store(builder build_0, (slice, slice, int, cell, cell, cell) v) inline;
 
 ;; $TodoParent$_load
-(slice, ((slice, int, cell, cell, cell))) $TodoParent$_load(slice sc_0) inline;
+(slice, ((slice, slice, int, cell, cell, cell))) $TodoParent$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -112,13 +115,13 @@ _ $BetArray$_get_map((cell, int) v) inline;
 builder $TestContract$init$_store(builder build_0, (int) v) inline;
 
 ;; $TodoParent$_contract_init
-(slice, int, cell, cell, cell) $TodoParent$_contract_init() impure inline_ref;
+(slice, slice, int, cell, cell, cell) $TodoParent$_contract_init() impure inline_ref;
 
 ;; $TodoParent$_contract_load
-(slice, int, cell, cell, cell) $TodoParent$_contract_load() impure inline_ref;
+(slice, slice, int, cell, cell, cell) $TodoParent$_contract_load() impure inline_ref;
 
 ;; $TodoParent$_contract_store
-() $TodoParent$_contract_store((slice, int, cell, cell, cell) v) impure inline;
+() $TodoParent$_contract_store((slice, slice, int, cell, cell, cell) v) impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
@@ -139,22 +142,22 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $TodoParent$_fun_withdraw
-((slice, int, cell, cell, cell), ()) $TodoParent$_fun_withdraw((slice, int, cell, cell, cell) $self) impure inline_ref;
+((slice, slice, int, cell, cell, cell), ()) $TodoParent$_fun_withdraw((slice, slice, int, cell, cell, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_numChildren
-((slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, int, cell, cell, cell) $self) impure inline_ref;
+((slice, slice, int, cell, cell, cell), int) $TodoParent$_fun_numChildren((slice, slice, int, cell, cell, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_UserBetInfo
-((slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, int, cell, cell, cell) $self, slice $user) impure inline_ref;
+((slice, slice, int, cell, cell, cell), cell) $TodoParent$_fun_UserBetInfo((slice, slice, int, cell, cell, cell) $self, slice $user) impure inline_ref;
 
 ;; $TodoParent$_fun_getAllAddresses
-((slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, int, cell, cell, cell) $self) impure inline_ref;
+((slice, slice, int, cell, cell, cell), cell) $TodoParent$_fun_getAllAddresses((slice, slice, int, cell, cell, cell) $self) impure inline_ref;
 
 ;; $TodoParent$_fun_forward
-((slice, int, cell, cell, cell), ()) $TodoParent$_fun_forward((slice, int, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, slice, int, cell, cell, cell), ()) $TodoParent$_fun_forward((slice, slice, int, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $TodoParent$_fun_notify
-((slice, int, cell, cell, cell), ()) $TodoParent$_fun_notify((slice, int, cell, cell, cell) $self, cell $body) impure inline;
+((slice, slice, int, cell, cell, cell), ()) $TodoParent$_fun_notify((slice, slice, int, cell, cell, cell) $self, cell $body) impure inline;
 
 ;; $SendParameters$_constructor_to_value_mode_code_data_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_code_data_body(slice to, int value, int mode, cell code, cell data, cell body) inline;

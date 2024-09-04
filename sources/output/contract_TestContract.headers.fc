@@ -61,10 +61,10 @@ builder $Data$_store(builder build_0, (int, int, int, int, cell, cell, cell, int
 (slice, ((int, int, int, int, cell, cell, cell, int, int, int))) $Data$_load(slice sc_0) inline_ref;
 
 ;; $BetInfo$_store
-builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int, int, int) v) inline_ref;
+builder $BetInfo$_store(builder build_0, (slice, slice, slice, slice, slice, int, int, int, int, int, int) v) inline_ref;
 
 ;; $BetInfo$_load
-(slice, ((slice, slice, slice, slice, slice, int, int, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref;
+(slice, ((slice, slice, slice, slice, slice, int, int, int, int, int, int))) $BetInfo$_load(slice sc_0) inline_ref;
 
 ;; $BetDetailsMessage$_store
 builder $BetDetailsMessage$_store(builder build_0, (slice, int, slice, int) v) inline;
@@ -76,10 +76,10 @@ cell $BetDetailsMessage$_store_cell((slice, int, slice, int) v) inline;
 (slice, ((slice, slice, slice, slice, slice))) $BetInfoInit$_load(slice sc_0) inline;
 
 ;; $TestContract$_store
-builder $TestContract$_store(builder build_0, (slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline;
+builder $TestContract$_store(builder build_0, (slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) v) inline;
 
 ;; $TestContract$_load
-(slice, ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)))) $TestContract$_load(slice sc_0) inline;
+(slice, ((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)))) $TestContract$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -88,7 +88,7 @@ builder $TestContract$_store(builder build_0, (slice, slice, int, (int, int, int
 _ $Context$_get_value((int, slice, int, slice) v) inline;
 
 ;; $BetInfo$_to_external
-(slice, slice, slice, slice, slice, int, int, int, int, int) $BetInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline;
+(slice, slice, slice, slice, slice, int, int, int, int, int, int) $BetInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int, int, int, int)) v) inline;
 
 ;; $TestContract$init$_load
 (slice, ((int))) $TestContract$init$_load(slice sc_0) inline;
@@ -96,92 +96,95 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 ;; $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_bets_total_finalized_outcome_a_wins_insufficient_balance
 ((int, int, int, int, cell, cell, cell, int, int, int)) $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_bets_total_finalized_outcome_a_wins_insufficient_balance(int total_bet_a, int total_bet_b, int odds_a, int odds_b, cell bets_a, cell bets_b, cell bets_total, int finalized, int outcome_a_wins, int insufficient_balance) inline;
 
-;; $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b
-((slice, slice, slice, slice, slice, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int finishDate, int odds_a, int odds_b, int total_bet_a, int total_bet_b) inline;
+;; $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_winnerOption_total_bet_a_total_bet_b
+((slice, slice, slice, slice, slice, int, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_winnerOption_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int finishDate, int odds_a, int odds_b, int winnerOption, int total_bet_a, int total_bet_b) inline;
 
 ;; $TestContract$_contract_init
-(slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_contract_init(int $seqno) impure inline_ref;
+(slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $TestContract$_contract_init(int $seqno) impure inline_ref;
 
 ;; $TestContract$_contract_load
-(slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_contract_load() impure inline_ref;
+(slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $TestContract$_contract_load() impure inline_ref;
 
 ;; $TestContract$_contract_store
-() $TestContract$_contract_store((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) v) impure inline;
+() $TestContract$_contract_store((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) v) impure inline;
 
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
 ;; $TestContract$_fun_handle_bet
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_handle_bet((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, int $bet_on_a, int $bet_amount) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_handle_bet((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, int $bet_on_a, int $bet_amount) impure inline_ref;
 
 ;; $SendParameters$_constructor_to_value_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline;
 
 ;; $TestContract$_fun_sendRemainingBalanceToOwner
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_sendRemainingBalanceToOwner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_sendRemainingBalanceToOwner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_payout
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_payout((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, cell $bets, int $odds) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_payout((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, cell $bets, int $odds) impure inline_ref;
 
 ;; $TestContract$_fun_chargeback
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_chargeback((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, cell $bets) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_chargeback((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, cell $bets) impure inline_ref;
 
 ;; $TestContract$_fun_payoutStatus
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_payoutStatus((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_payoutStatus((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getTodoParentAddress
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), slice) $TestContract$_fun_getTodoParentAddress((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), slice) $TestContract$_fun_getTodoParentAddress((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getTotalBetA
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getTotalBetB
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetB((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_getTotalBetB((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getoddA
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getoddA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_getoddA((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getoddB
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getoddB((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_getoddB((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_outcome
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_outcome((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_outcome((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getBetInfo
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), (slice, slice, slice, slice, slice, int, int, int, int, int)) $TestContract$_fun_getBetInfo((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $TestContract$_fun_getBetInfo((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getMap
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), cell) $TestContract$_fun_getMap((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), cell) $TestContract$_fun_getMap((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_getBet
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_getBet((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, slice $address) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_getBet((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, slice $address) impure inline_ref;
+
+;; $TestContract$_fun_checkOutcome
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_checkOutcome((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, slice $user) impure inline_ref;
 
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $TestContract$_fun_forward
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_forward((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_forward((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $TestContract$_fun_reply
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_reply((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, cell $body) impure inline;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_reply((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, cell $body) impure inline;
 
 ;; $TestContract$_fun_notify
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_notify((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self, cell $body) impure inline;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_notify((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self, cell $body) impure inline;
 
 ;; $TestContract$_fun_requireOwner
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_requireOwner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_requireOwner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_owner
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), slice) $TestContract$_fun_owner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), slice) $TestContract$_fun_owner((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_requireNotStopped
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), ()) $TestContract$_fun_requireNotStopped((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), ()) $TestContract$_fun_requireNotStopped((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
 ;; $TestContract$_fun_stopped
-((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)), int) $TestContract$_fun_stopped((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int)) $self) impure inline_ref;
+((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)), int) $TestContract$_fun_stopped((slice, slice, int, (int, int, int, int, cell, cell, cell, int, int, int), int, (slice, slice, slice, slice, slice, int, int, int, int, int, int)) $self) impure inline_ref;
 
-;; $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b
-((slice, slice, slice, slice, slice, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate, int total_bet_a, int total_bet_b) inline;
+;; $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_winnerOption_total_bet_b
+((slice, slice, slice, slice, slice, int, int, int, int, int, int)) $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_winnerOption_total_bet_b(slice title, slice source, slice bet_a_name, slice bet_b_name, slice image, int odds_a, int odds_b, int finishDate, int total_bet_a, int winnerOption, int total_bet_b) inline;
 
 ;; $BetDetailsMessage$_constructor_user_amount_betContract_outcome
 ((slice, int, slice, int)) $BetDetailsMessage$_constructor_user_amount_betContract_outcome(slice user, int amount, slice betContract, int outcome) inline;

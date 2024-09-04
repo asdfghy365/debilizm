@@ -1,5 +1,5 @@
-ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\arman\TonBets
-ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/arman/TonBets/sources/output/contract_TestContract.code.fc` incl:`D:/arman/TonBets/sources/output/contract_TestContract.headers.fc` incl:`D:/arman/TonBets/sources/output/contract_TestContract.stdlib.fc` incl:`D:/arman/TonBets/sources/output/contract_TestContract.constants.fc` incl:`D:/arman/TonBets/sources/output/contract_TestContract.storage.fc` 
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\Projects\tacttutor\tact-template
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/Projects/tacttutor/tact-template/sources/output/contract_TestContract.code.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TestContract.headers.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TestContract.stdlib.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TestContract.constants.fc` incl:`D:/Projects/tacttutor/tact-template/sources/output/contract_TestContract.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
@@ -32,7 +32,7 @@ PROGRAM{
   DECLPROC $BetInfo$_to_external
   DECLPROC $TestContract$init$_load
   DECLPROC $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_bets_total_finalized_outcome_a_wins_insufficient_balance
-  DECLPROC $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b
+  DECLPROC $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_winnerOption_total_bet_a_total_bet_b
   DECLPROC $TestContract$_contract_init
   DECLPROC $TestContract$_contract_load
   DECLPROC $TestContract$_contract_store
@@ -52,6 +52,7 @@ PROGRAM{
   DECLPROC $TestContract$_fun_getBetInfo
   DECLPROC $TestContract$_fun_getMap
   DECLPROC $TestContract$_fun_getBet
+  DECLPROC $TestContract$_fun_checkOutcome
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $TestContract$_fun_forward
   DECLPROC $TestContract$_fun_reply
@@ -60,7 +61,7 @@ PROGRAM{
   DECLPROC $TestContract$_fun_owner
   DECLPROC $TestContract$_fun_requireNotStopped
   DECLPROC $TestContract$_fun_stopped
-  DECLPROC $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b
+  DECLPROC $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_winnerOption_total_bet_b
   DECLPROC $BetDetailsMessage$_constructor_user_amount_betContract_outcome
   DECLPROC $SendParameters$_constructor_to_value_mode_body
   DECLPROC $DeployOk$_constructor_queryId
@@ -71,6 +72,7 @@ PROGRAM{
   DECLPROC $TestContract$_internal_text_739474efea42dbeff12b241c8526ed1225b0be5500bae1a04447b16a62d72901
   DECLPROC $TestContract$_internal_any_text
   DECLPROC $TestContract$_internal_text_a724187afb678ba0ac26b7b57049d3a9225e34ebece690d5af6b77a326666a55
+  DECLPROC $TestContract$_internal_text_efdb9e99edc1eb6a18fd98ca5ce6077a72be4f84808a5bf94d1de89d563e131a
   DECLPROC $TestContract$_internal_binary_Deploy
   DECLPROC $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501
   77247 DECLMETHOD %payoutStatus
@@ -83,6 +85,7 @@ PROGRAM{
   95159 DECLMETHOD %getBetInfo
   80934 DECLMETHOD %getMap
   105559 DECLMETHOD %getBet
+  68726 DECLMETHOD %checkOutcome
   83229 DECLMETHOD %owner
   74107 DECLMETHOD %stopped
   113617 DECLMETHOD supported_interfaces
@@ -266,17 +269,24 @@ PROGRAM{
   }>
   $BetInfo$_store PROCREF:<{
     NEWC
-    s0 s10 XCHG2
+    s0 s11 XCHG2
     STSLICER
     ENDC
-    s0 s10 XCHG2
+    s0 s11 XCHG2
     STREF
     NEWC
-    s0 s8 XCHG2
+    s0 s9 XCHG2
     STSLICER
     ENDC
-    s0 s7 XCHG2
+    s0 s8 XCHG2
     STREF
+    NEWC
+    s0 s7 XCHG2
+    STSLICER
+    ENDC
+    s0 s6 XCHG2
+    STREF
+    NEWC
     NEWC
     s0 s6 XCHG2
     STSLICER
@@ -284,26 +294,20 @@ PROGRAM{
     s0 s5 XCHG2
     STREF
     NEWC
-    NEWC
-    s0 s5 XCHG2
-    STSLICER
-    ENDC
     s0 s4 XCHG2
-    STREF
-    NEWC
-    s0 s3 XCHG2
     STSLICER
     ENDC
-    ROT
+    s0 s3 XCHG2
     STREF
     64 STU
-    s1 s2 XCHG
     64 STU
     s1 s2 XCHG
     32 STU
+    s1 s2 XCHG
+    64 STU
     s1 s3 XCHG
     64 STU
-    64 STU
+    8 STU
     ENDC
     SWAP
     STREF
@@ -337,10 +341,11 @@ PROGRAM{
     32 LDU
     64 LDU
     64 LDU
+    8 LDU
     DROP
-    s7 s10 XCHG
-    s7 s9 XCHG
-    s7 s8 XCHG
+    s8 s11 XCHG
+    s8 s10 XCHG
+    s8 s9 XCHG
   }>
   $BetDetailsMessage$_store PROCINLINE:<{
     3696589863 PUSHINT
@@ -393,36 +398,38 @@ PROGRAM{
     s2 s3 XCHG
   }>
   $TestContract$_store PROCINLINE:<{
-    s1 24 s() XCHG
-    s0 23 s() XCHG
+    s1 25 s() XCHG
+    s0 24 s() XCHG
     __tact_store_address INLINECALLDICT
     SWAP
-    s0 21 s() XCHG
+    s0 22 s() XCHG
     __tact_store_address INLINECALLDICT
-    s1 19 s() XCHG
+    s1 20 s() XCHG
     1 STI
     NEWC
     s0 s10 XCHG
-    s9 18 s() XCHG
-    s8 17 s() XCHG
-    s7 16 s() XCHG
-    s6 s15 XCHG
-    s5 s14 XCHG
-    s4 s13 XCHG
-    s3 s12 XCHG
-    s11 s0 s0 XCHG3
-    s0 18 s() XCHG
+    s9 19 s() XCHG
+    s8 18 s() XCHG
+    s7 17 s() XCHG
+    s6 16 s() XCHG
+    s5 s15 XCHG
+    s4 s14 XCHG
+    s3 s13 XCHG
+    s12 s11 s0 XCHG3
     $Data$_store INLINECALLDICT
-    s1 s7 XCHG
+    s1 s9 XCHG
     64 STU
     NEWC
-    s0 s10 XCHG
-    s6 s9 XCHG
-    s5 s8 XCHG
-    s4 s7 XCHG
-    s3 s6 XCHG
-    s0 s1 s5 XCHG3
-    s12 s11 XCHG2
+    s0 s11 XCHG
+    s8 s10 XCHG
+    s7 s9 XCHG
+    s6 s8 XCHG
+    s5 s7 XCHG
+    s4 s6 XCHG
+    s3 s5 XCHG
+    s0 s1 s4 XCHG3
+    s0 s3 XCHG
+    s13 s12 XCHG2
     $BetInfo$_store INLINECALLDICT
     ENDC
     ROT
@@ -447,10 +454,11 @@ PROGRAM{
     DROP
     CTOS
     $BetInfo$_load INLINECALLDICT
-    s10 POP
-    21 s() 24 s() XCHG
-    21 s() 23 s() XCHG
-    21 s() 22 s() XCHG
+    s11 POP
+    22 s() 25 s() XCHG
+    22 s() 24 s() XCHG
+    22 s() 23 s() XCHG
+    20 s() 21 s() XCHG
     19 s() 20 s() XCHG
     18 s() 19 s() XCHG
     17 s() 18 s() XCHG
@@ -459,8 +467,7 @@ PROGRAM{
     s14 s15 XCHG
     s13 s14 XCHG
     s12 s13 XCHG
-    s11 s12 XCHG
-    9 ROLL
+    10 ROLL
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -481,14 +488,15 @@ PROGRAM{
   }>
   $Data$_constructor_total_bet_a_total_bet_b_odds_a_odds_b_bets_a_bets_b_bets_total_finalized_outcome_a_wins_insufficient_balance PROCINLINE:<{
   }>
-  $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b PROCINLINE:<{
+  $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_winnerOption_total_bet_a_total_bet_b PROCINLINE:<{
+    s4 s5 XCHG
     s3 s4 XCHG
-    s2 s3 XCHG
+    ROT
   }>
   $TestContract$_contract_init PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
     FALSE
-    B{b5ee9c72410101010024000043801d0548f64eb40fcea0aecf550390f4ce69f7a194037a0178305a13277347b56e50d581e03e} B>boc <s PUSHSLICE
+    B{b5ee9c72410101010024000043801a0d582c1a7a7016d4e970b93f84d38ef6638777d8fc3e32705ea1212a18c788f0c6fb01c8} B>boc <s PUSHSLICE
     0 PUSHINT
     DUP
     1000 PUSHINT
@@ -506,11 +514,13 @@ PROGRAM{
     B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE
     B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE
     0 PUSHINT
-    s13 s12 s15 PUSH3
-    17 s() PUSH
-    $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_total_bet_a_total_bet_b INLINECALLDICT
-    22 s() 23 s() XCHG
-    20 s() 22 s() XCHG
+    s13 s12 s0 PUSH3
+    18 s() PUSH
+    18 s() PUSH
+    $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_finishDate_odds_a_odds_b_winnerOption_total_bet_a_total_bet_b INLINECALLDICT
+    23 s() 24 s() XCHG
+    21 s() 23 s() XCHG
+    20 s() 21 s() XCHG
     19 s() 20 s() XCHG
     18 s() 19 s() XCHG
     17 s() 18 s() XCHG
@@ -520,7 +530,6 @@ PROGRAM{
     s13 s14 XCHG
     s12 s13 XCHG
     s11 s12 XCHG
-    s10 s11 XCHG
   }>
   $TestContract$_contract_load PROCREF:<{
     c4 PUSH
@@ -532,7 +541,8 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $TestContract$_load INLINECALLDICT
-      24 s() POP
+      25 s() POP
+      23 s() 24 s() XCHG
       22 s() 23 s() XCHG
       21 s() 22 s() XCHG
       20 s() 21 s() XCHG
@@ -561,6 +571,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
+    s0 25 s() XCHG
     s0 24 s() XCHG
     s0 23 s() XCHG
     s0 22 s() XCHG
@@ -678,31 +689,32 @@ PROGRAM{
     SENDRAWMSG
   }>
   $TestContract$_fun_handle_bet PROCREF:<{
-    s5 POP
-    s5 POP
-    2DROP
-    s15 POP
-    s15 POP
+    s3 POP
+    s3 POP
+    s4 POP
+    s4 POP
+    16 s() POP
+    16 s() POP
     63076 PUSHINT
-    s10 PUSH
+    s11 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
-    s0 s15 XCHG
+    s0 s2 XCHG
     50000000 PUSHINT
     SUB
     5194 PUSHINT
     OVER
     0 GTINT
     THROWANYIFNOT
-    SWAP
+    s0 s15 XCHG
     IF:<{
-      s0 16 s() XCHG
-      16 s() PUSH
+      s0 17 s() XCHG
+      s14 PUSH
       ADD
-      s12 PUSH
+      s13 PUSH
       267 PUSHINT
-      16 s() PUSH
+      s3 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -710,29 +722,29 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        SWAP
-        s0 17 s() XCHG
+        s0 s15 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 16 s() XCHG
+        s0 s14 XCHG
       }>
-      s0 s12 XCHG
+      s0 s13 XCHG
       267 PUSHINT
-      s15 s13 PUSH2
+      s2 s14 PUSH2
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s2 s10 XCHG
+      s2 s11 XCHG
       267 PUSHINT
-      s0 s15 s13 XCHG3
+      s0 s0 s14 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
-      s15 s15 XCPU
+      s0 16 s() XCHG
+      s14 PUSH
       ADD
-      s11 PUSH
+      s12 PUSH
       267 PUSHINT
-      16 s() PUSH
+      s3 PUSH
       257 PUSHINT
       __tact_dict_get_slice_int INLINECALLDICT
       DUP
@@ -740,33 +752,46 @@ PROGRAM{
       NOT
       IF:<{
         __tact_not_null INLINECALLDICT
-        SWAP
-        s0 16 s() XCHG
+        s0 s15 XCHG2
         ADD
       }>ELSE<{
         DROP
-        s0 s15 XCHG
+        s0 s14 XCHG
       }>
-      s0 s11 XCHG
+      s0 s12 XCHG
       267 PUSHINT
-      s15 s12 PUSH2
+      s2 s13 PUSH2
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s2 s10 XCHG
+      s2 s11 XCHG
       267 PUSHINT
-      s0 s15 s12 XCHG3
+      s0 s0 s13 XCHG3
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
-      s10 s12 XCHG
-      s9 s10 XCHG
+      s14 s15 XCHG
+      s12 s14 XCHG
     }>
-    s14 PUSH
+    s12 PUSH
+    0 GTINT
+    IF:<{
+      s14 PUSH
+      1000 PUSHINT
+      MUL
+      s13 PUSH
+      DIV
+      90 MULCONST
+      100 PUSHINT
+      DIV
+    }>ELSE<{
+      1000 PUSHINT
+    }>
+    s15 PUSH
     0 GTINT
     IF:<{
       s13 PUSH
       1000 PUSHINT
       MUL
-      s15 PUSH
+      16 s() PUSH
       DIV
       90 MULCONST
       100 PUSHINT
@@ -774,29 +799,14 @@ PROGRAM{
     }>ELSE<{
       1000 PUSHINT
     }>
-    s14 PUSH
-    0 GTINT
-    IF:<{
-      s15 PUSH
-      1000 PUSHINT
-      MUL
-      s15 PUSH
-      DIV
-      90 MULCONST
-      100 PUSHINT
-      DIV
-    }>ELSE<{
-      1000 PUSHINT
-    }>
-    2DUP
-    18 s() PUSH
-    18 s() PUSH
-    s5 18 s() XCHG
-    s4 17 s() XCHG
-    s5 16 s() XCHG
-    s6 s14 XCHG
-    s3 s4 XCHG
-    s2 s3 XCHG
+    s1 s0 s14 PUSH3
+    19 s() PUSH
+    18 s() 21 s() XCHG
+    s5 19 s() XCHG
+    s4 18 s() XCHG
+    s6 s15 XCHG
+    s3 s5 XCHG
+    s1 s0 s4 XCHG3
   }>
   $SendParameters$_constructor_to_value_mode PROCINLINE:<{
     TRUE
@@ -806,7 +816,7 @@ PROGRAM{
     PUSHNULL
   }>
   $TestContract$_fun_sendRemainingBalanceToOwner PROCREF:<{
-    23 s() PUSH
+    24 s() PUSH
     0 PUSHINT
     7 PUSHPOW2
     $SendParameters$_constructor_to_value_mode INLINECALLDICT
@@ -819,7 +829,7 @@ PROGRAM{
     __tact_dict_min_slice_int INLINECALLDICT
     WHILE:<{
     }>DO<{
-      16 s() PUSH
+      17 s() PUSH
       IF:<{
         s0 s2 PUSH2
         MUL
@@ -851,16 +861,16 @@ PROGRAM{
     }>
     4 BLKDROP
     $TestContract$_fun_sendRemainingBalanceToOwner INLINECALLDICT
-    s2 POP
+    s3 POP
     TRUE
-    s13 POP
+    s14 POP
     NOW
-    s0 s2 XCHG
+    s0 s3 XCHG
   }>
   $TestContract$_fun_chargeback PROCREF:<{
-    s3 POP
-    s13 POP
-    OVER
+    s4 POP
+    s14 POP
+    s2 PUSH
     267 PUSHINT
     257 PUSHINT
     __tact_dict_min_slice_int INLINECALLDICT
@@ -878,54 +888,91 @@ PROGRAM{
         DROP
       }>
       267 PUSHINT
-      s3 PUSH
+      s4 PUSH
       s0 s2 XCHG
       257 PUSHINT
       __tact_dict_next_slice_int INLINECALLDICT
     }>
-    s2 s3 XCHG
-    3 BLKDROP
+    2DROP
+    s2 POP
     TRUE
-    s0 s12 XCHG
+    s0 s13 XCHG
     NOW
-    -ROT
+    s3 s3 XCHG2
   }>
   $TestContract$_fun_payoutStatus PROCREF:<{
-    s11 PUSH
-  }>
-  $TestContract$_fun_getTodoParentAddress PROCREF:<{
-    23 s() PUSH
-  }>
-  $TestContract$_fun_getTotalBetA PROCREF:<{
-    20 s() PUSH
-  }>
-  $TestContract$_fun_getTotalBetB PROCREF:<{
-    19 s() PUSH
-  }>
-  $TestContract$_fun_getoddA PROCREF:<{
-    18 s() PUSH
-  }>
-  $TestContract$_fun_getoddB PROCREF:<{
-    17 s() PUSH
-  }>
-  $TestContract$_fun_outcome PROCREF:<{
     s12 PUSH
   }>
+  $TestContract$_fun_getTodoParentAddress PROCREF:<{
+    24 s() PUSH
+  }>
+  $TestContract$_fun_getTotalBetA PROCREF:<{
+    21 s() PUSH
+  }>
+  $TestContract$_fun_getTotalBetB PROCREF:<{
+    20 s() PUSH
+  }>
+  $TestContract$_fun_getoddA PROCREF:<{
+    19 s() PUSH
+  }>
+  $TestContract$_fun_getoddB PROCREF:<{
+    18 s() PUSH
+  }>
+  $TestContract$_fun_outcome PROCREF:<{
+    s13 PUSH
+  }>
   $TestContract$_fun_getBetInfo PROCREF:<{
-    s9 s8 s7 PUSH3
-    s9 s8 s7 PUSH3
-    s9 s8 s7 PUSH3
-    s9 PUSH
+    s10 s9 s8 PUSH3
+    s10 s9 s8 PUSH3
+    s10 s9 s8 PUSH3
+    s10 s9 PUSH2
   }>
   $TestContract$_fun_getMap PROCREF:<{
-    s14 PUSH
+    s15 PUSH
   }>
   $TestContract$_fun_getBet PROCREF:<{
     267 PUSHINT
-    16 s() PUSH
+    17 s() PUSH
     s0 s2 XCHG
     257 PUSHINT
     __tact_dict_get_slice_int INLINECALLDICT
+  }>
+  $TestContract$_fun_checkOutcome PROCREF:<{
+    16 s() PUSH
+    267 PUSHINT
+    s2 PUSH
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    ISNULL
+    IFJMP:<{
+      DROP
+      -1 PUSHINT
+    }>
+    s14 PUSH
+    IFJMP:<{
+      267 PUSHINT
+      19 s() PUSH
+      s0 s2 XCHG
+      257 PUSHINT
+      __tact_dict_get_slice_int INLINECALLDICT
+      ISNULL
+      NOT
+      IFJMP:<{
+        1 PUSHINT
+      }>
+      0 PUSHINT
+    }>
+    267 PUSHINT
+    18 s() PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    ISNULL
+    NOT
+    IFJMP:<{
+      1 PUSHINT
+    }>
+    0 PUSHINT
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -967,24 +1014,25 @@ PROGRAM{
   }>
   $TestContract$_fun_requireOwner PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
-    24 s() PUSH
+    25 s() PUSH
     SWAP
     __tact_slice_eq_bits INLINECALLDICT
     132 THROWIFNOT
   }>
   $TestContract$_fun_owner PROCREF:<{
-    23 s() PUSH
+    24 s() PUSH
   }>
   $TestContract$_fun_requireNotStopped PROCREF:<{
     40368 PUSHINT
-    22 s() PUSH
+    23 s() PUSH
     NOT
     THROWANYIFNOT
   }>
   $TestContract$_fun_stopped PROCREF:<{
-    21 s() PUSH
+    22 s() PUSH
   }>
-  $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b PROCINLINE:<{
+  $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_winnerOption_total_bet_b PROCINLINE:<{
+    SWAP
   }>
   $BetDetailsMessage$_constructor_user_amount_betContract_outcome PROCINLINE:<{
   }>
@@ -997,6 +1045,7 @@ PROGRAM{
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $TestContract$_internal_binary_BetInfoInit PROCINLINE:<{
+    s5 POP
     s5 POP
     s5 POP
     s6 POP
@@ -1039,49 +1088,55 @@ PROGRAM{
     }>
     s1 s5 XCHG
     THROWANYIFNOT
-    s5 s1 s4 XCHG3
-    s14 s13 s(-2) PU2XC
-    18 s() PUSH
-    18 s() PUSH
-    $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_total_bet_b INLINECALLDICT
+    s0 s5 XCHG
+    s0 s3 XCHG
+    s2 s4 XCHG2
+    0 PUSHINT
+    s15 PUSH
+    s15 s2 s(-1) PUXC2
+    19 s() PUSH
+    SWAP
+    19 s() PUSH
+    $BetInfo$_constructor_title_source_bet_a_name_bet_b_name_image_odds_a_odds_b_finishDate_total_bet_a_winnerOption_total_bet_b INLINECALLDICT
   }>
   $TestContract$_internal_text_ab5413c4bad5a887365be8fb105b98c9e248b5ff44ca9f33c801dd11ce29d60b PROCINLINE:<{
     63076 PUSHINT
-    s14 PUSH
+    s15 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     __tact_context_get_sender INLINECALLDICT
+    24 s() 26 s() XCHG
     23 s() 25 s() XCHG
-    22 s() 24 s() XCHG
+    22 s() 26 s() XCHG
     21 s() 25 s() XCHG
-    20 s() 24 s() XCHG
+    20 s() 26 s() XCHG
     19 s() 25 s() XCHG
-    18 s() 24 s() XCHG
+    18 s() 26 s() XCHG
     17 s() 25 s() XCHG
-    16 s() 24 s() XCHG
+    16 s() 26 s() XCHG
     s15 25 s() XCHG
-    s14 24 s() XCHG
+    s14 26 s() XCHG
     s13 25 s() XCHG
-    s12 24 s() XCHG
+    s12 26 s() XCHG
     s11 25 s() XCHG
-    s10 24 s() XCHG
+    s10 26 s() XCHG
     s9 25 s() XCHG
-    s8 24 s() XCHG
+    s8 26 s() XCHG
     s7 25 s() XCHG
-    s6 24 s() XCHG
+    s6 26 s() XCHG
     s5 25 s() XCHG
-    s4 24 s() XCHG
+    s4 26 s() XCHG
     s3 25 s() XCHG
-    s2 24 s() XCHG
+    s2 26 s() XCHG
     s1 25 s() XCHG
-    s0 24 s() XCHG
+    s0 26 s() XCHG
     TRUE
     26 s() PUSH
     $TestContract$_fun_handle_bet INLINECALLDICT
     MYADDR
-    s2 25 s() XCHG
+    s2 27 s() XCHG
     s1 26 s() XCHG
     1 PUSHINT
     $BetDetailsMessage$_constructor_user_amount_betContract_outcome INLINECALLDICT
@@ -1091,10 +1146,11 @@ PROGRAM{
     3 PUSHINT
     s0 s4 XCHG
     $BetDetailsMessage$_store_cell INLINECALLDICT
-    24 s() PUSH
+    25 s() PUSH
     3 -ROLL
     $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
     $global_send INLINECALLDICT
+    22 s() 24 s() XCHG
     21 s() 23 s() XCHG
     20 s() 22 s() XCHG
     19 s() 21 s() XCHG
@@ -1108,41 +1164,42 @@ PROGRAM{
   }>
   $TestContract$_internal_text_69742cff251f5b948dc76100b6544580aaff8a55c4609f222ef7da35c1547d2d PROCINLINE:<{
     63076 PUSHINT
-    s14 PUSH
+    s15 PUSH
     NOT
     THROWANYIFNOT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     __tact_context_get_sender INLINECALLDICT
+    24 s() 26 s() XCHG
     23 s() 25 s() XCHG
-    22 s() 24 s() XCHG
+    22 s() 26 s() XCHG
     21 s() 25 s() XCHG
-    20 s() 24 s() XCHG
+    20 s() 26 s() XCHG
     19 s() 25 s() XCHG
-    18 s() 24 s() XCHG
+    18 s() 26 s() XCHG
     17 s() 25 s() XCHG
-    16 s() 24 s() XCHG
+    16 s() 26 s() XCHG
     s15 25 s() XCHG
-    s14 24 s() XCHG
+    s14 26 s() XCHG
     s13 25 s() XCHG
-    s12 24 s() XCHG
+    s12 26 s() XCHG
     s11 25 s() XCHG
-    s10 24 s() XCHG
+    s10 26 s() XCHG
     s9 25 s() XCHG
-    s8 24 s() XCHG
+    s8 26 s() XCHG
     s7 25 s() XCHG
-    s6 24 s() XCHG
+    s6 26 s() XCHG
     s5 25 s() XCHG
-    s4 24 s() XCHG
+    s4 26 s() XCHG
     s3 25 s() XCHG
-    s2 24 s() XCHG
+    s2 26 s() XCHG
     s1 25 s() XCHG
-    s0 24 s() XCHG
+    s0 26 s() XCHG
     FALSE
     26 s() PUSH
     $TestContract$_fun_handle_bet INLINECALLDICT
     MYADDR
-    s2 25 s() XCHG
+    s2 27 s() XCHG
     s1 26 s() XCHG
     2 PUSHINT
     $BetDetailsMessage$_constructor_user_amount_betContract_outcome INLINECALLDICT
@@ -1152,10 +1209,11 @@ PROGRAM{
     3 PUSHINT
     s0 s4 XCHG
     $BetDetailsMessage$_store_cell INLINECALLDICT
-    24 s() PUSH
+    25 s() PUSH
     3 -ROLL
     $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
     $global_send INLINECALLDICT
+    22 s() 24 s() XCHG
     21 s() 23 s() XCHG
     20 s() 22 s() XCHG
     19 s() 21 s() XCHG
@@ -1168,24 +1226,7 @@ PROGRAM{
     2 13 BLKSWAP
   }>
   $TestContract$_internal_text_661213cef1397c0b35665e953b6fd81184ea522c28d67a571a8db787803c02b7 PROCINLINE:<{
-    s12 POP
-    s12 POP
-    44933 PUSHINT
-    __tact_context_get_sender INLINECALLDICT
-    22 s() PUSH
-    SWAP
-    __tact_slice_eq_bits INLINECALLDICT
-    THROWANYIFNOT
-    TRUE
-    TRUE
-    18 s() PUSH
-    17 s() PUSH
-    s2 s15 XCHG
-    s3 s14 XCHG
-    s3 s0 s0 XCHG3
-    $TestContract$_fun_payout INLINECALLDICT
-  }>
-  $TestContract$_internal_text_739474efea42dbeff12b241c8526ed1225b0be5500bae1a04447b16a62d72901 PROCINLINE:<{
+    s13 POP
     s13 POP
     44933 PUSHINT
     __tact_context_get_sender INLINECALLDICT
@@ -1194,15 +1235,37 @@ PROGRAM{
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     TRUE
-    17 s() PUSH
-    16 s() PUSH
-    s15 s0 s0 XCHG3
+    TRUE
+    19 s() PUSH
+    18 s() PUSH
+    s2 16 s() XCHG
+    s3 s15 XCHG
+    s3 s0 s0 XCHG3
     $TestContract$_fun_payout INLINECALLDICT
+    DROP
+    1 PUSHINT
+  }>
+  $TestContract$_internal_text_739474efea42dbeff12b241c8526ed1225b0be5500bae1a04447b16a62d72901 PROCINLINE:<{
+    s14 POP
+    44933 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    24 s() PUSH
+    SWAP
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    TRUE
+    18 s() PUSH
+    17 s() PUSH
+    s2 16 s() XCHG
+    SWAP
+    $TestContract$_fun_payout INLINECALLDICT
+    DROP
+    2 PUSHINT
   }>
   $TestContract$_internal_any_text PROCINLINE:<{
     44933 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    25 s() PUSH
+    26 s() PUSH
     SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
@@ -1211,8 +1274,8 @@ PROGRAM{
     __tact_slice_eq INLINECALLDICT
     IF:<{
       DROP
-      s12 POP
-      s12 POP
+      s13 POP
+      s13 POP
       TRUE
       TRUE
     }>ELSE<{
@@ -1221,14 +1284,14 @@ PROGRAM{
       __tact_slice_eq INLINECALLDICT
       IF:<{
         DROP
-        s12 POP
-        s12 POP
+        s13 POP
+        s13 POP
         TRUE
         TRUE
+        19 s() PUSH
         18 s() PUSH
-        17 s() PUSH
-        s2 s15 XCHG
-        s3 s14 XCHG
+        s2 16 s() XCHG
+        s3 s15 XCHG
         s3 s0 s0 XCHG3
         $TestContract$_fun_payout INLINECALLDICT
       }>ELSE<{
@@ -1236,30 +1299,35 @@ PROGRAM{
         SWAP
         __tact_slice_eq INLINECALLDICT
         IF:<{
-          s13 POP
+          s14 POP
           TRUE
+          18 s() PUSH
           17 s() PUSH
-          16 s() PUSH
-          s15 s0 s0 XCHG3
+          s2 16 s() XCHG
+          SWAP
           $TestContract$_fun_payout INLINECALLDICT
         }>ELSE<{
         }>
       }>
-      s12 s12 XCHG2
-      s0 s13 XCHG
+      s13 s13 XCHG2
+      s0 s14 XCHG
     }>
-    s13 s13 XCHG2
-    s0 s12 XCHG
+    s14 s14 XCHG2
+    s0 s13 XCHG
   }>
   $TestContract$_internal_text_a724187afb678ba0ac26b7b57049d3a9225e34ebece690d5af6b77a326666a55 PROCINLINE:<{
     44933 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    24 s() PUSH
+    25 s() PUSH
     SWAP
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
-    s14 PUSH
+    s15 PUSH
     $TestContract$_fun_chargeback INLINECALLDICT
+  }>
+  $TestContract$_internal_text_efdb9e99edc1eb6a18fd98ca5ce6077a72be4f84808a5bf94d1de89d563e131a PROCINLINE:<{
+    TRUE
+    s15 POP
   }>
   $TestContract$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -1269,10 +1337,10 @@ PROGRAM{
   $TestContract$_internal_text_bcfaf776907c719cc8d379d8f194aaaa27e8ca2871cd591781721f215a454501 PROCINLINE:<{
     $TestContract$_fun_requireOwner INLINECALLDICT
     $TestContract$_fun_requireNotStopped INLINECALLDICT
-    21 s() POP
+    22 s() POP
     TRUE
     B{b5ee9c7241010101000d0000160000000053746f707065646f94ddb2} B>boc PUSHREF
-    s1 22 s() XCHG
+    s1 23 s() XCHG
     $TestContract$_fun_reply INLINECALLDICT
   }>
   %payoutStatus PROC:<{
@@ -1280,56 +1348,56 @@ PROGRAM{
     $TestContract$_fun_payoutStatus INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getTodoParentAddress PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTodoParentAddress INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getTotalBetA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetA INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getTotalBetB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getTotalBetB INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getoddA PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddA INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getoddB PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getoddB INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %outcome PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_outcome INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getBetInfo PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_getBetInfo INLINECALLDICT
-    10 10 BLKDROP2
-    10 10 BLKDROP2
-    4 10 BLKDROP2
+    11 11 BLKDROP2
+    11 11 BLKDROP2
+    3 11 BLKDROP2
     $BetInfo$_to_external INLINECALLDICT
   }>
   %getMap PROC:<{
@@ -1337,11 +1405,12 @@ PROGRAM{
     $TestContract$_fun_getMap INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %getBet PROC:<{
     __tact_verify_address INLINECALLDICT
     $TestContract$_contract_load INLINECALLDICT
+    24 s() 25 s() XCHG
     23 s() 24 s() XCHG
     22 s() 23 s() XCHG
     21 s() 22 s() XCHG
@@ -1355,21 +1424,40 @@ PROGRAM{
     $TestContract$_fun_getBet INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
+  }>
+  %checkOutcome PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $TestContract$_contract_load INLINECALLDICT
+    24 s() 25 s() XCHG
+    23 s() 24 s() XCHG
+    22 s() 23 s() XCHG
+    21 s() 22 s() XCHG
+    20 s() 21 s() XCHG
+    19 s() 20 s() XCHG
+    18 s() 19 s() XCHG
+    17 s() 18 s() XCHG
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
+    15 ROLL
+    $TestContract$_fun_checkOutcome INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    9 1 BLKDROP2
   }>
   %owner PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_owner INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   %stopped PROC:<{
     $TestContract$_contract_load INLINECALLDICT
     $TestContract$_fun_stopped INLINECALLDICT
     16 s() POP
     15 BLKDROP
-    8 1 BLKDROP2
+    9 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -1380,7 +1468,7 @@ PROGRAM{
     192989407141549587419771644724066226057 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6176763479726b78414d733332563877746e526175444665796f734865723637613335644a6b683538703533} PUSHSLICE
+    x{697066733a2f2f516d64706977563546335035456e42487a726a55314e5a5878677154676d3775416d356b56334a69575846557a73} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1474,6 +1562,15 @@ PROGRAM{
         TRUE
         RETALT
       }>
+      DUP
+      108490804944420552989294274005378279587037202662902278785832882355752925008666 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        $TestContract$_internal_text_efdb9e99edc1eb6a18fd98ca5ce6077a72be4f84808a5bf94d1de89d563e131a INLINECALLDICT
+        TRUE
+        RETALT
+      }>
       85478235227686204299312064008631277118150318603456584517510472216578858763521 PUSHINT
       EQUAL
       IFJMP:<{
@@ -1517,6 +1614,7 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $TestContract$_contract_load INLINECALLDICT
+    24 s() 26 s() XCHG
     23 s() 25 s() XCHG
     22 s() 24 s() XCHG
     21 s() 23 s() XCHG
@@ -1527,7 +1625,8 @@ PROGRAM{
     16 s() 18 s() XCHG
     s15 17 s() XCHG
     s14 16 s() XCHG
-    2 14 BLKSWAP
+    s13 s15 XCHG
+    2 13 BLKSWAP
     $TestContract$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $TestContract$_contract_store INLINECALLDICT
